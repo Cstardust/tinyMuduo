@@ -4,16 +4,12 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/shc/Muduo/src/InetAddress.cpp" "/home/shc/Muduo/build/src/CMakeFiles/muduo.dir/InetAddress.cpp.o"
-  "/home/shc/Muduo/src/Logger.cpp" "/home/shc/Muduo/build/src/CMakeFiles/muduo.dir/Logger.cpp.o"
-  "/home/shc/Muduo/src/Timestamp.cpp" "/home/shc/Muduo/build/src/CMakeFiles/muduo.dir/Timestamp.cpp.o"
-  "/home/shc/Muduo/src/main.cpp" "/home/shc/Muduo/build/src/CMakeFiles/muduo.dir/main.cpp.o"
+  "/home/shc/Muduo/examples/epoll_example.cpp" "/home/shc/Muduo/examples/build/CMakeFiles/epoll.dir/epoll_example.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "../include"
   )
 
 # Targets to which this target links.

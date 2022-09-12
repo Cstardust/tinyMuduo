@@ -57,9 +57,33 @@ include src/CMakeFiles/muduo.dir/progress.make
 # Include the compile flags for this target's objects.
 include src/CMakeFiles/muduo.dir/flags.make
 
+src/CMakeFiles/muduo.dir/InetAddress.cpp.o: src/CMakeFiles/muduo.dir/flags.make
+src/CMakeFiles/muduo.dir/InetAddress.cpp.o: ../src/InetAddress.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shc/Muduo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/muduo.dir/InetAddress.cpp.o"
+	cd /home/shc/Muduo/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/muduo.dir/InetAddress.cpp.o -c /home/shc/Muduo/src/InetAddress.cpp
+
+src/CMakeFiles/muduo.dir/InetAddress.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/muduo.dir/InetAddress.cpp.i"
+	cd /home/shc/Muduo/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/shc/Muduo/src/InetAddress.cpp > CMakeFiles/muduo.dir/InetAddress.cpp.i
+
+src/CMakeFiles/muduo.dir/InetAddress.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/muduo.dir/InetAddress.cpp.s"
+	cd /home/shc/Muduo/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/shc/Muduo/src/InetAddress.cpp -o CMakeFiles/muduo.dir/InetAddress.cpp.s
+
+src/CMakeFiles/muduo.dir/InetAddress.cpp.o.requires:
+
+.PHONY : src/CMakeFiles/muduo.dir/InetAddress.cpp.o.requires
+
+src/CMakeFiles/muduo.dir/InetAddress.cpp.o.provides: src/CMakeFiles/muduo.dir/InetAddress.cpp.o.requires
+	$(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/InetAddress.cpp.o.provides.build
+.PHONY : src/CMakeFiles/muduo.dir/InetAddress.cpp.o.provides
+
+src/CMakeFiles/muduo.dir/InetAddress.cpp.o.provides.build: src/CMakeFiles/muduo.dir/InetAddress.cpp.o
+
+
 src/CMakeFiles/muduo.dir/Logger.cpp.o: src/CMakeFiles/muduo.dir/flags.make
 src/CMakeFiles/muduo.dir/Logger.cpp.o: ../src/Logger.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shc/Muduo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/muduo.dir/Logger.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shc/Muduo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/CMakeFiles/muduo.dir/Logger.cpp.o"
 	cd /home/shc/Muduo/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/muduo.dir/Logger.cpp.o -c /home/shc/Muduo/src/Logger.cpp
 
 src/CMakeFiles/muduo.dir/Logger.cpp.i: cmake_force
@@ -83,7 +107,7 @@ src/CMakeFiles/muduo.dir/Logger.cpp.o.provides.build: src/CMakeFiles/muduo.dir/L
 
 src/CMakeFiles/muduo.dir/Timestamp.cpp.o: src/CMakeFiles/muduo.dir/flags.make
 src/CMakeFiles/muduo.dir/Timestamp.cpp.o: ../src/Timestamp.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shc/Muduo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/CMakeFiles/muduo.dir/Timestamp.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shc/Muduo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object src/CMakeFiles/muduo.dir/Timestamp.cpp.o"
 	cd /home/shc/Muduo/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/muduo.dir/Timestamp.cpp.o -c /home/shc/Muduo/src/Timestamp.cpp
 
 src/CMakeFiles/muduo.dir/Timestamp.cpp.i: cmake_force
@@ -107,7 +131,7 @@ src/CMakeFiles/muduo.dir/Timestamp.cpp.o.provides.build: src/CMakeFiles/muduo.di
 
 src/CMakeFiles/muduo.dir/main.cpp.o: src/CMakeFiles/muduo.dir/flags.make
 src/CMakeFiles/muduo.dir/main.cpp.o: ../src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shc/Muduo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object src/CMakeFiles/muduo.dir/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shc/Muduo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object src/CMakeFiles/muduo.dir/main.cpp.o"
 	cd /home/shc/Muduo/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/muduo.dir/main.cpp.o -c /home/shc/Muduo/src/main.cpp
 
 src/CMakeFiles/muduo.dir/main.cpp.i: cmake_force
@@ -131,6 +155,7 @@ src/CMakeFiles/muduo.dir/main.cpp.o.provides.build: src/CMakeFiles/muduo.dir/mai
 
 # Object files for target muduo
 muduo_OBJECTS = \
+"CMakeFiles/muduo.dir/InetAddress.cpp.o" \
 "CMakeFiles/muduo.dir/Logger.cpp.o" \
 "CMakeFiles/muduo.dir/Timestamp.cpp.o" \
 "CMakeFiles/muduo.dir/main.cpp.o"
@@ -138,12 +163,13 @@ muduo_OBJECTS = \
 # External object files for target muduo
 muduo_EXTERNAL_OBJECTS =
 
+../bin/muduo: src/CMakeFiles/muduo.dir/InetAddress.cpp.o
 ../bin/muduo: src/CMakeFiles/muduo.dir/Logger.cpp.o
 ../bin/muduo: src/CMakeFiles/muduo.dir/Timestamp.cpp.o
 ../bin/muduo: src/CMakeFiles/muduo.dir/main.cpp.o
 ../bin/muduo: src/CMakeFiles/muduo.dir/build.make
 ../bin/muduo: src/CMakeFiles/muduo.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/shc/Muduo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable ../../bin/muduo"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/shc/Muduo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable ../../bin/muduo"
 	cd /home/shc/Muduo/build/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/muduo.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -151,6 +177,7 @@ src/CMakeFiles/muduo.dir/build: ../bin/muduo
 
 .PHONY : src/CMakeFiles/muduo.dir/build
 
+src/CMakeFiles/muduo.dir/requires: src/CMakeFiles/muduo.dir/InetAddress.cpp.o.requires
 src/CMakeFiles/muduo.dir/requires: src/CMakeFiles/muduo.dir/Logger.cpp.o.requires
 src/CMakeFiles/muduo.dir/requires: src/CMakeFiles/muduo.dir/Timestamp.cpp.o.requires
 src/CMakeFiles/muduo.dir/requires: src/CMakeFiles/muduo.dir/main.cpp.o.requires

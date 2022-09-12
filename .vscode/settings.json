@@ -4,6 +4,9 @@
         "ostream": "cpp",
         "memory_resource": "cpp",
         "sstream": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "*.tcc": "cpp",
+        "fstream": "cpp",
+        "memory": "cpp"
     }
 }

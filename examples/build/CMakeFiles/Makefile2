@@ -54,63 +54,45 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/shc/Muduo
+CMAKE_SOURCE_DIR = /home/shc/Muduo/examples
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/shc/Muduo/build
+CMAKE_BINARY_DIR = /home/shc/Muduo/examples/build
 
 #=============================================================================
-# Directory level rules for directory src
-
-# Convenience name for "all" pass in the directory.
-src/all: src/CMakeFiles/muduo.dir/all
-
-.PHONY : src/all
-
-# Convenience name for "clean" pass in the directory.
-src/clean: src/CMakeFiles/muduo.dir/clean
-
-.PHONY : src/clean
-
-# Convenience name for "preinstall" pass in the directory.
-src/preinstall:
-
-.PHONY : src/preinstall
-
-#=============================================================================
-# Target rules for target src/CMakeFiles/muduo.dir
+# Target rules for target CMakeFiles/epoll.dir
 
 # All Build rule for target.
-src/CMakeFiles/muduo.dir/all:
-	$(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/depend
-	$(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/shc/Muduo/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target muduo"
-.PHONY : src/CMakeFiles/muduo.dir/all
+CMakeFiles/epoll.dir/all:
+	$(MAKE) -f CMakeFiles/epoll.dir/build.make CMakeFiles/epoll.dir/depend
+	$(MAKE) -f CMakeFiles/epoll.dir/build.make CMakeFiles/epoll.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/shc/Muduo/examples/build/CMakeFiles --progress-num=1,2 "Built target epoll"
+.PHONY : CMakeFiles/epoll.dir/all
 
 # Include target in all.
-all: src/CMakeFiles/muduo.dir/all
+all: CMakeFiles/epoll.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-src/CMakeFiles/muduo.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/shc/Muduo/build/CMakeFiles 5
-	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/muduo.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/shc/Muduo/build/CMakeFiles 0
-.PHONY : src/CMakeFiles/muduo.dir/rule
+CMakeFiles/epoll.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/shc/Muduo/examples/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/epoll.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/shc/Muduo/examples/build/CMakeFiles 0
+.PHONY : CMakeFiles/epoll.dir/rule
 
 # Convenience name for target.
-muduo: src/CMakeFiles/muduo.dir/rule
+epoll: CMakeFiles/epoll.dir/rule
 
-.PHONY : muduo
-
-# clean rule for target.
-src/CMakeFiles/muduo.dir/clean:
-	$(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/clean
-.PHONY : src/CMakeFiles/muduo.dir/clean
+.PHONY : epoll
 
 # clean rule for target.
-clean: src/CMakeFiles/muduo.dir/clean
+CMakeFiles/epoll.dir/clean:
+	$(MAKE) -f CMakeFiles/epoll.dir/build.make CMakeFiles/epoll.dir/clean
+.PHONY : CMakeFiles/epoll.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/epoll.dir/clean
 
 .PHONY : clean
 

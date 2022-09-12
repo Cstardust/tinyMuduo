@@ -1,5 +1,5 @@
-#ifndef PUBLIC_H
-#define PUBLIC_H
+#ifndef MY_MUDUO_PUBLIC_H
+#define MY_MUDUO_PUBLIC_H
 
 #include<iostream>
 #include<string>

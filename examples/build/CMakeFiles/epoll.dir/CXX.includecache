@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/shc/Muduo/examples/epoll_example.cpp
+arpa/inet.h
+-
+sys/socket.h
+-
+sys/types.h
+-
+sys/epoll.h
+-
+libgen.h
+-
+stdio.h
+-
+string.h
+-
+stdlib.h
+-
+cassert
+-
+fcntl.h
+-
+unistd.h
+-
+iostream
+-
+

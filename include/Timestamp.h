@@ -5,7 +5,7 @@
 #include<time.h>
 
 //  Interace for user : now()
-//  复习拷贝构造 左移右移
+//  复习拷贝构造 左移右移 ok
 class Timestamp
 {
 public:

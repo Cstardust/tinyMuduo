@@ -1,11 +1,18 @@
 #include<iostream>
 #include"Logger.h"
+#include"InetAddress.h"
+
 
 using namespace std;
 
 int main()
 {
     LOG_INFO("=====TEST LOG %d=====\n",1);
+
+    InetAddress address(80);
+    cout<<address.toIp()<<endl;
+    cout<<address.toPort()<<endl;
+    cout<<address.toIpPort()<<endl;
 }
 
 

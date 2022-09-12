@@ -1,0 +1,1 @@
+/usr/bin/c++   -g  -rdynamic CMakeFiles/epoll.dir/epoll_example.cpp.o  -o ../epoll 
