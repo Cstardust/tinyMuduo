@@ -1,6 +1,7 @@
 #include "Logger.h"
 #include "Timestamp.h"
 #include <functional>
+#include <cstdio>
 
 using std::function;
 
@@ -17,11 +18,13 @@ void Logger::setLogLevel(LogLevel level)
 
 void Logger::log(const string &msg)
 {
-    cout << levelName_[logLevel_]
+    cout << __FILE__ << " (" <<__LINE__<<") "<< " <" << __FUNCTION__ << "> "
+         << levelName_[logLevel_]
          << " "
          << Timestamp::now().toString()
          << " : "
          << msg << endl;
+
 }
 
 Logger::Logger()

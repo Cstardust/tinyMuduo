@@ -61,7 +61,12 @@ public:
     int events() const { return events_; }          //  return fd注册到epoll的事件
     void set_revents(int revt) { revents_ = revt; } //  used by poller to tell the channel 发生了什么事件
 
-    //  For poller 业务上的
+    //  For Poller
+    //  记录Channel的状态
+    //  index 代表 本Channel封装的 fd-event的状态
+        //  记录在Poller中 && 在epoll上被监听 ： added
+        //  记录在Poller中 && 没在epoll上被监听 ：deleted
+        //  没记录在Poller中 && 没在epoll上被监听 ： New
     int index() { return index_; }
     void set_index(int idx) { index_ = idx; }
 

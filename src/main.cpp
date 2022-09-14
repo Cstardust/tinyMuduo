@@ -2,7 +2,6 @@
 #include"Logger.h"
 #include"InetAddress.h"
 
-
 using namespace std;
 
 int main()

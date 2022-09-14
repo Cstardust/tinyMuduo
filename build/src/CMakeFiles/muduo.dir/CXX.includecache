@@ -6,6 +6,28 @@
 
 #IncludeRegexTransform: 
 
+../include/Channel.h
+functional
+-
+memory
+-
+sys/epoll.h
+../include/sys/epoll.h
+noncopyable.h
+../include/noncopyable.h
+Timestamp.h
+../include/Timestamp.h
+
+../include/EpollPoller.h
+Poller.h
+../include/Poller.h
+vector
+-
+sys/poll.h
+-
+
+../include/EventLoop.h
+
 ../include/InetAddress.h
 netinet/in.h
 -
@@ -21,6 +43,22 @@ public.h
 ../include/public.h
 unordered_map
 -
+cstdio
+-
+
+../include/Poller.h
+noncopyable.h
+../include/noncopyable.h
+EventLoop.h
+../include/EventLoop.h
+Channel.h
+../include/Channel.h
+unordered_map
+-
+vector
+-
+
+../include/TcpServer.h
 
 ../include/Timestamp.h
 public.h
@@ -36,6 +74,28 @@ iostream
 string
 -
 
+/home/shc/Muduo/src/Channel.cpp
+Channel.h
+/home/shc/Muduo/src/Channel.h
+
+/home/shc/Muduo/src/EpollPoller.cpp
+Logger.h
+/home/shc/Muduo/src/Logger.h
+EpollPoller.h
+/home/shc/Muduo/src/EpollPoller.h
+fcntl.h
+-
+unistd.h
+-
+cassert
+-
+cstring
+-
+
+/home/shc/Muduo/src/EventLoop.cpp
+EventLoop.h
+/home/shc/Muduo/src/EventLoop.h
+
 /home/shc/Muduo/src/InetAddress.cpp
 InetAddress.h
 /home/shc/Muduo/src/InetAddress.h
@@ -49,6 +109,16 @@ Timestamp.h
 /home/shc/Muduo/src/Timestamp.h
 functional
 -
+cstdio
+-
+
+/home/shc/Muduo/src/Poller.cpp
+Poller.h
+/home/shc/Muduo/src/Poller.h
+
+/home/shc/Muduo/src/TcpServer.cpp
+TcpServer.h
+/home/shc/Muduo/src/TcpServer.h
 
 /home/shc/Muduo/src/Timestamp.cpp
 Timestamp.h
@@ -61,4 +131,12 @@ Logger.h
 /home/shc/Muduo/src/Logger.h
 InetAddress.h
 /home/shc/Muduo/src/InetAddress.h
+
+/home/shc/Muduo/src/newDefaultPoller.cpp
+Poller.h
+/home/shc/Muduo/src/Poller.h
+EpollPoller.h
+/home/shc/Muduo/src/EpollPoller.h
+stdlib.h
+-
 

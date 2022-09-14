@@ -4,6 +4,7 @@
 #include"noncopyable.h"
 #include"public.h"
 #include<unordered_map>
+#include<cstdio>
 
 using std::unordered_map;
 
@@ -35,7 +36,7 @@ enum LogLevel
             char buf[1024]={0}; \
             snprintf(buf,1024,logmsgFormat,##__VA_ARGS__); \
             \
-            Logger &logger = Logger::getInsance(); \
+            Logger &logger = Logger::getInstance(); \
             logger.setLogLevel(ERROR); \
             logger.log(buf); \
         }while(0)
@@ -47,9 +48,10 @@ enum LogLevel
             char buf[1024]={0}; \
             snprintf(buf,1024,logmsgFormat,##__VA_ARGS__); \
             \
-            Logger &logger = Logger::getInsance(); \
+            Logger &logger = Logger::getInstance(); \
             logger.setLogLevel(FATAL); \
             logger.log(buf); \
+            exit(-1); \
         }while(0)
 
 
@@ -61,7 +63,7 @@ enum LogLevel
             char buf[1024]={0}; \
             snprintf(buf,1024,logmsgFormat,##__VA_ARGS__); \
             \
-            Logger &logger = Logger::getInsance(); \
+            Logger &logger = Logger::getInstance(); \
             logger.setLogLevel(DEBUG); \
             logger.log(buf); \
         }while(0)

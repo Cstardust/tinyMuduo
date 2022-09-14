@@ -125,6 +125,87 @@ muduo/fast:
 	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/build
 .PHONY : muduo/fast
 
+Channel.o: Channel.cpp.o
+
+.PHONY : Channel.o
+
+# target to build an object file
+Channel.cpp.o:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/Channel.cpp.o
+.PHONY : Channel.cpp.o
+
+Channel.i: Channel.cpp.i
+
+.PHONY : Channel.i
+
+# target to preprocess a source file
+Channel.cpp.i:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/Channel.cpp.i
+.PHONY : Channel.cpp.i
+
+Channel.s: Channel.cpp.s
+
+.PHONY : Channel.s
+
+# target to generate assembly for a file
+Channel.cpp.s:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/Channel.cpp.s
+.PHONY : Channel.cpp.s
+
+EpollPoller.o: EpollPoller.cpp.o
+
+.PHONY : EpollPoller.o
+
+# target to build an object file
+EpollPoller.cpp.o:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/EpollPoller.cpp.o
+.PHONY : EpollPoller.cpp.o
+
+EpollPoller.i: EpollPoller.cpp.i
+
+.PHONY : EpollPoller.i
+
+# target to preprocess a source file
+EpollPoller.cpp.i:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/EpollPoller.cpp.i
+.PHONY : EpollPoller.cpp.i
+
+EpollPoller.s: EpollPoller.cpp.s
+
+.PHONY : EpollPoller.s
+
+# target to generate assembly for a file
+EpollPoller.cpp.s:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/EpollPoller.cpp.s
+.PHONY : EpollPoller.cpp.s
+
+EventLoop.o: EventLoop.cpp.o
+
+.PHONY : EventLoop.o
+
+# target to build an object file
+EventLoop.cpp.o:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/EventLoop.cpp.o
+.PHONY : EventLoop.cpp.o
+
+EventLoop.i: EventLoop.cpp.i
+
+.PHONY : EventLoop.i
+
+# target to preprocess a source file
+EventLoop.cpp.i:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/EventLoop.cpp.i
+.PHONY : EventLoop.cpp.i
+
+EventLoop.s: EventLoop.cpp.s
+
+.PHONY : EventLoop.s
+
+# target to generate assembly for a file
+EventLoop.cpp.s:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/EventLoop.cpp.s
+.PHONY : EventLoop.cpp.s
+
 InetAddress.o: InetAddress.cpp.o
 
 .PHONY : InetAddress.o
@@ -178,6 +259,60 @@ Logger.s: Logger.cpp.s
 Logger.cpp.s:
 	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/Logger.cpp.s
 .PHONY : Logger.cpp.s
+
+Poller.o: Poller.cpp.o
+
+.PHONY : Poller.o
+
+# target to build an object file
+Poller.cpp.o:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/Poller.cpp.o
+.PHONY : Poller.cpp.o
+
+Poller.i: Poller.cpp.i
+
+.PHONY : Poller.i
+
+# target to preprocess a source file
+Poller.cpp.i:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/Poller.cpp.i
+.PHONY : Poller.cpp.i
+
+Poller.s: Poller.cpp.s
+
+.PHONY : Poller.s
+
+# target to generate assembly for a file
+Poller.cpp.s:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/Poller.cpp.s
+.PHONY : Poller.cpp.s
+
+TcpServer.o: TcpServer.cpp.o
+
+.PHONY : TcpServer.o
+
+# target to build an object file
+TcpServer.cpp.o:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/TcpServer.cpp.o
+.PHONY : TcpServer.cpp.o
+
+TcpServer.i: TcpServer.cpp.i
+
+.PHONY : TcpServer.i
+
+# target to preprocess a source file
+TcpServer.cpp.i:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/TcpServer.cpp.i
+.PHONY : TcpServer.cpp.i
+
+TcpServer.s: TcpServer.cpp.s
+
+.PHONY : TcpServer.s
+
+# target to generate assembly for a file
+TcpServer.cpp.s:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/TcpServer.cpp.s
+.PHONY : TcpServer.cpp.s
 
 Timestamp.o: Timestamp.cpp.o
 
@@ -233,6 +368,33 @@ main.cpp.s:
 	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+newDefaultPoller.o: newDefaultPoller.cpp.o
+
+.PHONY : newDefaultPoller.o
+
+# target to build an object file
+newDefaultPoller.cpp.o:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/newDefaultPoller.cpp.o
+.PHONY : newDefaultPoller.cpp.o
+
+newDefaultPoller.i: newDefaultPoller.cpp.i
+
+.PHONY : newDefaultPoller.i
+
+# target to preprocess a source file
+newDefaultPoller.cpp.i:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/newDefaultPoller.cpp.i
+.PHONY : newDefaultPoller.cpp.i
+
+newDefaultPoller.s: newDefaultPoller.cpp.s
+
+.PHONY : newDefaultPoller.s
+
+# target to generate assembly for a file
+newDefaultPoller.cpp.s:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/newDefaultPoller.cpp.s
+.PHONY : newDefaultPoller.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -242,18 +404,36 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... muduo"
 	@echo "... edit_cache"
+	@echo "... Channel.o"
+	@echo "... Channel.i"
+	@echo "... Channel.s"
+	@echo "... EpollPoller.o"
+	@echo "... EpollPoller.i"
+	@echo "... EpollPoller.s"
+	@echo "... EventLoop.o"
+	@echo "... EventLoop.i"
+	@echo "... EventLoop.s"
 	@echo "... InetAddress.o"
 	@echo "... InetAddress.i"
 	@echo "... InetAddress.s"
 	@echo "... Logger.o"
 	@echo "... Logger.i"
 	@echo "... Logger.s"
+	@echo "... Poller.o"
+	@echo "... Poller.i"
+	@echo "... Poller.s"
+	@echo "... TcpServer.o"
+	@echo "... TcpServer.i"
+	@echo "... TcpServer.s"
 	@echo "... Timestamp.o"
 	@echo "... Timestamp.i"
 	@echo "... Timestamp.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... newDefaultPoller.o"
+	@echo "... newDefaultPoller.i"
+	@echo "... newDefaultPoller.s"
 .PHONY : help
 
 

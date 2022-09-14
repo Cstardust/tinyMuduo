@@ -24,7 +24,7 @@ void Channel::tie(const std::shared_ptr<void>& ptr)
 //  EventLoop -> Poller->epoll_ctl
 void Channel::update()
 {
-    //  loop_->updateChannel()
+    //  loop_->updateChannel(this)
     //  Eventloop -> Poller -> epoll_ctl 更新fd注册在事件表上的event
 }
 
@@ -32,7 +32,7 @@ void Channel::update()
 //  在channel所属的EventLoop中 把当前的channel删除掉
 void Channel::remove()
 {
-    // loop_->remove(this);
+    // loop_->removeChannel(this);
 }
 
 void Channel::handleEvent(const Timestamp& receiveTime)

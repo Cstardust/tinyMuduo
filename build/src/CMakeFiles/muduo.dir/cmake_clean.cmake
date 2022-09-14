@@ -1,8 +1,14 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/muduo.dir/Channel.cpp.o"
+  "CMakeFiles/muduo.dir/EpollPoller.cpp.o"
+  "CMakeFiles/muduo.dir/EventLoop.cpp.o"
   "CMakeFiles/muduo.dir/InetAddress.cpp.o"
   "CMakeFiles/muduo.dir/Logger.cpp.o"
+  "CMakeFiles/muduo.dir/Poller.cpp.o"
+  "CMakeFiles/muduo.dir/TcpServer.cpp.o"
   "CMakeFiles/muduo.dir/Timestamp.cpp.o"
   "CMakeFiles/muduo.dir/main.cpp.o"
+  "CMakeFiles/muduo.dir/newDefaultPoller.cpp.o"
   "../../bin/muduo.pdb"
   "../../bin/muduo"
 )
