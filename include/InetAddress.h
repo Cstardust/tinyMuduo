@@ -23,6 +23,7 @@ public:
     string toIpPort() const;
     //  返回sockaddr_in结构体
     const sockaddr_in *getSockAddr() const{return &addr_;}
+    void setSockAddr(const sockaddr_in& addr) {addr_ = addr;}
 private:
     //  sockaddr_in结构体以 **网络字节序** 保存 IP和Port
     sockaddr_in addr_;

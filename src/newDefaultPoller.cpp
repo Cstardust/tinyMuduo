@@ -11,7 +11,7 @@
 //  父类Poller.cc 不需要改变 ，也即不需要重新编译
 //  需要重新编译的只有newDefaultPoller.cc
 
-Poller *Poller::*newDefaultPoller(EventLoop *loop)
+Poller *Poller::newDefaultPoller(EventLoop *loop)
 {
     if(::getenv("MY_MUDDUO_USE_POLL"))
     {
@@ -19,7 +19,8 @@ Poller *Poller::*newDefaultPoller(EventLoop *loop)
     }
     else
     {
-        return nullptr;     //  构造EPOLL对象
+        // return nullptr;     //  构造EPOLL对象
+        return new EpollPoller(loop);
     }
 }
 

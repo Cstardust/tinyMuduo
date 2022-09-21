@@ -16,15 +16,14 @@ void Logger::setLogLevel(LogLevel level)
     logLevel_ = level;
 }
 
-void Logger::log(const string &msg)
+void Logger::log(const string &msg,const string &header)
 {
-    cout << __FILE__ << " (" <<__LINE__<<") "<< " <" << __FUNCTION__ << "> "
-         << levelName_[logLevel_]
+    cout << levelName_[logLevel_]
          << " "
          << Timestamp::now().toString()
          << " : "
+         << header <<"  "
          << msg << endl;
-
 }
 
 Logger::Logger()

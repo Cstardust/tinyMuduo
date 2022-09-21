@@ -21,24 +21,28 @@ enum LogLevel
 #define LOG_INFO(logmsgFormat,...) \
         do \
         { \
-           char buf[1024]={0}; \
+           char buf[1024] = {0}; \
            snprintf(buf,1024,logmsgFormat,##__VA_ARGS__); \
            \
+           char header[512]={0}; \
+           snprintf(header,512,"%s (%d) <%s> ",__FILE__,__LINE__,__FUNCTION__); \
            Logger& logger = Logger::getInstance(); \
            logger.setLogLevel(INFO); \
-           logger.log(buf); \
+           logger.log(buf,header); \
         } while (0)
         
 
 #define LOG_ERROR(logmsgFormat,...) \
         do \
         { \
-            char buf[1024]={0}; \
-            snprintf(buf,1024,logmsgFormat,##__VA_ARGS__); \
+            char buf[512]={0}; \
+            snprintf(buf,512,logmsgFormat,##__VA_ARGS__); \
             \
+            char header[512]={0}; \
+            snprintf(header,512,"%s (%d) <%s> ",__FILE__,__LINE__,__FUNCTION__); \
             Logger &logger = Logger::getInstance(); \
             logger.setLogLevel(ERROR); \
-            logger.log(buf); \
+            logger.log(buf,header); \
         }while(0)
 
 
@@ -48,9 +52,11 @@ enum LogLevel
             char buf[1024]={0}; \
             snprintf(buf,1024,logmsgFormat,##__VA_ARGS__); \
             \
+            char header[512]={0}; \
+            snprintf(header,512,"%s (%d) <%s> ",__FILE__,__LINE__,__FUNCTION__); \
             Logger &logger = Logger::getInstance(); \
             logger.setLogLevel(FATAL); \
-            logger.log(buf); \
+            logger.log(buf,header); \
             exit(-1); \
         }while(0)
 
@@ -80,7 +86,7 @@ public:
     //  set log level
     void setLogLevel(LogLevel);
     //  do the log 
-    void log(const string&);
+    void log(const string&,const string&);
 private:
     LogLevel logLevel_;
     unordered_map<LogLevel,string> levelName_;

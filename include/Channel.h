@@ -16,13 +16,16 @@
 class EventLoop; //  因为没有定义对象 所以只声明一下即可
 using std::function;
 
-/// Channel 封装了
-//  fd
-//  要监听的fd的事件 如fd的EPOLLIN、EPOLLOUT
-//  事件发生后的相应的回调函数
-//  channel 将感兴趣的事情注册给Poller，Poller将fd上发生的事情返回给channel，channel再调用相应的回调函数
-/// EventLoop 有多个Channel，一个Poller。这个Poller监听多个Channel
-/// EventLoop对应Reactor模型上的Demultiplex
+
+// channel 将感兴趣的事情注册给Poller，Poller将fd上发生的事情返回给channel，channel再调用相应的回调函数
+// EventLoop 有多个Channel，一个Poller。这个Poller监听多个Channel
+// EventLoop对应Reactor模型上的Demultiplex
+
+// Channel 封装了
+    //  fd
+    //  要监听的fd的事件 如fd的EPOLLIN、EPOLLOUT
+    //  事件发生后的相应的回调函数
+// core function : handleEvent() 
 class Channel : noncopybale
 {
 public:
@@ -30,6 +33,7 @@ public:
     using EventCallback = function<void()>;
     using ReadEventCallback = function<void(Timestamp)>;
 
+public:
     Channel(EventLoop *loop, int fd);
     ~Channel();
 
@@ -41,7 +45,8 @@ public:
     void setCloseCallback(EventCallback call) { closeCallback_ = std::move(call); }
     void setErrorCallback(EventCallback call) { errorCallback_ = std::move(call); }
 
-    //  设置fd感兴趣的事件：读 / 写
+    //  1. 设置fd感兴趣的事件：读 / 写
+    //  2. 注册在channel所属eventloop的poller上。 
     void enableReading(){ events_ |= kReadEvent; update(); }
     void disableReading() { events_ &= ~kReadEvent; update(); }
     void enableWriting() { events_ |= kWriteEvent; update(); }
@@ -85,7 +90,7 @@ private:
 
     EventLoop *loop_; //  EventLoop channel归属于哪个EventLoop 为了获取poller
     const int fd_;    //  Poller的监听对象 epoll_ctl(fd?)
-    int events_;      //  注册要监听的fd的事件？
+    int events_;      //  注册要监听的fd的事件
     int revents_;     //  it's the received event types of epoll or poll
     int index_;
 

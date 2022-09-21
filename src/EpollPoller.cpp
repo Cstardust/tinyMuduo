@@ -45,6 +45,7 @@ void EpollPoller::updateChannel(Channel *channel)
     int index = channel->index();
     LOG_INFO("fd = %d , events = %d , index = %d\n",channel->fd(),channel->events(),index);
     
+    //  添加新Channel：O(logN)
     if(index == kNew || index == kDeleted)
     {
         //  kNew 
@@ -59,6 +60,7 @@ void EpollPoller::updateChannel(Channel *channel)
         //  将Channel封装的fd以及fd的相应事件 ADD注册 在EPOLL上
         update(EPOLL_CTL_ADD,channel);  
     }
+    //  更新已经有的channel：O(1)
     else if(index == kAdded)
     {
         int fd = channel->fd();
@@ -95,6 +97,7 @@ void EpollPoller::update(int operation,Channel* channel)
     event.data.ptr = channel;           //  封装了 fd events and handler
     event.events = channel->events();
     int fd = channel->fd();
+    LOG_INFO("fd = %d is epolled\n",fd);
     if(epoll_ctl(epollfd_,operation,fd,&event) < 0)
     {
         if(operation == EPOLL_CTL_DEL)
@@ -105,7 +108,6 @@ void EpollPoller::update(int operation,Channel* channel)
         else
         {
             LOG_FATAL("epoll_ctl mod/add error %d\n",errno);
-            exit(-1);
         }
     }
 }
@@ -117,28 +119,18 @@ void EpollPoller::removeChannel(Channel *channel)
     LOG_INFO("fd = %d , events = %d , index = %d\n",fd,channel->events(),index);
 
     assert(channel == channels_[fd]);
+    
+    //  从map表中删除fd-channel
+    channels_.erase(fd);
+    
     update(EPOLL_CTL_DEL,channel);
 }
 
-//  EventLoop调用Poller的fillActiveChannels 获取Poller监听到的发生事件的Channel
-void EpollPoller::fillActiveChannels(int numEvents,ChannelList* activeChannels) const
-{
-    for(int i=0;i<numEvents;++i)
-    {
-        //  获取监听到的channel
-        Channel * channel = static_cast<Channel*>(events_[i].data.ptr) ;
-        //  获取fd上实际发生的事件
-        int event_happened = events_[i].events;        
-        channel->set_revents(event_happened);  
-        activeChannels->emplace_back(channel);
-        //  EventLoop拿到了它的Poller负责监测的所有Channel中 发生事件的Channel
-    }
-}
 
 Timestamp EpollPoller::poll(int timeoutMs,ChannelList *activeChannels) 
 {
     //  实际上应该用LOG_DEBUG
-    LOG_INFO("fd total count : %lu\n",channels_.size());
+    LOG_INFO("fd to be monitored total count : %lu\n",channels_.size());
     //	int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout)
     //  epoll_wait  
         //  epoll_event[] 传入传出参数 用来存内核得到事件的集合，
@@ -153,6 +145,7 @@ Timestamp EpollPoller::poll(int timeoutMs,ChannelList *activeChannels)
     if(numEvents > 0)
     {
         LOG_INFO("%d events happneded\n",numEvents);
+        //  填充EventLoop传入的ChannelList
         fillActiveChannels(numEvents,activeChannels);
         if(numEvents == events_.size())
         {
@@ -176,3 +169,20 @@ Timestamp EpollPoller::poll(int timeoutMs,ChannelList *activeChannels)
     return now;
 }
 
+
+//  EventLoop调用Poller的fillActiveChannels 获取Poller监听到的发生事件的Channel
+void EpollPoller::fillActiveChannels(int numEvents,ChannelList* activeChannels) const
+{
+    for(int i=0;i<numEvents;++i)
+    {
+        //  获取监听到的channel
+        Channel * channel = static_cast<Channel*>(events_[i].data.ptr) ;
+        LOG_INFO("fill %d \n",channel->fd());
+        //  获取fd上实际发生的事件
+        int event_happened = events_[i].events;        
+        channel->set_revents(event_happened);  
+        //  填充eventloop传入的ChannelList
+        activeChannels->emplace_back(channel);
+        //  EventLoop拿到了它的Poller负责监测的所有Channel中 发生事件的Channel
+    }
+}

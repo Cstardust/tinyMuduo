@@ -1,4 +1,6 @@
 #include "Channel.h"
+#include "EventLoop.h"
+#include "Logger.h"
 
 Channel::Channel(EventLoop *loop, int fd)
     : loop_(loop),
@@ -24,7 +26,7 @@ void Channel::tie(const std::shared_ptr<void>& ptr)
 //  EventLoop -> Poller->epoll_ctl
 void Channel::update()
 {
-    //  loop_->updateChannel(this)
+    loop_->updateChannel(this);
     //  Eventloop -> Poller -> epoll_ctl 更新fd注册在事件表上的event
 }
 
@@ -32,9 +34,10 @@ void Channel::update()
 //  在channel所属的EventLoop中 把当前的channel删除掉
 void Channel::remove()
 {
-    // loop_->removeChannel(this);
+    loop_->removeChannel(this);
 }
 
+//  Channel的核心
 void Channel::handleEvent(const Timestamp& receiveTime)
 {
     //  绑定了 && 没析构 handleEvent
@@ -59,6 +62,7 @@ void Channel::handlerEventWithGuard(const Timestamp& receiveTime)
     //  对端关闭?
     if(!(revents_ & EPOLLIN) && (revents_ & EPOLLHUP)) //  什么意思？？EPOLLHUP???
     {
+        LOG_INFO("happened1\n");
         if(closeCallback_!=nullptr)
         {
             closeCallback_();
@@ -67,6 +71,7 @@ void Channel::handlerEventWithGuard(const Timestamp& receiveTime)
     //  server error?
     if(revents_ & EPOLLERR)
     {
+        LOG_INFO("happened2\n");
         if(errorCallback_)
         {
             errorCallback_();
@@ -75,6 +80,7 @@ void Channel::handlerEventWithGuard(const Timestamp& receiveTime)
     //  普通的读事件
     if(revents_ & (EPOLLIN | EPOLLPRI))
     {
+        LOG_INFO("happened3\n");
         if(readCallback_)
         {
             readCallback_(receiveTime);
