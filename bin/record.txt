@@ -1,0 +1,7 @@
+[INFO] 2022-09-21-18-51-16 : /home/shc/Muduo/src/main.cpp (54) <main>   main(): pid = 873 , tid = 873
+
+[INFO] 2022-09-21-18-51-16 : /home/shc/Muduo/src/main.cpp (60) <main>   thread : name = thread 1 , tid = 874
+
+[INFO] 2022-09-21-18-51-16 : /home/shc/Muduo/src/Thread.cpp (26) <~Thread>   thread : name = thread 1 , tid = 874 is detached
+
+hello thread!

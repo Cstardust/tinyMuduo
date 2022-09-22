@@ -8,12 +8,76 @@
 #include "Channel.h"
 #include "EventLoopThread.h"
 #include "EventLoopThreadPool.h"
+#include "Acceptor.h"
+#include "Socket.h"
 #include <cstring>
 
 using namespace std;
 
 
-#define EVENTLOOPTHREADPOOL_TEST 
+#define TEST_ACCEPT
+#ifdef TEST_ACCEPT
+
+
+void newConnection(int connfd,const InetAddress & cliet_addr)
+{
+    LOG_INFO("accepted a new connection from %s\n",cliet_addr.toIpPort().c_str());
+    ::write(connfd,"hello world!\n",13);
+    ::close(connfd);
+}
+
+
+int main()
+{
+    printf("main(): pid = %d\n",getpid());
+    InetAddress server_addr(6667);              //  server address
+    //  loop
+        //  actives channels  poller上传的
+        //  poller            是loop自己创建的poller
+        //  所以是在靠poller的epoll_wait来驱动整个事件循环 loop平时会阻塞在那个wait上
+        //  poller怎么知道他要监听谁？
+            //  通过acceptor中的方法listen 将第一个要监听的listening fd 注册到epoll上
+            //  之后又要注册什么fd或者events 都是由user注册回调函数控制的
+    EventLoop loop;                             //  真正做事情的循环
+    
+    //  create socket fd , 将server_addr绑定在socket上 , 并传入loop
+    //  传入的loop是在外面创建的。将loop的地址传入。
+    //  Socket绑定了 fd以及 server addr
+    //  channel 绑定了 （其属于的）loop 以及要监听的fd
+    //  传入loop 里面并没有对其进行任何修改 只是将loop的指针给了channel
+    //  让channel知道 应该将监听到的事件向上汇报给谁处理
+    Acceptor acceptor(&loop,server_addr,true);  
+    //  will be called when accept a connection   
+    acceptor.setNewConnectionCallback(newConnection); 
+    //  listen + 注册到epoll上 
+    acceptor.listen();                          
+    // 开启epoll_wait and handle
+    loop.loop();                                //  开始做事情 将channel
+}
+
+
+#endif
+
+
+#ifdef TEST_ASAN
+
+void func()
+{
+    int *p = new int(1);
+    cout << *p <<endl;
+}
+
+int main()
+{   
+    cout<<"-----------test----------"<<endl;
+    func();
+    cout<<"-----------test-----------"<<endl;
+    return 0;
+}
+
+#endif
+
+
 #ifdef EVENTLOOPTHREADPOOL_TEST
 
 int main()
@@ -40,7 +104,6 @@ int main()
 
 
 #endif
-
 
 #ifdef THREAD_TEST
 void func()

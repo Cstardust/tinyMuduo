@@ -1,4 +1,7 @@
 file(REMOVE_RECURSE
+  "../../bin/muduo"
+  "../../bin/muduo.pdb"
+  "CMakeFiles/muduo.dir/Acceptor.cpp.o"
   "CMakeFiles/muduo.dir/Channel.cpp.o"
   "CMakeFiles/muduo.dir/CurrentThread.cpp.o"
   "CMakeFiles/muduo.dir/EpollPoller.cpp.o"
@@ -14,8 +17,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/muduo.dir/Timestamp.cpp.o"
   "CMakeFiles/muduo.dir/main.cpp.o"
   "CMakeFiles/muduo.dir/newDefaultPoller.cpp.o"
-  "../../bin/muduo.pdb"
-  "../../bin/muduo"
 )
 
 # Per-language clean rules from dependency scanning.

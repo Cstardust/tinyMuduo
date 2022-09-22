@@ -1,0 +1,28 @@
+#include<functional>
+#include "InetAddress.h"
+#include "Socket.h"
+#include "Channel.h"
+
+class EventLoop;
+
+class Acceptor
+{
+public:
+    using NewConnectionCallback = std::function<void(int sockfd,const InetAddress&)>;
+public:
+    Acceptor(EventLoop *loop,const InetAddress &server_addr,bool request_port);
+    ~Acceptor();
+
+    void setNewConnectionCallback(const NewConnectionCallback &cb){newConnectionCallback_ = cb;}
+
+    bool listening() const {return listening_;}
+    void listen();
+private:
+    void handleRead(Timestamp);
+private:
+    EventLoop *loop_;       //  Acceptor使用的就是用户定义的baseloop,也就是mainloop
+    Socket acceptSocket_;   
+    Channel acceptChannel_;
+    NewConnectionCallback newConnectionCallback_;
+    bool listening_;
+};

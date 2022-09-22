@@ -35,10 +35,8 @@ EventLoop::EventLoop()
       poller_(Poller::newDefaultPoller(this)),
       wakeupFd_(createEventfd()),
       wakeupChannel_(new Channel(this,wakeupFd_)),
-      activeChannels_(),
       currentActiveChannel_(nullptr),
       callingPendingFactors_(false),
-      pendingFunctors_(),
       mtx_()
 {
     LOG_INFO("EventLoop created %p in thread %d\n",this,threadId_);
@@ -158,7 +156,7 @@ void EventLoop::quit()
 
 
 
-
+//  ? 唤醒谁的 ? wakeupFd 发生的事件是只能唤醒IO线程 还是可以唤醒IO线程+worker线程？工程运行时到底有几个loop？
 //  mainReactor 唤醒 subReactor
 //  subReactor处理wakeupFd的读事件
 void EventLoop::handleRead(const Timestamp& )

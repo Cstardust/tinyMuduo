@@ -15,7 +15,7 @@
 class InetAddress
 {
 public:
-    explicit InetAddress(uint16_t port,const string &ip="127.0.0.1");
+    explicit InetAddress(uint16_t port = 6666,const string &ip="127.0.0.1");
     explicit InetAddress(const sockaddr_in & addr);
     //  网络字节序->本地字节序 并返回本地字节序的IP和Port
     string toIp() const;
