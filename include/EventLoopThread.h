@@ -12,7 +12,7 @@ class EventLoop;
 
 //  将EventLoop和Thread结合
     //  实现 one loop per thread
-class EventLoopThread:noncopybale
+class EventLoopThread:noncopyable
 {
 public:
     //  fucntion 定义函数对象类型时 <>加入返回参数以及传入参数

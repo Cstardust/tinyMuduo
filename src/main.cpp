@@ -19,7 +19,7 @@ using namespace std;
 #ifdef TEST_ACCEPT
 
 
-void newConnection(int connfd,const InetAddress & cliet_addr)
+void testNewConnection(int connfd,const InetAddress & cliet_addr)
 {
     LOG_INFO("accepted a new connection from %s\n",cliet_addr.toIpPort().c_str());
     ::write(connfd,"hello world!\n",13);
@@ -40,6 +40,7 @@ int main()
             //  之后又要注册什么fd或者events 都是由user注册回调函数控制的
     EventLoop loop;                             //  真正做事情的循环
     
+    //  将loop channel socket 组合在一起。
     //  create socket fd , 将server_addr绑定在socket上 , 并传入loop
     //  传入的loop是在外面创建的。将loop的地址传入。
     //  Socket绑定了 fd以及 server addr
@@ -48,7 +49,7 @@ int main()
     //  让channel知道 应该将监听到的事件向上汇报给谁处理
     Acceptor acceptor(&loop,server_addr,true);  
     //  will be called when accept a connection   
-    acceptor.setNewConnectionCallback(newConnection); 
+    acceptor.setNewConnectionCallback(testNewConnection); 
     //  listen + 注册到epoll上 
     acceptor.listen();                          
     // 开启epoll_wait and handle

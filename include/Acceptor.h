@@ -1,3 +1,7 @@
+#ifndef MY_MUDUO_ACCEPTOR
+#define MY_MUDUO_ACCEPTOR
+
+
 #include<functional>
 #include "InetAddress.h"
 #include "Socket.h"
@@ -8,7 +12,7 @@ class EventLoop;
 class Acceptor
 {
 public:
-    using NewConnectionCallback = std::function<void(int sockfd,const InetAddress&)>;
+    using NewConnectionCallback = std::function<void(int connfd,const InetAddress& cliet_addr)>;
 public:
     Acceptor(EventLoop *loop,const InetAddress &server_addr,bool request_port);
     ~Acceptor();
@@ -26,3 +30,4 @@ private:
     NewConnectionCallback newConnectionCallback_;
     bool listening_;
 };
+#endif

@@ -10,7 +10,7 @@ class InetAddress;
         //  在构造函数中 创建fd资源 ; 在析构函数中 释放打卡的fd
 //  acceptor 使用该 Socket
 //  Socket 记录的资源仅仅是一个打开的Socket Fd 
-class Socket : noncopybale
+class Socket : noncopyable
 {
 public:
     explicit Socket(int sockfd);

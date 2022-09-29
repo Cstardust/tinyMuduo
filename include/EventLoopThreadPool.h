@@ -6,7 +6,7 @@
 #include<vector>
 #include<memory>
 
-class EventLoopThreadPool:noncopybale
+class EventLoopThreadPool:noncopyable
 {
 public:
     using ThreadInitCallback = std::function<void(EventLoop*)> ;

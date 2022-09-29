@@ -5,6 +5,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/shc/Muduo/src/Acceptor.cpp" "/home/shc/Muduo/build/src/CMakeFiles/muduo.dir/Acceptor.cpp.o"
+  "/home/shc/Muduo/src/Buffer.cpp" "/home/shc/Muduo/build/src/CMakeFiles/muduo.dir/Buffer.cpp.o"
   "/home/shc/Muduo/src/Channel.cpp" "/home/shc/Muduo/build/src/CMakeFiles/muduo.dir/Channel.cpp.o"
   "/home/shc/Muduo/src/CurrentThread.cpp" "/home/shc/Muduo/build/src/CMakeFiles/muduo.dir/CurrentThread.cpp.o"
   "/home/shc/Muduo/src/EpollPoller.cpp" "/home/shc/Muduo/build/src/CMakeFiles/muduo.dir/EpollPoller.cpp.o"
@@ -15,6 +16,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/shc/Muduo/src/Logger.cpp" "/home/shc/Muduo/build/src/CMakeFiles/muduo.dir/Logger.cpp.o"
   "/home/shc/Muduo/src/Poller.cpp" "/home/shc/Muduo/build/src/CMakeFiles/muduo.dir/Poller.cpp.o"
   "/home/shc/Muduo/src/Socket.cpp" "/home/shc/Muduo/build/src/CMakeFiles/muduo.dir/Socket.cpp.o"
+  "/home/shc/Muduo/src/TcpConnection.cpp" "/home/shc/Muduo/build/src/CMakeFiles/muduo.dir/TcpConnection.cpp.o"
   "/home/shc/Muduo/src/TcpServer.cpp" "/home/shc/Muduo/build/src/CMakeFiles/muduo.dir/TcpServer.cpp.o"
   "/home/shc/Muduo/src/Thread.cpp" "/home/shc/Muduo/build/src/CMakeFiles/muduo.dir/Thread.cpp.o"
   "/home/shc/Muduo/src/Timestamp.cpp" "/home/shc/Muduo/build/src/CMakeFiles/muduo.dir/Timestamp.cpp.o"

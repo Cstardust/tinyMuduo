@@ -53,25 +53,28 @@ int Socket::accept(InetAddress *clietaddr)
     return connfd;
 }
 
-
+//  作用？
 void Socket::setTcpNoDelay(bool on)
 {
     int opt = on ? 1 : 0;
     ::setsockopt(fd_,IPPROTO_TCP,TCP_NODELAY,&opt,sizeof opt);
 }
 
+//  复用
 void Socket::setReuseAddr(bool on)
 {
     int opt = on ? 1 : 0;
     ::setsockopt(fd_,SOL_SOCKET,SO_REUSEADDR,&opt,sizeof opt);
 }
-
+//  复用
 void Socket::setReusePort(bool on)
 {
     int opt = on ? 1 : 0;
     ::setsockopt(fd_,SOL_SOCKET,SO_REUSEPORT,&opt,sizeof opt);
 }
 
+
+//  作用？？？？
 void Socket::setKeepAlive(bool on)
 {
     int opt = on ? 1 : 0;
@@ -81,4 +84,12 @@ void Socket::setKeepAlive(bool on)
 Socket::~Socket()
 {
     ::close(fd_);
+}
+
+void Socket::shutdownWrite()
+{
+    if (::shutdown(fd_, SHUT_WR) < 0)
+    {
+        LOG_ERROR("shutdownWrite error");
+    }
 }

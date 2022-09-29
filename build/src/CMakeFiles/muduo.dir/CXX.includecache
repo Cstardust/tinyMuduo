@@ -6,15 +6,21 @@
 
 #IncludeRegexTransform: 
 
-../include/Acceptor.h
+../include/Buffer.h
+vector
+-
+string
+-
+algorithm
+-
+errno.h
+-
+
+../include/Callback.h
 functional
 -
-InetAddress.h
-../include/InetAddress.h
-Socket.h
-../include/Socket.h
-Channel.h
-../include/Channel.h
+memory
+-
 
 ../include/Channel.h
 functional
@@ -50,28 +56,6 @@ CurrentThread.h
 Timestamp.h
 ../include/Timestamp.h
 
-../include/EventLoopThread.h
-noncopyable.h
-../include/noncopyable.h
-Thread.h
-../include/Thread.h
-functional
--
-string
--
-mutex
--
-condition_variable
--
-
-../include/EventLoopThreadPool.h
-EventLoopThread.h
-../include/EventLoopThread.h
-vector
--
-memory
--
-
 ../include/InetAddress.h
 netinet/in.h
 -
@@ -94,17 +78,19 @@ cstdio
 noncopyable.h
 ../include/noncopyable.h
 
-../include/Thread.h
-thread
--
+../include/TcpConnection.h
 memory
 -
-functional
+cstring
 -
 atomic
 -
-string
--
+InetAddress.h
+../include/InetAddress.h
+Callback.h
+../include/Callback.h
+Buffer.h
+../include/Buffer.h
 noncopyable.h
 ../include/noncopyable.h
 
@@ -122,31 +108,15 @@ iostream
 string
 -
 
-/home/shc/Muduo/src/main.cpp
-sys/timerfd.h
--
-iostream
--
-thread
--
+/home/shc/Muduo/src/TcpConnection.cpp
+TcpConnection.h
+/home/shc/Muduo/src/TcpConnection.h
 Logger.h
 /home/shc/Muduo/src/Logger.h
-InetAddress.h
-/home/shc/Muduo/src/InetAddress.h
-EventLoop.h
-/home/shc/Muduo/src/EventLoop.h
-Thread.h
-/home/shc/Muduo/src/Thread.h
-Channel.h
-/home/shc/Muduo/src/Channel.h
-EventLoopThread.h
-/home/shc/Muduo/src/EventLoopThread.h
-EventLoopThreadPool.h
-/home/shc/Muduo/src/EventLoopThreadPool.h
-Acceptor.h
-/home/shc/Muduo/src/Acceptor.h
 Socket.h
 /home/shc/Muduo/src/Socket.h
-cstring
--
+Channel.h
+/home/shc/Muduo/src/Channel.h
+EventLoop.h
+/home/shc/Muduo/src/EventLoop.h
 

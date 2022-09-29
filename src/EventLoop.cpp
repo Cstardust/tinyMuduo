@@ -107,6 +107,8 @@ void EventLoop::loop()
             LOG_INFO("%lu IN HANDLING %d\n",activeChannels_.size(),channel->fd());
             //  poller能够监听哪些channel发生事件，然后上报给EventLoop，
             //  EventLoop通知channel处理相应事件
+                //  其中 对于新连接事件 注册的回调函数是Acceptor::handleRead
+                //  在handleRead中 会调用accept接收新连接 
             channel->handleEvent(pollReturnTime_);
             //  猜测
             //  感觉像是 在这些注册handle函数里，会开启其他线程，来执行work
@@ -191,8 +193,15 @@ void EventLoop::runInLoop(const Functor& cb)
     {
         cb();
     }
-    //  如果 用户在非IO线程，也即非创建该EventLoop Object的线程，调用了该EventLoop Object的runInLoop函数
-        //  那么，回调cb会被加入队列，IO线程会被唤醒来调用这个cb回调
+    //  如果 用户所在的线程不是创建该EventLoop Object的线程，调用了该EventLoop Object的runInLoop函数
+        //  那么，回调cb会被加入该EventLoop Object的回调队列，
+        //  并唤醒loop所属的线程来调用loop的回调
+        //  如何唤醒？
+            //  在当前thread(也就是在非loop所属线程调用了loop的runInloop的方法的该线程)
+            //  向loop对象监听的wakeupFd写入数据
+            //  loop对象一般都卡在epoll_wait上
+            //  于是loop对象会监听到wakeupFd的读事件 从epoll_wait中离开
+            //  处理pendingFunctor中的回调函数  
     else
     {
         queueInLoop(cb);
@@ -214,7 +223,10 @@ void EventLoop::queueInLoop(const Functor& cb)
     //  下面这段还难以理解
     //  只有在IO线程的事件回调中 调用queueInLoop() 才无须wakeup()!
     //  唤醒相应的，需要执行上面回调操作的loop的线程。
-        //  callingPendingFactor = true 代表当前正在执行回调 没有阻塞在loop上 , 但是loop又有了新回调 ???
+        //  callingPendingFactor = true 代表当前正在执行回调 没有阻塞在epoll_wait上
+        //  这时新回调已经加入了loop的pendingFunctors，那么由于loop会执行完pendingFunctors中所有的cb
+        //  所以 也就会执行新加入的cb
+        //  当然无须再wakeup 那个 loop
     if(!isInLoopThread() || callingPendingFactors_)       //  这里的callingPendingFactors待解释  
     {
         wakeup();           //  唤醒loop所在线程。通过eventfd唤醒。？？哪个线程？哪个loop?

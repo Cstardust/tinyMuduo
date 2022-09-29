@@ -152,6 +152,33 @@ Acceptor.cpp.s:
 	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/Acceptor.cpp.s
 .PHONY : Acceptor.cpp.s
 
+Buffer.o: Buffer.cpp.o
+
+.PHONY : Buffer.o
+
+# target to build an object file
+Buffer.cpp.o:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/Buffer.cpp.o
+.PHONY : Buffer.cpp.o
+
+Buffer.i: Buffer.cpp.i
+
+.PHONY : Buffer.i
+
+# target to preprocess a source file
+Buffer.cpp.i:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/Buffer.cpp.i
+.PHONY : Buffer.cpp.i
+
+Buffer.s: Buffer.cpp.s
+
+.PHONY : Buffer.s
+
+# target to generate assembly for a file
+Buffer.cpp.s:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/Buffer.cpp.s
+.PHONY : Buffer.cpp.s
+
 Channel.o: Channel.cpp.o
 
 .PHONY : Channel.o
@@ -422,6 +449,33 @@ Socket.cpp.s:
 	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/Socket.cpp.s
 .PHONY : Socket.cpp.s
 
+TcpConnection.o: TcpConnection.cpp.o
+
+.PHONY : TcpConnection.o
+
+# target to build an object file
+TcpConnection.cpp.o:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/TcpConnection.cpp.o
+.PHONY : TcpConnection.cpp.o
+
+TcpConnection.i: TcpConnection.cpp.i
+
+.PHONY : TcpConnection.i
+
+# target to preprocess a source file
+TcpConnection.cpp.i:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/TcpConnection.cpp.i
+.PHONY : TcpConnection.cpp.i
+
+TcpConnection.s: TcpConnection.cpp.s
+
+.PHONY : TcpConnection.s
+
+# target to generate assembly for a file
+TcpConnection.cpp.s:
+	cd /home/shc/Muduo/build && $(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/TcpConnection.cpp.s
+.PHONY : TcpConnection.cpp.s
+
 TcpServer.o: TcpServer.cpp.o
 
 .PHONY : TcpServer.o
@@ -569,6 +623,9 @@ help:
 	@echo "... Acceptor.o"
 	@echo "... Acceptor.i"
 	@echo "... Acceptor.s"
+	@echo "... Buffer.o"
+	@echo "... Buffer.i"
+	@echo "... Buffer.s"
 	@echo "... Channel.o"
 	@echo "... Channel.i"
 	@echo "... Channel.s"
@@ -599,6 +656,9 @@ help:
 	@echo "... Socket.o"
 	@echo "... Socket.i"
 	@echo "... Socket.s"
+	@echo "... TcpConnection.o"
+	@echo "... TcpConnection.i"
+	@echo "... TcpConnection.s"
 	@echo "... TcpServer.o"
 	@echo "... TcpServer.i"
 	@echo "... TcpServer.s"

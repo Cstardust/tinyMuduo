@@ -78,7 +78,7 @@ enum LogLevel
 
 
 //  Singleton Pattern
-class Logger:noncopybale
+class Logger:noncopyable
 {
 public:
     //  getInstance

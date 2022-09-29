@@ -33,6 +33,8 @@ Acceptor::Acceptor(EventLoop *loop, const InetAddress &server_addr, bool request
 
     //  regisiter to epoll
         //  1. set call back for connect to listening fd
+        //  将Acceptor内置的handleRead注册在poller上
+        //  handleRead 先accept连接 后又会调用用户注册在Acceptor的回调函数
     acceptChannel_.setReadCallback(std::bind(&Acceptor::handleRead,this,std::placeholders::_1));
 
 }

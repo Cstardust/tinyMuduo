@@ -23,14 +23,16 @@ using std::function;
 
 // Channel 封装了
     //  fd
-    //  要监听的fd的事件 如fd的EPOLLIN、EPOLLOUT
-    //  事件发生后的相应的回调函数
+    //  挂在epoll tree上的fd的事件 如fd的EPOLLIN、EPOLLOUT
+    //  handler
+// Channel 就是 之前 我用C写的那个single process reactor 的my_event
 // core function : handleEvent() 
-class Channel : noncopybale
+class Channel : noncopyable
 {
 public:
     //  用于处理事件的回调函数
     using EventCallback = function<void()>;
+    //  处理读事件
     using ReadEventCallback = function<void(Timestamp)>;
 
 public:
@@ -41,7 +43,7 @@ public:
 
     //  设置回调函数（为什么要std move? 我觉得也没多大吧）
     void setReadCallback(ReadEventCallback call) { readCallback_ = std::move(call); }
-    void setEventCallback(EventCallback call) { writeCallback_ = std::move(call); }
+    void setWriteCallback(EventCallback call) { writeCallback_ = std::move(call); }
     void setCloseCallback(EventCallback call) { closeCallback_ = std::move(call); }
     void setErrorCallback(EventCallback call) { errorCallback_ = std::move(call); }
 

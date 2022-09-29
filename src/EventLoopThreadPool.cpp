@@ -18,6 +18,7 @@ EventLoopThreadPool::~EventLoopThreadPool()
 }
 
 
+//  threadinitcallback有什么用？
 void EventLoopThreadPool::start(const ThreadInitCallback& cb/* = ThreadInitCallback()*/)
 {
     started_ = true;

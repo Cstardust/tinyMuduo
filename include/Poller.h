@@ -11,7 +11,7 @@
 //  封装了 epoll / poll / select
     //  epoll_create  epoll_ctl  epoll_wait
 //  core function : poll
-class Poller:noncopybale
+class Poller:noncopyable
 {
 public:
     using ChannelList = std::vector<Channel*>;

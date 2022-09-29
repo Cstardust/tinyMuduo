@@ -11,6 +11,9 @@ src/CMakeFiles/muduo.dir/Acceptor.cpp.o: ../include/noncopyable.h
 src/CMakeFiles/muduo.dir/Acceptor.cpp.o: ../include/public.h
 src/CMakeFiles/muduo.dir/Acceptor.cpp.o: ../src/Acceptor.cpp
 
+src/CMakeFiles/muduo.dir/Buffer.cpp.o: ../include/Buffer.h
+src/CMakeFiles/muduo.dir/Buffer.cpp.o: ../src/Buffer.cpp
+
 src/CMakeFiles/muduo.dir/Channel.cpp.o: ../include/Channel.h
 src/CMakeFiles/muduo.dir/Channel.cpp.o: ../include/CurrentThread.h
 src/CMakeFiles/muduo.dir/Channel.cpp.o: ../include/EventLoop.h
@@ -89,7 +92,36 @@ src/CMakeFiles/muduo.dir/Socket.cpp.o: ../include/noncopyable.h
 src/CMakeFiles/muduo.dir/Socket.cpp.o: ../include/public.h
 src/CMakeFiles/muduo.dir/Socket.cpp.o: ../src/Socket.cpp
 
+src/CMakeFiles/muduo.dir/TcpConnection.cpp.o: ../include/Buffer.h
+src/CMakeFiles/muduo.dir/TcpConnection.cpp.o: ../include/Callback.h
+src/CMakeFiles/muduo.dir/TcpConnection.cpp.o: ../include/Channel.h
+src/CMakeFiles/muduo.dir/TcpConnection.cpp.o: ../include/CurrentThread.h
+src/CMakeFiles/muduo.dir/TcpConnection.cpp.o: ../include/EventLoop.h
+src/CMakeFiles/muduo.dir/TcpConnection.cpp.o: ../include/InetAddress.h
+src/CMakeFiles/muduo.dir/TcpConnection.cpp.o: ../include/Logger.h
+src/CMakeFiles/muduo.dir/TcpConnection.cpp.o: ../include/Socket.h
+src/CMakeFiles/muduo.dir/TcpConnection.cpp.o: ../include/TcpConnection.h
+src/CMakeFiles/muduo.dir/TcpConnection.cpp.o: ../include/Timestamp.h
+src/CMakeFiles/muduo.dir/TcpConnection.cpp.o: ../include/noncopyable.h
+src/CMakeFiles/muduo.dir/TcpConnection.cpp.o: ../include/public.h
+src/CMakeFiles/muduo.dir/TcpConnection.cpp.o: ../src/TcpConnection.cpp
+
+src/CMakeFiles/muduo.dir/TcpServer.cpp.o: ../include/Acceptor.h
+src/CMakeFiles/muduo.dir/TcpServer.cpp.o: ../include/Buffer.h
+src/CMakeFiles/muduo.dir/TcpServer.cpp.o: ../include/Callback.h
+src/CMakeFiles/muduo.dir/TcpServer.cpp.o: ../include/Channel.h
+src/CMakeFiles/muduo.dir/TcpServer.cpp.o: ../include/CurrentThread.h
+src/CMakeFiles/muduo.dir/TcpServer.cpp.o: ../include/EventLoop.h
+src/CMakeFiles/muduo.dir/TcpServer.cpp.o: ../include/EventLoopThread.h
+src/CMakeFiles/muduo.dir/TcpServer.cpp.o: ../include/EventLoopThreadPool.h
+src/CMakeFiles/muduo.dir/TcpServer.cpp.o: ../include/InetAddress.h
+src/CMakeFiles/muduo.dir/TcpServer.cpp.o: ../include/Socket.h
+src/CMakeFiles/muduo.dir/TcpServer.cpp.o: ../include/TcpConnection.h
 src/CMakeFiles/muduo.dir/TcpServer.cpp.o: ../include/TcpServer.h
+src/CMakeFiles/muduo.dir/TcpServer.cpp.o: ../include/Thread.h
+src/CMakeFiles/muduo.dir/TcpServer.cpp.o: ../include/Timestamp.h
+src/CMakeFiles/muduo.dir/TcpServer.cpp.o: ../include/noncopyable.h
+src/CMakeFiles/muduo.dir/TcpServer.cpp.o: ../include/public.h
 src/CMakeFiles/muduo.dir/TcpServer.cpp.o: ../src/TcpServer.cpp
 
 src/CMakeFiles/muduo.dir/Thread.cpp.o: ../include/CurrentThread.h

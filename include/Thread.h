@@ -13,7 +13,7 @@
     //  功能：Thread object 负责 1. 开启线程 + 2. 记录线程信息 如tid 
 //  Interface
     //  constructor : 唯一接口初始化跑在thread上的函数
-class Thread : noncopybale
+class Thread : noncopyable
 {
 public:
     using ThreadFunc = std::function<void(void)>;  

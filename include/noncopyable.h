@@ -11,14 +11,14 @@
  * 
  */
 
-class noncopybale
+class noncopyable
 {
 public:
-    noncopybale (const noncopybale&) = delete;
-    noncopybale& operator=(const noncopybale&) = delete;
+    noncopyable (const noncopyable&) = delete;
+    noncopyable& operator=(const noncopyable&) = delete;
 protected:
-    noncopybale()=default;
-    ~noncopybale()=default;
+    noncopyable()=default;
+    ~noncopyable()=default;
 };
 
 
