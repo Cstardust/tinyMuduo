@@ -30,20 +30,21 @@ public:
                   const std::string &name,
                   int sockfd,
                   const InetAddress &localAddr,
-                  const InetAddress &clietAddr);
+                  const InetAddress &peerAddr);
     ~TcpConnection();
 
     EventLoop *getLoop() const { return loop_; }
     const std::string &name() const { return name_; }
     const InetAddress &localAddress() const { return localAddr_; }
-    const InetAddress &clietAddress() const { return clietAddr_; }
+    const InetAddress &peerAddress() const { return peerAddr_; }
 
     bool connected() const { return state_ == kConnected; }
     //  发送数据
-    void send(const void *message, int len);
+    void send(const std::string& buf);
     //  关闭连接
     void shutdown();
-
+    
+    //  用户设置的回调函数
     void setConnectionCallback(const ConnectionCallback &cb) { connectionCallback_ = cb; }
     void setMessageCallback(const MessageCallback &cb) { messageCallback_ = cb; }
     void setWriteCompleteCallback(const ConnectionCallback &cb) { writeCompleteCallback_ = cb; }
@@ -58,7 +59,6 @@ private:
     void handleClose();
     void handleError();
 
-    void send(const std::string& buf);
     void sendInLoop(const void *message, size_t ken);
     void shutdownInLoop();
 private:
@@ -82,9 +82,16 @@ private:
     std::unique_ptr<Channel> channel_; //  channel for connfd to poller?
 
     const InetAddress localAddr_;       //  server_addr
-    const InetAddress clietAddr_;       //  client_addr        
+    const InetAddress peerAddr_;       //  client_addr        
 
-    ConnectionCallback connectionCallback_;       //  有新连接时的回调
+    //  下面这些应当是都是user设定的回调
+    //  user设定给TcpServer TcpServer设置给TcpConnection
+    //  之后会在注册给channel的回调中被调用
+    //  connectioncallback_ : user设定的回调
+    //  在连接建立完成(accept完成，并将client fd的reading事件注册给指定loop的poller)后 
+    //  会在 TcpConnection::connectionEstablished中调用 user设定的onConnection
+    ConnectionCallback connectionCallback_;       //  连接建立和断开时的回调
+    //  messageCallback_ : user设置的回调
     MessageCallback messageCallback_;             //  收到消息时的回调
     WriteCompleteCallback writeCompleteCallback_; //  消息发送完成之后的回调
     HighWaterMarkCallback highWaterMarkCallback_;
