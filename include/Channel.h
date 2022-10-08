@@ -48,7 +48,7 @@ public:
     void setErrorCallback(EventCallback call) { errorCallback_ = std::move(call); }
 
     //  1. 设置fd感兴趣的事件：读 / 写
-    //  2. 注册在channel所属eventloop的poller上。 
+    //  2. update 注册在channel所属eventloop的poller上。 
     void enableReading(){ events_ |= kReadEvent; update(); }
     void disableReading() { events_ &= ~kReadEvent; update(); }
     void enableWriting() { events_ |= kWriteEvent; update(); }
@@ -80,7 +80,7 @@ public:
     //  EventLoop 删除本Channel
     void remove();
 private:
-    // loop_->getPoller()->update();
+
     void update();
     //  weak_ptr -> lock -> handler
     void handlerEventWithGuard(const Timestamp& receiveTime);

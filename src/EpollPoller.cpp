@@ -25,14 +25,6 @@ EpollPoller::EpollPoller(EventLoop *loop)
     }
 }
 
-// 创建socket负责的吧这个应该是
-// int setnonblocking(int fd)
-// {
-//     int old_option = fcntl(fd,F_GETFL);
-//     int new_option = old_option | O_NONBLOCK;
-//     fcntl(fd,F_SETFL,new_option);
-//     return old_option;
-// }
 
 EpollPoller::~EpollPoller()
 {
@@ -97,7 +89,7 @@ void EpollPoller::update(int operation,Channel* channel)
     event.data.ptr = channel;           //  封装了 fd events and handler
     event.events = channel->events();
     int fd = channel->fd();
-    LOG_INFO("fd = %d is epolled\n",fd);
+    LOG_INFO("fd = %d is to be epolled or deleted in loop %p on thread %d",fd,getOwnerLoop(),CurrentThread::gettid());
     if(epoll_ctl(epollfd_,operation,fd,&event) < 0)
     {
         if(operation == EPOLL_CTL_DEL)
@@ -116,7 +108,7 @@ void EpollPoller::removeChannel(Channel *channel)
 {
     int fd = channel->fd();
     int index = channel->index();
-    LOG_INFO("fd = %d , events = %d , index = %d\n",fd,channel->events(),index);
+    LOG_INFO("fd = %d , events = %d , index = %d in loop %p on thread %d\n",fd,channel->events(),index,getOwnerLoop(),CurrentThread::gettid());
 
     assert(channel == channels_[fd]);
     
@@ -130,7 +122,7 @@ void EpollPoller::removeChannel(Channel *channel)
 Timestamp EpollPoller::poll(int timeoutMs,ChannelList *activeChannels) 
 {
     //  实际上应该用LOG_DEBUG
-    LOG_INFO("fd to be monitored total count : %lu\n",channels_.size());
+    LOG_INFO("fd to be monitored total count : %lu in loop %p on thread %d\n",channels_.size(),getOwnerLoop(),CurrentThread::gettid());
     //	int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout)
     //  epoll_wait  
         //  epoll_event[] 传入传出参数 用来存内核得到事件的集合，
@@ -177,9 +169,10 @@ void EpollPoller::fillActiveChannels(int numEvents,ChannelList* activeChannels) 
     {
         //  获取监听到的channel
         Channel * channel = static_cast<Channel*>(events_[i].data.ptr) ;
-        LOG_INFO("fill %d \n",channel->fd());
+        LOG_INFO("fill fd = %d \n",channel->fd());
         //  获取fd上实际发生的事件
-        int event_happened = events_[i].events;        
+        int event_happened = events_[i].events; 
+        //  告知fd的channel 实际发生了什么事件       
         channel->set_revents(event_happened);  
         //  填充eventloop传入的ChannelList
         activeChannels->emplace_back(channel);

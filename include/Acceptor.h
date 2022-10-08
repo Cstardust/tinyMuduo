@@ -1,8 +1,7 @@
 #ifndef MY_MUDUO_ACCEPTOR
 #define MY_MUDUO_ACCEPTOR
 
-
-#include<functional>
+#include <functional>
 #include "InetAddress.h"
 #include "Socket.h"
 #include "Channel.h"
@@ -12,22 +11,24 @@ class EventLoop;
 class Acceptor
 {
 public:
-    using NewConnectionCallback = std::function<void(int connfd,const InetAddress& cliet_addr)>;
+    using NewConnectionCallback = std::function<void(int connfd, const InetAddress &cliet_addr,const InetAddress &localAddr)>;
+
 public:
-    Acceptor(EventLoop *loop,const InetAddress &server_addr,bool request_port);
+    Acceptor(EventLoop *loop, const InetAddress &server_addr, bool request_port);
     ~Acceptor();
 
-    void setNewConnectionCallback(const NewConnectionCallback &cb){newConnectionCallback_ = cb;}
+    void setNewConnectionCallback(const NewConnectionCallback &cb) { newConnectionCallback_ = cb; }
 
-    bool listening() const {return listening_;}
+    bool listening() const { return listening_; }
     void listen();
 private:
-    void handleRead(Timestamp);
+    void handleConnection(Timestamp);
 private:
-    EventLoop *loop_;       //  Acceptor使用的就是用户定义的baseloop,也就是mainloop
-    Socket acceptSocket_;   
+    EventLoop *loop_; //  Acceptor使用的就是用户定义的baseloop,也就是mainloop
+    Socket acceptSocket_;
     Channel acceptChannel_;
-    NewConnectionCallback newConnectionCallback_;
+    NewConnectionCallback newConnectionCallback_;   //  接收tcpserver注册的callback
     bool listening_;
 };
+
 #endif

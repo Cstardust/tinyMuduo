@@ -4,30 +4,7 @@
 #include "sys/timerfd.h"
 #include "Channel.h"
 #include<cstring>
-// EventLoopThread::EventLoopThread(const ThreadInitCallback &call /*= ThreadInitCallback()*/,
-//                                  const std::string name /*= ""*/)
-// :   callback_(call),
-//     loop_(new EventLoop()),
-//     thread_(std::bind(call,loop_),name),
-//     exiting_(false)
-// {
-// }
 
-// EventLoop * EventLoopThread:: startLoop()
-// {
-//     thread_.start();
-//     return loop_;
-// }
-
-// EventLoopThread :: ~EventLoopThread()
-// {
-//     thread_.join();
-//     delete loop_;
-// }
-
-// void EventLoopThread::threadFunc()
-// {
-// }
 
 EventLoopThread::EventLoopThread(const ThreadInitCallback &cb /*= ThreadInitCallback()*/,
                                  const std::string name /*= ""*/)
@@ -50,11 +27,14 @@ EventLoopThread::~EventLoopThread()
     }
 }
 
+//  创建并启动一个thread 并且在该thread上创建一个EventLoop对象（threadFunc运行在该thread上）。
+    //  这个启动的thread上 调用 loop.loop()
 EventLoop* EventLoopThread::startLoop()
 {
 
     thread_.start();        //  开启thread 跑threadFunc
-
+    //  loop_临界区原因:
+        //  为了startLoop之后 loop_指针一定不是null,一定指向本subThread中的subLoop
     {
         //  loop_临界区 因此需要lock
         std::unique_lock<std::mutex> lock(mtx_);
@@ -71,24 +51,26 @@ EventLoop* EventLoopThread::startLoop()
 }
 
 
-//  传给Thread 即将跑在Thread开启的thread上的函数
-    //  Eventloop 在开启的thread上创建
+//  即将跑在subThread的threadFunc
+//  创建subLoop的Eventloop对象 调用其loop()
 void EventLoopThread::threadFunc()
 {
     LOG_INFO("main(): pid = %d , tid = %d\n",
             getpid(),CurrentThread::tid());
-    // loop_ = new EventLoop();
-    EventLoop loop;         //  智能指针不应当被放在堆上 因此不是new EventLoop()，而是local的EventLoop
+
+    EventLoop loop;         
     
     if(callback_)
     {
         callback_(&loop);
     }
 
+    //  感觉没必要枷锁。。。
     {
         //  loop_ 是临界区 需要加锁
         std::unique_lock<std::mutex> lock(mtx_);
-        loop_ = &loop;
+        loop_ = &loop;              //  ????
+        LOG_INFO("loop_ = %p in thread %d",&loop,CurrentThread::gettid());
         cond_.notify_one();
     }
 
@@ -101,20 +83,3 @@ void EventLoopThread::threadFunc()
 }
 
 
-
-
-        // int timerfd = ::timerfd_create(CLOCK_MONOTONIC,TFD_NONBLOCK | TFD_CLOEXEC);
-
-        // //  创建channel 封装timerfd以及其上的读事件
-        // Channel channel(&loop,timerfd);
-        // channel.setReadCallback([&](Timestamp t)->void{
-        //         LOG_INFO("TIME OUT %s\n",t.now().toString().c_str());
-        //         loop.quit();
-        //     });
-        // //  这个函数会使得fd以及其事件会被注册到epoll上
-        // channel.enableReading();
-
-        // struct itimerspec howlong;
-        // memset(&howlong,0,sizeof howlong); 
-        // howlong.it_value.tv_sec = 5;
-        // ::timerfd_settime(timerfd,0,&howlong,nullptr);

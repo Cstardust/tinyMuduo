@@ -6,6 +6,8 @@
 class InetAddress;
 
 //  Socket
+    //  封装了fd以及对fd的操作(fd由user打开)
+    //  并不负责创建打开fd
     //  socketfd 的 RAII handler
         //  在构造函数中 创建fd资源 ; 在析构函数中 释放打卡的fd
 //  acceptor 使用该 Socket

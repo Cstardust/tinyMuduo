@@ -23,7 +23,9 @@ void Channel::tie(const std::shared_ptr<void>& ptr)
     tied_ = true;
 }
 
-//  EventLoop -> Poller->epoll_ctl
+//  Channel enable/disable -> update -> EventLoop -> Poller -> epoll_ctl
+//  参数传this 是为了让poller建立起fd-Channel*的关系
+//  毕竟根据channel*就可以获得fd和handler。将channel*上报给eventloop，eventloop可以知道如何处理事件
 void Channel::update()
 {
     loop_->updateChannel(this);
@@ -62,7 +64,7 @@ void Channel::handlerEventWithGuard(const Timestamp& receiveTime)
     //  对端关闭?
     if(!(revents_ & EPOLLIN) && (revents_ & EPOLLHUP)) //  什么意思？？EPOLLHUP???
     {
-        LOG_INFO("happened1\n");
+        LOG_INFO("happened 1\n");
         if(closeCallback_!=nullptr)
         {
             closeCallback_();
@@ -71,7 +73,7 @@ void Channel::handlerEventWithGuard(const Timestamp& receiveTime)
     //  server error?
     if(revents_ & EPOLLERR)
     {
-        LOG_INFO("happened2\n");
+        LOG_INFO("happened 2\n");
         if(errorCallback_)
         {
             errorCallback_();
@@ -80,10 +82,19 @@ void Channel::handlerEventWithGuard(const Timestamp& receiveTime)
     //  普通的读事件
     if(revents_ & (EPOLLIN | EPOLLPRI))
     {
-        LOG_INFO("happened3\n");
+        LOG_INFO("happened 3\n");
         if(readCallback_)
         {
             readCallback_(receiveTime);
+        }
+    }
+    //  写事件：从buffer中向tcp socket的写缓冲区中写数据
+    if(revents_ & EPOLLOUT)
+    {
+        LOG_INFO("happened 4\n");
+        if(writeCallback_)
+        {
+            writeCallback_();
         }
     }
 }

@@ -1,5 +1,6 @@
 #include"InetAddress.h"
 #include<cstring>
+#include "Logger.h"
 
 InetAddress::InetAddress(uint16_t port,const string &ip/*="127.0.0.1"*/)
 {
@@ -39,4 +40,16 @@ string InetAddress::toIpPort() const
     //  ip + port
     sprintf(host_str_ip_port+len,":%u",host_port);
     return host_str_ip_port;
+}
+
+InetAddress InetAddress::getSockName(int fd)
+{
+    sockaddr_in addr;
+    socklen_t addrlen = sizeof (&addr);
+    bzero(&addr,addrlen);
+    if(::getsockname(fd,(sockaddr*)&addr,&addrlen) < 0)
+    {
+        LOG_ERROR("getsockname : failed to get connfd addr");
+    }
+    return InetAddress(addr);
 }

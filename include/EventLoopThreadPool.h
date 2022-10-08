@@ -12,7 +12,7 @@ public:
     using ThreadInitCallback = std::function<void(EventLoop*)> ;
     EventLoopThreadPool(EventLoop *baseLoop = nullptr,const std::string &name = std::string());
     ~EventLoopThreadPool();
-    //  开启线程？
+    //  开启底层的numThreads_个thread 且 每个thread上 都创建并运行着一个loop.loop()
     void start(const ThreadInitCallback &cb = ThreadInitCallback());
 
     void setThreadNum(int num){numThreads_ = num;}
@@ -22,7 +22,7 @@ public:
     std::vector<EventLoop*> getAllLoops();    
 
 private:
-    EventLoop *baseLoop_;       //  IO线程？EventLoop loop
+    EventLoop *baseLoop_;       //  main loop
     std::string name_;
     bool started_;
     int numThreads_;            //  subloop的个数

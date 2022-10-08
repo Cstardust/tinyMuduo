@@ -15,7 +15,7 @@ thread_local EventLoop *t_loopInThisThread = nullptr;
 //  定义默认的Poller IO复用接口的超时时间
 const int kPollerTimeMs = 10000;
 
-// ???
+
 //  创建wakeupFd,用来notify唤醒subReactor处理新来的Channel
 int createEventfd()
 {
@@ -60,25 +60,20 @@ EventLoop::EventLoop()
     //  然后IO线程处理这个eventfd的读事件，调用之前注册的handleRead 将数据读出，然而并没有做什么其他的。可能仅仅就是为了有个hanle，判断下eventFd read是否发生错误
     wakeupChannel_->enableReading();       
     wakeupChannel_->setReadCallback(std::bind(&EventLoop::handleRead,this,std::placeholders::_1));
-
-    //  问题？
-    //  这是创建eventfd的线程       IO线程
-    //  那么worker线程呢？上面跑的函数是什么？不会也是eventloop的loop函数吧？？
-    //  是哪个线程写入eventfd，唤醒IO线程？？
 }
 
 
 
 // loop
 // loop -> epoll_wait -> handleEvent(IO线程监听到的event) -> doPendingFunctor()(其他worker线程加入的event cb)
-//          epoll_wait 可能被eventfd唤醒 为了 quit 或者执行其他worker线程加入的cb doPendingFunctor()
+//          epoll_wait 可能被eventfd(wakeupFd_)唤醒 为了 quit 或者执行其他worker线程加入的cb doPendingFunctor()
 //  EventLoop核心
-//  只有创建了EventLoop Object的线程，才有资格调用该object的loop方法。也即，才有资格成为mainReactor,才有资格成为IO线程，接收连接。
+//  只有创建了EventLoop Object的thread(我们称之为eventloop所属的thread)，才有资格调用该object的loop方法。也即，才有资格作为main/subReactor的IOloop,监听处理 新连接(mainReactor) / 已连接socket发生的事件(subReactor)。
     //  通过assertInloopThread保证这点
 void EventLoop::loop()
 {
     assert(!looping_);
-    
+    //  保证是eventloop所属的thread使用该eventloop的loop方法
     assertInLoopThread();
 
     looping_ = true;
@@ -98,24 +93,23 @@ void EventLoop::loop()
         pollReturnTime_ = poller_->poll(kPollerTimeMs,&activeChannels_);
         
         //  轮询处理事件
-            //  这不就成了在IO线程 既处理accept事件，又处理read/write事件？
-            //  IO线程难道不是只应该负责接收client发起的连接事件？
-            //  然后将读写事件派发给其他线程完成??
+        //  IO线程 负责监听和处理 事件
+            //  对于mainReactor的IO loop , 负责监听listenfd , handler : 接收新来的连接 并将新来的连接派发给 其他thread的eventloop(subReactor)
+            //  对于subReactor的IO loop  , 负责监听connfd   , handler : 处理 已连接socket上发生的事件.可以在subreactor的ioloop中处理 也可将任务打包提交给线程池处理
         for(Channel *channel:activeChannels_)
         {
             channel->isReading();
-            LOG_INFO("%lu IN HANDLING %d\n",activeChannels_.size(),channel->fd());
+            LOG_INFO("%d is being handled on EventLoop %p in thread %d\n",channel->fd(),this,CurrentThread::gettid());
             //  poller能够监听哪些channel发生事件，然后上报给EventLoop，
             //  EventLoop通知channel处理相应事件
                 //  其中 对于新连接事件 注册的回调函数是Acceptor::handleRead
-                //  在handleRead中 会调用accept接收新连接 
+                //  在handleRead中 会调用accept接收新连接 并派发给subReactor
             channel->handleEvent(pollReturnTime_);
-            //  猜测
-            //  感觉像是 在这些注册handle函数里，会开启其他线程，来执行work
-            //  这些在hanle里开启的线程 就是worker线程。
         }
 
-        //  执行当前EventLoop事件循环需要处理的回调操作
+        //  执行别的thread(是mainloop给添加的吗???)添加给本eventLoop的回调操作
+        //  ?? 这个执行的回调和上面执行的回调都是一种东西吧?只不过一个是本loop检测到的.一个是别的loop加进来的.
+        //  为什么别的loop会加进来??
         /*
         * mainReactor IO 线程 accept fd=>channel  --分发给-->subloop
         * mainloop 拿到新channel之后 分发给subloop 
@@ -176,21 +170,22 @@ void EventLoop::handleRead(const Timestamp& )
 
 //  runInLoop -> IO cb()
 //            -> Worker queueInLoop(cb)->wakeup->IO cb()  
-//  猜测 作用：
 //  让loop对象执行回调函数cb
     //  如果 调用loop.runInloop(cb)的线程 正好是loop对象所属的线程(IO线程)
-        //  那么 直接执行cb
+        //  那么 直接在该loop上执行cb
     //  如果 调用loop.runInloop(cb)的线程 不是loop对象所属的线程(IO线程)
         //  那么 将cb存入loop所属的IO线程的回调队列。
-        //  loop对象会待会在IO线程调用这些回调cb
-//  cb作用：执行Event Handler 开启worker线程??????
+        //  loop对象会待会在loop的IO线程调用这些回调cb
+    //  cb：event handler
 void EventLoop::runInLoop(const Functor& cb)
 {
+    LOG_INFO("cb runInLoop in loop %p on thread %d",this,CurrentThread::gettid());
     //  如果 当前正在运行的线程是创建EventLoop的线程(IO线程)
         //  那么，直接调用回调函数
     //  也即，如果用户在当前IO线程调用这个函数，回调会同步进行
     if(isInLoopThread())
     {
+        LOG_INFO("直接调用cb on loop %p in thread %d\n",this,CurrentThread::gettid());
         cb();
     }
     //  如果 用户所在的线程不是创建该EventLoop Object的线程，调用了该EventLoop Object的runInLoop函数
@@ -212,24 +207,27 @@ void EventLoop::runInLoop(const Functor& cb)
 //  真tm难
 //  事件循环四：23:10
 //  把cb放入队列 唤醒loop所在线程 执行cb
+    //  如果不需要唤醒的话 说明当前就是iothread 也就是正在执行iothread的handleEvent。
+    //  那么加入队列的cb就会在稍后顺序调用
 void EventLoop::queueInLoop(const Functor& cb)
 {
+    LOG_INFO("queueInLoop");
     //  给loop添加新回调
+    //  这个cb 会在loop的IO thread的epollwait之后 被调用
     {
         std::lock_guard<std::mutex> lock(mtx_);
         pendingFunctors_.emplace_back(cb);
     }
 
-    //  下面这段还难以理解
-    //  只有在IO线程的事件回调中 调用queueInLoop() 才无须wakeup()!
+    //  只有当前queueInLoop()函数是被 loop所属的IO thread 执行cb中被调用，才无须wakeup()!
     //  唤醒相应的，需要执行上面回调操作的loop的线程。
         //  callingPendingFactor = true 代表当前正在执行回调 没有阻塞在epoll_wait上
         //  这时新回调已经加入了loop的pendingFunctors，那么由于loop会执行完pendingFunctors中所有的cb
         //  所以 也就会执行新加入的cb
         //  当然无须再wakeup 那个 loop
-    if(!isInLoopThread() || callingPendingFactors_)       //  这里的callingPendingFactors待解释  
+    if(!isInLoopThread() || !callingPendingFactors_)       //  这里的callingPendingFactors待解释  
     {
-        wakeup();           //  唤醒loop所在线程。通过eventfd唤醒。？？哪个线程？哪个loop?
+        wakeup();                                         //  在其他thread 通过loop对象wakeup方法 唤醒卡在epoll wait的loop的IOthread
     }
 }
 
@@ -239,6 +237,7 @@ void EventLoop::queueInLoop(const Functor& cb)
 //  wakeupChannel就发生读事件 当前loop线程就会被唤醒。
 void EventLoop::wakeup()
 {
+    LOG_INFO("wakeup");
     uint64_t one = 1;
     ssize_t n = write(wakeupFd_,&one,sizeof one);
     if(n != sizeof one)
@@ -262,10 +261,11 @@ void EventLoop::doPendingFunctors()
         std::lock_guard<std::mutex> lock(mtx_);
         functors.swap(pendingFunctors_); //  交换。functor获取所有需要执行的cb。pendingFunctors置空
     }
+    LOG_INFO("functor size = %lu",functors.size());
     for(const Functor &functor : functors)
     {
         functor();                      //  执行当前loop需要执行的回调操作
-        //  在这些functor中 会开启一个个worker线程 去处理业务? 
+        //  在这些functor中 会开启一个个worker线程 去处理业务? 或许会 或许不会.
     }
 
     callingPendingFactors_ = false;
@@ -283,7 +283,7 @@ void EventLoop::removeChannel(Channel *channel)
     poller_->removeChannel(channel);
 }
 
-bool EventLoop::hasChannel(Channel* channel)
+bool EventLoop::hasChannel(Channel* channel) const
 {
     return poller_->hasChannel(channel);
 }

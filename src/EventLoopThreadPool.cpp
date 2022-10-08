@@ -18,6 +18,8 @@ EventLoopThreadPool::~EventLoopThreadPool()
 }
 
 
+//  创建并启动一个thread 并且在该thread上创建一个EventLoop对象（threadFunc运行在该thread上）。
+    //  这个启动的thread上 调用 loop.loop()
 //  threadinitcallback有什么用？
 void EventLoopThreadPool::start(const ThreadInitCallback& cb/* = ThreadInitCallback()*/)
 {
@@ -25,10 +27,10 @@ void EventLoopThreadPool::start(const ThreadInitCallback& cb/* = ThreadInitCallb
 
     for(int i=0;i<numThreads_;++i)
     {
-        char buf[name_.size() + 32];
-        snprintf(buf,sizeof buf,"%s%d",name_.c_str(),i);
+        char name[name_.size() + 32];
+        snprintf(name,sizeof name,"%s%d",name_.c_str(),i);
         //  new EventLoopthread which has loop_ and will start a thread
-        EventLoopThread *t = new EventLoopThread(cb,buf);
+        EventLoopThread *t = new EventLoopThread(cb,name);
         //  EventLoopThread 交给unique_ptr管理 负责销毁
         threads_.push_back(std::unique_ptr<EventLoopThread>(t));
         //  EventLoopThread对象底层创建一thread 该thread会调用底层的threadFunc 并进入loop循环。
@@ -37,7 +39,7 @@ void EventLoopThreadPool::start(const ThreadInitCallback& cb/* = ThreadInitCallb
         loops_.push_back(t->startLoop());
     }
 
-    //  整个Server端中只有一个thread，运行着baseloop
+    //  整个Server端中只有一个thread，将base放入baseloop(mainthread的eventloop_运行
     if(numThreads_ == 0 && cb)
     {
         cb(baseLoop_);

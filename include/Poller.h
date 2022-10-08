@@ -41,6 +41,9 @@ public:
 
     //  判断当前Poller对象 是否属于 当前运行的线程
     void assertInLoopThread(); 
+
+    //  for debug
+    const EventLoop *getOwnerLoop() const {return ownerLoop_;}
 protected:
     using ChannelMap = std::unordered_map<int,Channel*>;//  sockfd -- Channel
     ChannelMap channels_;

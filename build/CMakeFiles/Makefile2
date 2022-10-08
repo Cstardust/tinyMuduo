@@ -71,7 +71,7 @@ clean: src/clean
 # Directory level rules for directory src
 
 # Recursive "all" directory target.
-src/all: src/CMakeFiles/muduo.dir/all
+src/all: src/CMakeFiles/miniMuduo.dir/all
 
 .PHONY : src/all
 
@@ -81,36 +81,36 @@ src/preinstall:
 .PHONY : src/preinstall
 
 # Recursive "clean" directory target.
-src/clean: src/CMakeFiles/muduo.dir/clean
+src/clean: src/CMakeFiles/miniMuduo.dir/clean
 
 .PHONY : src/clean
 
 #=============================================================================
-# Target rules for target src/CMakeFiles/muduo.dir
+# Target rules for target src/CMakeFiles/miniMuduo.dir
 
 # All Build rule for target.
-src/CMakeFiles/muduo.dir/all:
-	$(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/depend
-	$(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/shc/Muduo/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19 "Built target muduo"
-.PHONY : src/CMakeFiles/muduo.dir/all
+src/CMakeFiles/miniMuduo.dir/all:
+	$(MAKE) -f src/CMakeFiles/miniMuduo.dir/build.make src/CMakeFiles/miniMuduo.dir/depend
+	$(MAKE) -f src/CMakeFiles/miniMuduo.dir/build.make src/CMakeFiles/miniMuduo.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/shc/Muduo/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19 "Built target miniMuduo"
+.PHONY : src/CMakeFiles/miniMuduo.dir/all
 
 # Build rule for subdir invocation for target.
-src/CMakeFiles/muduo.dir/rule: cmake_check_build_system
+src/CMakeFiles/miniMuduo.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/shc/Muduo/build/CMakeFiles 19
-	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/muduo.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/miniMuduo.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/shc/Muduo/build/CMakeFiles 0
-.PHONY : src/CMakeFiles/muduo.dir/rule
+.PHONY : src/CMakeFiles/miniMuduo.dir/rule
 
 # Convenience name for target.
-muduo: src/CMakeFiles/muduo.dir/rule
+miniMuduo: src/CMakeFiles/miniMuduo.dir/rule
 
-.PHONY : muduo
+.PHONY : miniMuduo
 
 # clean rule for target.
-src/CMakeFiles/muduo.dir/clean:
-	$(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/clean
-.PHONY : src/CMakeFiles/muduo.dir/clean
+src/CMakeFiles/miniMuduo.dir/clean:
+	$(MAKE) -f src/CMakeFiles/miniMuduo.dir/build.make src/CMakeFiles/miniMuduo.dir/clean
+.PHONY : src/CMakeFiles/miniMuduo.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

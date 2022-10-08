@@ -1,3 +1,5 @@
+# if 0
+
 #include<sys/timerfd.h>
 #include<iostream>
 #include<thread>
@@ -11,11 +13,87 @@
 #include "Acceptor.h"
 #include "Socket.h"
 #include <cstring>
+#include "Buffer.h"
+#include "TcpServer.h"
+#include<unistd.h>
+#include<sys/types.h>
+#include<fcntl.h>
+#include<sys/stat.h>
+#include<cassert>
 
 using namespace std;
 
 
-#define TEST_ACCEPT
+void threadInitFunc(EventLoop *loop)
+{
+    LOG_INFO("thread init func on %p in thread %d",loop,CurrentThread::gettid());
+}
+
+void testConnectionCallback(const TcpConnectionPtr& ptr)
+{
+    LOG_INFO("%s server : %s ; client : %s",ptr->name().c_str(),ptr->localAddress().toIpPort().c_str(),ptr->clietAddress().toIpPort().c_str());
+}
+
+void testMessageCallback(const TcpConnectionPtr& ptr,Buffer *inputBuffer,Timestamp time)
+{
+    LOG_INFO("onMessage() : receive %s into buffer at %s from connection [%s]",inputBuffer->retrieveAllAsString().c_str(),time.now().toString().c_str(),ptr->name().c_str());
+
+}
+
+//  一些一定会被打开的fd
+    //  fd 0 1 2 终端
+    //  fd 3     user创建的eventloop中的Poller的epfd
+    //  fd 4     user创建的eventloop中的wakeupFd
+    //  fd 5     mainReactor的listening fd
+    //  fd 6     mainReactor(acceptor)接收后创建的connfd
+    //  fd 7     subLoop的wakeupFd ...
+int main()
+{
+    InetAddress server_addr(6667);
+    EventLoop loop;
+    TcpServer server(&loop,server_addr,"miniMuduo");
+    server.setThreadNum(0);
+    server.setConnectionCallback(testConnectionCallback);
+    server.setMessageCallback(testMessageCallback);
+    server.start();
+
+    loop.loop();
+}
+
+
+#ifdef TEST_BUFFER
+
+int Open(string path,int flag)
+{
+    int fd = open(path.c_str(),O_RDONLY);
+    if(fd==-1)
+    {
+        LOG_INFO("errno = %d ; error = %s\n",errno,strerror(errno));
+    }
+    return fd;
+}
+
+int main()
+{
+    int fd = Open("/home/shc/Muduo/src/BufferTest.txt",O_RDONLY);
+    int err = 0;
+    Buffer buffer;              //  初始化
+    buffer.readFd(fd,&err);     //  扩容
+    // cout<<buffer.retrieveAllAsString()<<endl;   //  回退 readerIdx writeIdx   
+    //  buffer将数据写出
+    size_t n = buffer.writeFd(STDOUT_FILENO,&err);
+    //  写出之后需要retrieve 将nbytes取出
+    string data = buffer.retrieve(n);
+
+}
+
+
+#endif
+
+#endif
+
+
+
 #ifdef TEST_ACCEPT
 
 

@@ -24,6 +24,10 @@ public:
     //  返回sockaddr_in结构体
     const sockaddr_in *getSockAddr() const{return &addr_;}
     void setSockAddr(const sockaddr_in& addr) {addr_ = addr;}
+    //  使用前提:fd的addr 在本程序中已经被绑定  
+        //   根据fd 获取相应地址信息 封装为InetAddress return
+        //   getsockname()  returns the current address to which the socket sockfd is bound, in the buffer pointed to by addr.
+    static InetAddress getSockName(int fd);
 private:
     //  sockaddr_in结构体以 **网络字节序** 保存 IP和Port
     sockaddr_in addr_;

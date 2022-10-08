@@ -44,7 +44,8 @@ int Socket::accept(InetAddress *clietaddr)
     sockaddr_in cliet_addr;
     socklen_t cliet_len = sizeof(sockaddr_in);
     memset(&cliet_addr,0,sizeof cliet_addr);
-    int connfd = ::accept(fd_,(sockaddr*)&cliet_addr,&cliet_len);
+    //  设置建立的sockfd nonblocking + child process execve之后close
+    int connfd = ::accept4(fd_,(sockaddr*)&cliet_addr,&cliet_len,SOCK_CLOEXEC | SOCK_NONBLOCK);
     if(connfd == -1)
     {
         LOG_FATAL("failed to accept the connection!\n");
@@ -53,7 +54,7 @@ int Socket::accept(InetAddress *clietaddr)
     return connfd;
 }
 
-//  作用？
+//  禁用Nagle 算法 避免连续发包出现延迟。
 void Socket::setTcpNoDelay(bool on)
 {
     int opt = on ? 1 : 0;
@@ -74,7 +75,7 @@ void Socket::setReusePort(bool on)
 }
 
 
-//  作用？？？？
+// 定期探测tcp连接是否还存在
 void Socket::setKeepAlive(bool on)
 {
     int opt = on ? 1 : 0;
@@ -93,3 +94,12 @@ void Socket::shutdownWrite()
         LOG_ERROR("shutdownWrite error");
     }
 }
+
+/* 
+Shut down all or part of the connection open on socket FD.
+   HOW determines what to shut down:
+     SHUT_RD   = No more receptions;
+     SHUT_WR   = No more transmissions;
+     SHUT_RDWR = No more receptions or transmissions.
+Returns 0 on success, -1 for errors.  
+*/

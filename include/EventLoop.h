@@ -53,7 +53,7 @@ public:
     //  EventLoop -> Poller
     void updateChannel(Channel *channel);
     void removeChannel(Channel *channel);
-    bool hasChannel(Channel*);
+    bool hasChannel(Channel*) const;
     //  判断 创建该EventLoop的线程 是不是当前正在CPU上运行的线程。
     bool isInLoopThread() const{return threadId_ == CurrentThread::tid();}
 
@@ -86,8 +86,8 @@ private:
     //  用于mainReactor(IO loop) 唤醒 subReactor(worker loop)
     //  wakeupFd!!!!!!!!!!!! muduo库最重要的知识点!!
     //  mainReactor 如何唤醒subReactor?? **通过 wakeupFd 统一事件源！！！**
-    //  libevent 使用的是 socketpair
-        //  没唤醒的时候，subReactor一直在阻塞。
+        //  libevent 使用的是 socketpair
+    //  没唤醒的时候，subReactor一直在阻塞。
     //  wakeupFd_ 就是 event_fd = eventfd();
     int wakeupFd_;                              //  主要作用：当mainLoop获取一个新用户的channel，通过轮询算法选择一个subLoop 通过wakeupFd唤醒subLoop处理channel
     std::unique_ptr<Channel> wakeupChannel_;    //  wakeupChannel_ 封装wakeupFd以及其事件
@@ -95,7 +95,6 @@ private:
     ChannelList activeChannels_;        //  EventLoop 管理的channels
     Channel*   currentActiveChannel_;   //  for assert
     
-    //  其他worker线程加入到本loop的IO线程的回调操作????????
     std::atomic<bool> callingPendingFactors_;   //  ?? 表示当前loop是否有需要执行的回调操作
     std::vector<Functor> pendingFunctors_;  //  存储loop需要执行的所有回调操作  干嘛的？
     std::mutex mtx_;                    //  互斥锁 用来保护上面vector的线程安全操作

@@ -111,17 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named muduo
+# Target rules for targets named miniMuduo
 
 # Build rule for target.
-muduo: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 muduo
-.PHONY : muduo
+miniMuduo: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 miniMuduo
+.PHONY : miniMuduo
 
 # fast build rule for target.
-muduo/fast:
-	$(MAKE) -f src/CMakeFiles/muduo.dir/build.make src/CMakeFiles/muduo.dir/build
-.PHONY : muduo/fast
+miniMuduo/fast:
+	$(MAKE) -f src/CMakeFiles/miniMuduo.dir/build.make src/CMakeFiles/miniMuduo.dir/build
+.PHONY : miniMuduo/fast
 
 # Help Target
 help:
@@ -131,7 +131,7 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... muduo"
+	@echo "... miniMuduo"
 .PHONY : help
 
 
