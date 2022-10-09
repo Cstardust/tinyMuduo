@@ -46,7 +46,7 @@ TcpConnection::~TcpConnection()
     LOG_INFO("TcpConnection::ctor (%p) [%s] on socket %d with state %d\n",this,name_.c_str(),socket_->fd(),state_.load());
 }
 
-//  注册给channel channel是是属于mainloop的channel。因此这个函数最终会被mainloop调用
+//  注册给channel 这个函数最终会被ioloop调用
 void TcpConnection::handleRead(Timestamp receiveTime)
 {
     int savedErrno = 0;
@@ -83,8 +83,6 @@ void TcpConnection::handleWrite()
         ssize_t n = outputBuffer_.writeFd(channel_->fd(),&savedErrno);
         if(n > 0)
         {
-            //  将已经写出的bytes取出 ：readerIdx向前移动nbytes
-            outputBuffer_.retrieve(n);
             //  如果已经没有数据可以从buffer中取出  可取bytes : [readerIdx,writerIdx) 
                 //  即buffer中的数据都已经写给fd
                 //  那么我们需要立刻停止epoll对writable事件的监听
@@ -311,8 +309,8 @@ void TcpConnection::connectionEstablished()
     setState(kConnected);
     //  延长channel生命周期 ？
     channel_->tie(shared_from_this());
-    //  将channel的fd以及事件注册给poller
-    channel_->enableReading();          // 向poller注册channel的epollin事件
+    // 给新建立的connfd 注册读事件到Poller
+    channel_->enableReading();           
 
     // 新连接建立，执行回调
     if(connectionCallback_)

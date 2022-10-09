@@ -15,15 +15,14 @@
 /// 0      <=      readerIndex   <=   writerIndex    <=     size
 
 //  网络库底层缓冲区
-//  Buffer还没实践
 //  Buffer中的readable writeable都是针对Buffer来说的。：可从buffer中读出(读出来给fd) ；可向buffer中写入（从fd中读出来写给buffer）
 //  [readerIdx,writerIdx) 有效数据 可从buffer中读出
 //  [writerIdx,size)      剩余的可向buffer中写入的byte数量
 //  Interface for user
-    //  readFd fd               : 用户使用readFd   将fd输入给用户程序的数据 输入给Bufferd的writable区域[writeIdx,size)
+    //  readFd fd               : 用户使用readFd   从fd读取数据 输入给Bufferd的writable区域[writeIdx,size)
     //  writeFd  fd             : 用户使用writeFd  将Buffer中的readable数据 全部输入给fd文件
-    //  retrieve                : 用户从buffer中拿走readable bytes。以string形式获得。会改变readIdx
     //  retrieveAllAsString     : 用户从buffer中拿走全部readable bytes。以string形式获得。会改变readIdx
+    //  append                  : Buffer使用者 通过append 向Buffer中增添数据。buffer数据增加有两种方式：一个是readFd 一个是append 
     //  user不必关心Buffer的大小。Buffer是自适应扩张的。
         //  唯一扩张的原因就是调用Buffer的append（向缓冲区中写数据）。一般是user通过readFd调用。
         //  Buffer会自己扩充内存 管理writeIdx readIdx
@@ -38,15 +37,42 @@ public:
         : buffer_(kCheapPrepend + initialSize),
           readerIdx_(kCheapPrepend),
           writerIdx_(kCheapPrepend)
-    {
-        LOG_INFO("readerIdx = %ld ; writerIdx = %ld; total size = %lu\n",readerIdx_,writerIdx_,buffer_.size());
-    }
-
+    {}
 
     //  都是stack上的 没必要重载析构
-    ~Buffer()
+    ~Buffer(){}
+    //  从fd中读数据
+    ssize_t readFd(int fd,int *saveErrno);
+    //  通过fd发送数据
+    ssize_t writeFd(int fd,int *saveErrno);
+
+    //  buffer中的所有可读数据 转成string类型的数据返回
+        //  一般会被user编写的的onMessage调用 
+    std::string retrieveAllAsString()
     {
-        LOG_INFO("readerIdx = %ld ; writerIdx = %ld; total size = %lu\n",readerIdx_,writerIdx_,buffer_.size());
+        return retrieveAsString(readableBytes());
+    }
+
+    //  从readerIdx开始 读取len bytes char
+    std::string retrieveAsString(size_t len)
+    {
+        //  [readerIdx,readerIdx+len) 转化成string
+        std::string result(peek(), len);
+        //  移动readerIdx
+        retrieve(len);
+        return result;
+    }
+
+    //  向写缓冲区写入len长度的data
+        //  data -> [writable ...)
+    void append(const char *data,size_t len)
+    {
+        //  确保写空间足够
+        ensureWriteableBytes(len);
+        //  从extrabuf中写入buffer
+        std::copy(data,data+len,beginWrite());
+        //  移动writeIdx 一定能够移动len长度。因为write到buffer的writeable之前已经ensure
+        writerIdx_ += len;
     }
 
     //  返回可读的字节数
@@ -67,34 +93,14 @@ public:
         return readerIdx_;
     }
 
-    //  把onMessage函数上报的Buffer数据 转成string类型的数据返回
-    std::string retrieveAllAsString()
-    {
-        return retrieveAsString(readableBytes());
-    }
+private:
 
-    //  从readerIdx开始 读取len bytes char
-    //  [readerIdx,readerIdx+len)
-    std::string retrieveAsString(size_t len)
-    {
-        //  [readerIdx,readerIdx+len) 转化成string
-        std::string result(peek(), len);
-        //  移动readerIdx 至还没读的char
-        retrieve(len);
-        return result;
-    }
-
-
-    //  返回readerIdx指向的内存地址
-    //  [readerIdx,writerIdx)中的readerIdx指向的char的地址
-    const char *peek() const
-    {
-        //  vector 底层是连续的
-        return begin() + readerIdx_;
-    }
-
-    //  读走len长度的字节之后 移动readIdx_ ?
-    //  on Message : string <- Buffer
+    //  作用：清除Buffer里已经使用完的字节
+        //  buffer的使用者不必自己负责清除已经用过的字节 ，即不必自己调用retrieve(len)
+        //  retrieve已经封装在writeFd 和 retrieveAsString(len) 以及 retrieveAllAsString()了 
+        //  从buffer中取走len长度的字节之后(无论是读走还是写出) 移动readIdx_ 
+        //  readerIdx的移动被封装在retrieve里
+        //  writerIdx的移动没有封装
     void retrieve(size_t len)
     {
         //  应用只读取了可读缓冲区数据的一部分，就是len
@@ -108,12 +114,11 @@ public:
         //  复位即可
         else
         {
-            //  len == readableBytes();(>readableBytes()也没用，最多就读readableBytes())
+            //  len >= readableBytes(); 
             retrieveAll();
         }
     }
 
-    //  buffer_.size() - writeIdx_
     //  确保有len长度的可写空间
     void ensureWriteableBytes(size_t len)
     {
@@ -123,17 +128,11 @@ public:
         }
     }
 
-    //  向写缓冲区写入len长度的data
-        //  data -> [writable ...)
-    void append(const char *data,size_t len)
+    //  [readerIdx,writerIdx) return readerIdx指向的char的地址
+    const char *peek() const
     {
-        //  确保写空间足够
-        ensureWriteableBytes(len);
-        //  从extrabuf中写入buffer
-        std::copy(data,data+len,beginWrite());
-        //  移动writeIdx 一定能够移动len长度。因为write到buffer的writeable之前已经ensure
-        writerIdx_ += len;
-       LOG_INFO("after read all into buffer : len = %ld ; readerIdx = %ld ; writerIdx = %ld ; total size = %lu\n",len,readerIdx_,writerIdx_,buffer_.size());
+        //  vector 底层是连续的
+        return begin() + readerIdx_;
     }
 
     //  返回writeIdx指向的内存地址
@@ -147,12 +146,6 @@ public:
         return begin() + writerIdx_;
     }
 
-    //  从fd中读数据
-    ssize_t readFd(int fd,int *saveErrno);
-    //  通过fd发送数据
-    ssize_t writeFd(int fd,int *saveErrno);
-
-private:
     char *begin()
     {
         return buffer_.begin().base();
@@ -187,10 +180,8 @@ private:
             //  [readerIdx,writerIdx) [writerIdx, old writeableBytes + prependableBytes - kCheapPrepend)
         if (writableBytes() + prependableBytes() < len + kCheapPrepend)
         {
-            LOG_INFO("before resize : readerIdx = %ld ; writerIdx = %ld; total size = %lu\n",readerIdx_,writerIdx_,buffer_.size());
             //  resize 重新分配一块新内存. 不必移动readerIdx，writerIdx
             buffer_.resize(writerIdx_ + len);
-            LOG_INFO("after resize : readerIdx = %ld ; writerIdx = %ld; total size = %lu\n",readerIdx_,writerIdx_,buffer_.size());
         }
         else
         {
