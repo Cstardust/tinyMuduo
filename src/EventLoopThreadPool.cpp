@@ -18,9 +18,7 @@ EventLoopThreadPool::~EventLoopThreadPool()
 }
 
 
-//  创建并启动一个thread 并且在该thread上创建一个EventLoop对象（threadFunc运行在该thread上）。
-    //  这个启动的thread上 调用 loop.loop()
-//  threadinitcallback有什么用？
+//  开启subReactors(EventLoopThreads)
 void EventLoopThreadPool::start(const ThreadInitCallback& cb/* = ThreadInitCallback()*/)
 {
     started_ = true;
@@ -29,13 +27,8 @@ void EventLoopThreadPool::start(const ThreadInitCallback& cb/* = ThreadInitCallb
     {
         char name[name_.size() + 32];
         snprintf(name,sizeof name,"%s%d",name_.c_str(),i);
-        //  new EventLoopthread which has loop_ and will start a thread
         EventLoopThread *t = new EventLoopThread(cb,name);
-        //  EventLoopThread 交给unique_ptr管理 负责销毁
-        threads_.push_back(std::unique_ptr<EventLoopThread>(t));
-        //  EventLoopThread对象底层创建一thread 该thread会调用底层的threadFunc 并进入loop循环。
-        //  loops中的EventLoop* 是EventLoopThread创建的local variable
-        //  因此 并不需要delete loop 更不需要在eventloopthreadpool这层delete loop
+        subReactors_.push_back(std::unique_ptr<EventLoopThread>(t));
         loops_.push_back(t->startLoop());
     }
 

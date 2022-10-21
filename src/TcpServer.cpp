@@ -57,6 +57,7 @@ void TcpServer::setThreadNum(int subLoopNum)
 //  mainthread执行一下listening socket的listen
 //  并没有开启mainthread上的eventloop的loop
 //  mainloop的loop是由user开启的.
+    //  感觉也可以改成由start开启
 void TcpServer::start()
 {
     if (started_++ == 0) // 1. atomic 2. ++防止一个TcpServer被start多次
@@ -91,7 +92,7 @@ void TcpServer::newConnection(int connfd, const InetAddress &peerAddr, const Ine
     TcpConnectionPtr conn(new TcpConnection(
         ioLoop,
         connName,
-        connfd, // Socket Channel
+        connfd,
         localAddr,
         peerAddr));
 
@@ -99,10 +100,8 @@ void TcpServer::newConnection(int connfd, const InetAddress &peerAddr, const Ine
     conn->setConnectionCallback(connectionCallback_);
     conn->setMessageCallback(messageCallback_);
     conn->setWriteCompleteCallback(writeCompleteCallback_);
-
     // 设置了如何关闭连接的回调   conn->shutDown()
-    conn->setCloseCallback(
-        std::bind(&TcpServer::removeConnection, this, std::placeholders::_1));
+    conn->setCloseCallback(std::bind(&TcpServer::removeConnection, this, std::placeholders::_1));
 
     LOG_INFO("shared_ptr cnt %ld",conn.use_count());
     //  记录在TcpServer中 connName - Tcpcpnnection conn
@@ -110,7 +109,6 @@ void TcpServer::newConnection(int connfd, const InetAddress &peerAddr, const Ine
     connections_[connName] = conn;
     LOG_INFO("shared_ptr cnt %ld",conn.use_count());
 
-        // EventLoop 直接调用TcpConnection::connectEstablished ??
     //  如果ioloop是mainloop 那么就是在eventloop所属thread上调用runInloop方法 直接cb即可
     //  如果ioloop是subloop 那么唤醒subthread的subloop执行connectionEstablished
     ioLoop->runInLoop(std::bind(&TcpConnection::connectionEstablished, conn));
@@ -119,6 +117,7 @@ void TcpServer::newConnection(int connfd, const InetAddress &peerAddr, const Ine
 //  removeConnection -> removeConnectionInLoop
 void TcpServer::removeConnection(const TcpConnectionPtr &conn)
 {
+    //  TcpServer的loop_必定是个mainloop阿 
     loop_->runInLoop(
         std::bind(&TcpServer::removeConnectionInLoop, this, conn));
 }
@@ -137,8 +136,11 @@ void TcpServer::removeConnectionInLoop(const TcpConnectionPtr &conn)
     //  将tcpconnection的生命周期 延迟到connectionDestroyed时刻
         //  参数绑定传智能指针！！而非裸指针！！不然会导致其提前析构！！
         //  **智能指针 可以作为成员函数隐含的this**
+    //  获取conn所属的subloop
     EventLoop *ioLoop = conn->getLoop();
-    ioLoop->queueInLoop(
+    // ioLoop->queueInLoop(
+    //     std::bind(&TcpConnection::connectionDestroyed,conn));
+    ioLoop->runInLoop(
         std::bind(&TcpConnection::connectionDestroyed,conn));
     LOG_INFO("after removeConnectionInLoop");
 }

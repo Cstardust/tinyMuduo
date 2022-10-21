@@ -17,10 +17,10 @@ public:
     using ChannelList = std::vector<Channel*>;
 public:
     Poller(EventLoop*);
-    //  注意析构函数virtual
+    //  base , so virtual dtor
     virtual ~Poller() = default;                                   
     
-    //  给所有IO复用子类保留的统一接口
+    //  给所有IO复用子类保留的统一接口.
         //  (epoll_wait) polls the io events
         //  must be called in the loop thread
     virtual Timestamp poll(int timeoutMs,ChannelList *activeChannels) = 0;  //  epoll_wait 这应该就是封装的epoll_wait 传入timeout时间以及感兴趣的fd return发生的事件数量
@@ -48,8 +48,7 @@ protected:
     using ChannelMap = std::unordered_map<int,Channel*>;//  sockfd -- Channel
     ChannelMap channels_;
 private:
-    //  该Poller所属的EventLoop
-    //  protected 注意这是个基类 还有子类呢
+    //  所属EventLoop
     EventLoop *ownerLoop_;   
 };
 

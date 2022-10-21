@@ -27,7 +27,7 @@ private:
     EventLoop *loop_; //  Acceptor使用的就是用户定义的baseloop,也就是mainloop
     Socket acceptSocket_;
     Channel acceptChannel_;
-    NewConnectionCallback newConnectionCallback_;   //  接收tcpserver注册的callback
+    NewConnectionCallback newConnectionCallback_;   
     bool listening_;
 };
 

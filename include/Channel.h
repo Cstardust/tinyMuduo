@@ -19,8 +19,6 @@ using std::function;
 
 // channel 将感兴趣的事情注册给Poller，Poller将fd上发生的事情返回给channel，channel再调用相应的回调函数
 // EventLoop 有多个Channel，一个Poller。这个Poller监听多个Channel
-// EventLoop对应Reactor模型上的Demultiplex
-
 // Channel 封装了
     //  fd
     //  挂在epoll tree上的fd的事件 如fd的EPOLLIN、EPOLLOUT
@@ -41,14 +39,14 @@ public:
 
     void handleEvent(const Timestamp& receiveTime);
 
-    //  设置回调函数（为什么要std move? 我觉得也没多大吧）
+    //  设置回调函数
     void setReadCallback(ReadEventCallback call) { readCallback_ = std::move(call); }
     void setWriteCallback(EventCallback call) { writeCallback_ = std::move(call); }
     void setCloseCallback(EventCallback call) { closeCallback_ = std::move(call); }
     void setErrorCallback(EventCallback call) { errorCallback_ = std::move(call); }
 
     //  1. 设置fd感兴趣的事件：读 / 写
-    //  2. update 注册在channel所属eventloop的poller上。 
+    //  2. update 将本channel绑定到所属eventloop的poller上。 
     void enableReading(){ events_ |= kReadEvent; update(); }
     void disableReading() { events_ &= ~kReadEvent; update(); }
     void enableWriting() { events_ |= kWriteEvent; update(); }
@@ -91,9 +89,9 @@ private:
     static const int kWriteEvent = EPOLLOUT; //  写事件
 
     EventLoop *loop_; //  EventLoop channel归属于哪个EventLoop 为了获取poller
-    const int fd_;    //  Poller的监听对象 epoll_ctl(fd?)
-    int events_;      //  注册要监听的fd的事件
-    int revents_;     //  it's the received event types of epoll or poll
+    const int fd_;    //  fd
+    int events_;      //  fd感兴趣的事件的集合（注册在epoll tree上要被监听的事件的集合）
+    int revents_;     //  poller 实际监听到的事件
     int index_;
 
     //  这个weak_ptr到底是引用谁？？？

@@ -42,7 +42,7 @@ private:
     }
 
     //  当server收到消息时 该做什么
-        //  这里传入给onMessage的buffer 应当就是TcpConnection中的inputBuffer
+        //  这里传入给onMessage的buffer 就是TcpConnection中的inputBuffer
         //  inputBuffer中 存的就是server从client fd的socket kernel读缓冲区读取进内存的数据
         //  tcpconnection 如果要发送该读取到inputBuffer的数据的话
         //  那么就调用send(buffer->retrieveAllAsString()) （取出inputBuffer中的data，然后直接发送或者先存入outputBuffer再发送)

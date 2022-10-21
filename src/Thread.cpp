@@ -1,7 +1,9 @@
 #include "Thread.h"
 #include"Logger.h"
 #include"CurrentThread.h"
-#include<semaphore.h>
+// #include<semaphore.h>
+#include<mutex>
+#include<condition_variable>
 
 std::atomic<int> Thread:: numCreated_(0);     //  static 变量 类外初始化
 
@@ -43,27 +45,54 @@ void Thread::setDefaultName()
 
 
 //  Thread 类对象 : 保存了该对象开启的thread的信息。如tid
+// void Thread::start()
+// {
+// //  sempahore 
+//     //  我们无法保证 开启的thread和这个start谁先运行
+//     //  因此 需要有一个机制 来保证 start结束之后 user可以通过Thread对象安全的访问新生的thread的信息 如tid
+//     //  因此 就用了信号量
+//     sem_t sem;
+//     sem_init(&sem,false,0);
+//     //  开启线程
+//         //  [&] lambda以引用的方式捕获外界值
+//     // thread_.reset(new std::thread(func_));   //  开启线程 （给shared_ptr赋值）
+//     thread_ = std::unique_ptr<std::thread>(new std::thread([&](void)->void{
+//         //  获取线程的tid值 存入Thread的tid_变量
+//         tid_ = CurrentThread::tid();
+//         //  ++sem
+//         sem_post(&sem);
+//         //  该线程的任务 专门执行func_()
+//         func_();
+//     }));
+//     //  等待被信号量唤醒
+//     sem_wait(&sem);
+//     started_ = true;
+// }
+
+
 void Thread::start()
 {
-//  sempahore 
-    //  我们无法保证 开启的thread和这个start谁先运行
-    //  因此 需要有一个机制 来保证 start结束之后 user可以通过Thread对象安全的访问新生的thread的信息 如tid
-    //  因此 就用了信号量
-    sem_t sem;
-    sem_init(&sem,false,0);
-    //  开启线程
-        //  [&] lambda以引用的方式捕获外界值
-    // thread_.reset(new std::thread(func_));   //  开启线程 （给shared_ptr赋值）
+    std::mutex mtx;
+    std::condition_variable cond;
+    //  start thread
     thread_ = std::unique_ptr<std::thread>(new std::thread([&](void)->void{
-        //  获取线程的tid值 存入Thread的tid_变量
+
+        //  临界区: tid_ , thread func内要写;开启thread的thread要读。
+        mtx.lock();
         tid_ = CurrentThread::tid();
-        //  ++sem
-        sem_post(&sem);
-        //  该线程的任务 专门执行func_()
+        cond.notify_one();
+        mtx.unlock();
+
+        //  threadFunc
         func_();
     }));
-    //  等待被信号量唤醒
-    sem_wait(&sem);
+
+    {
+        std::unique_lock<std::mutex> lock(mtx);
+        while(!(tid_ != 0)){
+            cond.wait(lock);
+        }
+    }
     started_ = true;
 }
 

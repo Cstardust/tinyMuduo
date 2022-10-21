@@ -13,8 +13,8 @@ class EventLoop;
 class Socket;
 class Channel;
 
-//  acceptor : mainloop中的 监听listenfd
-//  tcpconntcion : subloop中的 监听已连接connfd的读写事件
+//  acceptor : mainloop中的 封装listenfd、相关事件及回调
+//  tcpconntcion : subloop中的 封装已连接connfd、相关事件及回调
 
 //  负责和一个connfd进行通信？
 /*
@@ -72,14 +72,14 @@ private:
 
     void setState(StateE s){state_ = s;}
 
-    EventLoop *loop_; //  这里可不是baseloop 因为TcpConnection是subloop 。即 subthread的 即 subreactor的处理连接connfd的loop
+    EventLoop *loop_;                   //  这里可不是baseloop 因为TcpConnection是subloop 。即 subthread的 即 subreactor的处理连接connfd的loop
     const std::string name_;
     std::atomic<int> state_;
     bool reading_;
 
     //  socket(fd and action on the fd) and channel(fd event handler)
-    std::unique_ptr<Socket> socket_;   //  connfd ?
-    std::unique_ptr<Channel> channel_; //  channel for connfd to poller?
+    std::unique_ptr<Socket> socket_;   //  connfd 
+    std::unique_ptr<Channel> channel_; //  channel for connfd to poller
 
     const InetAddress localAddr_;       //  server_addr
     const InetAddress peerAddr_;       //  client_addr        

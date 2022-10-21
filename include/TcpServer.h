@@ -16,7 +16,6 @@
     //  设置好callback
     //  调用start()即可
 
-//  EventLoopThreadPool 经典！ one loop per thread
 
 //  TcpServer --> EventLoop --> Channel
 //                          --> Poller
@@ -32,9 +31,7 @@ public:
     TcpServer(EventLoop* loop,const InetAddress &server_addr,const string &name,Option op = kNoReusePort);
     ~TcpServer();
 
-    //  开启server thread safe
-    //  starts server if it's not listening
-    //  it's harmless to call it multiple times
+    //  starts server if it's not listening , it's harmless to call it multiple times
     void start();
     //  设置底层subloop个数
     void setThreadNum(int subThreadNum);
@@ -68,8 +65,7 @@ private:
         //  task：epoll_wait 监听新连接事件
     std::unique_ptr<Acceptor> acceptor_;
 
-    //  Loop + Thread Pool
-        //  one loop per thread!!!!!!
+    //  Loop + Thread Pool : subReactors pool
     std::shared_ptr<EventLoopThreadPool> threadPool_;
         
     //  设置callback

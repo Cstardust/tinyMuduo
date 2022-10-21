@@ -1,16 +1,8 @@
 #ifndef MY_MUDUO_EVENT_LOOP
 #define MY_MUDUO_EVENT_LOOP
-/*
- * 
- * EventLoop 反应堆的核心！！！
- * 
- * 时间循环类
- * 主要包含
- *      Channel -- 
- *      Poller  -- epoll的抽象     
- *
- */
 
+
+//  EventLoop : the core of reactor
 
 #include<atomic>
 #include<memory>
@@ -40,14 +32,13 @@ public:
     void quit();
 
     Timestamp pollReturnTime() const {return pollReturnTime_;}
-    //  重要！！！
+
     //  在当前loop中执行cb
     void runInLoop(const Functor& cb);         
-    //  把cb放入队列 等轮转到该loop时再执行cb
+    //  把cb放入队列 等待loop执行
     void queueInLoop(const Functor& cb);      
 
-    //  mainReactor 唤醒 subReactor
-    //  唤醒loop所在线程
+    //  讲loop从wait中唤醒
     void wakeup();      
 
     //  EventLoop -> Poller
@@ -63,13 +54,11 @@ public:
 
     //  定时器相关操作....
 private:
-    //  wake up
-    void handleRead(const Timestamp&);
+    //  解除wakeup事件
+    void handleWakeUpFd(const Timestamp&);
     //  执行回调
     void doPendingFunctors();
-
     void abortNotInLoopThread();
-
 private:
     using ChannelList = std::vector<Channel*>; 
     //  控制相关
@@ -83,29 +72,22 @@ private:
     std::unique_ptr<Poller> poller_;
     Timestamp pollReturnTime_;          //  poller返回发生事件的channels的时间点
 
-    //  用于mainReactor(IO loop) 唤醒 subReactor(worker loop)
     //  wakeupFd!!!!!!!!!!!! muduo库最重要的知识点!!
     //  mainReactor 如何唤醒subReactor?? **通过 wakeupFd 统一事件源！！！**
-        //  libevent 使用的是 socketpair
-    //  没唤醒的时候，subReactor一直在阻塞。
-    //  wakeupFd_ 就是 event_fd = eventfd();
+    // 每个subReactor 监听了 一个 wakeupChannel
+    // mainReactor 通过 给wakeupChannel发送消息 让subReactor感知到wakeupFd上有读事件发生。
+    // subReactor 就能拿到mainReactor给的新连接的fd
     int wakeupFd_;                              //  主要作用：当mainLoop获取一个新用户的channel，通过轮询算法选择一个subLoop 通过wakeupFd唤醒subLoop处理channel
     std::unique_ptr<Channel> wakeupChannel_;    //  wakeupChannel_ 封装wakeupFd以及其事件
 
     ChannelList activeChannels_;        //  EventLoop 管理的channels
     Channel*   currentActiveChannel_;   //  for assert
     
-    std::atomic<bool> callingPendingFactors_;   //  ?? 表示当前loop是否有需要执行的回调操作
-    std::vector<Functor> pendingFunctors_;  //  存储loop需要执行的所有回调操作  干嘛的？
-    std::mutex mtx_;                    //  互斥锁 用来保护上面vector的线程安全操作
+    std::atomic<bool> callingPendingFunctors_;   //  loop_ is doPendingFunctor
+    std::vector<Functor> pendingFunctors_;      //  存储loop需要执行的所有回调操作  干嘛的？
+    std::mutex mtx_;                            //  互斥锁 用来保护上面vector的线程安全操作
 };
 
-
-/*
-每个subReactor 监听了 一个 wakeupChannel
-mainReactor 通过 给wakeupChannel发送消息 让subReactor感知到wakeupFd上有读事件发生。
-subReactor 就能拿到mainReactor给的新连接的fd
-*/
 
 #endif
 

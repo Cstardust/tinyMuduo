@@ -6,13 +6,12 @@
 #include<cstring>
 
 //  Channel index_
-// Channel 未被添加到 Poller中      不在channel_map中 && 没注册在epoll上
+//  Channel 未被添加到 Poller中      不在channel_map中 && 没注册在epoll上
 const int kNew = -1;            
-// Channel 已被添加到 Poller中      在channel_map中 && 注册在epoll上
+//  Channel 已被添加到 Poller中      在channel_map中 && 注册在epoll上
 const int kAdded = 1;
-// Channel 从 Poller 中 删除        在channel_map中 && 没注册在epoll上
+//  Channel 从 Poller 中 删除        在channel_map中 && 没注册在epoll上
 const int kDeleted = 2;
-//  kDeleted 有什么用？？？？？
 
 EpollPoller::EpollPoller(EventLoop *loop)
     :Poller(loop),                   
@@ -31,7 +30,7 @@ EpollPoller::~EpollPoller()
     ::close(epollfd_);
 }
 
-// channel update -> EventLoop updateChannel -> Poller updateChannel -> EpollPoller
+// channel update -> EventLoop updateChannel -> Poller updateChannel -> EpollPoller updateChannel
 void EpollPoller::updateChannel(Channel *channel)
 {
     int index = channel->index();
@@ -60,7 +59,6 @@ void EpollPoller::updateChannel(Channel *channel)
 
         //  fd 没有事件要监听 --> 从epoll中移除fd 然后 改变记录channel的状态 added->deleted
             //  added -> delete 只是从epoll中拿下，并没有改变channelMap. fd - channel仍旧记录在map中
-            //  为什么不拿下？
         if(channel->isNoneEvent())
         {
             update(EPOLL_CTL_DEL,channel);
@@ -109,7 +107,6 @@ void EpollPoller::removeChannel(Channel *channel)
     int fd = channel->fd();
     int index = channel->index();
     LOG_INFO("fd = %d , events = %d , index = %d in loop %p on thread %d\n",fd,channel->events(),index,getOwnerLoop(),CurrentThread::gettid());
-
     assert(channel == channels_[fd]);
     
     //  从map表中删除fd-channel
@@ -121,9 +118,10 @@ void EpollPoller::removeChannel(Channel *channel)
 
 Timestamp EpollPoller::poll(int timeoutMs,ChannelList *activeChannels) 
 {
-    //  实际上应该用LOG_DEBUG
     LOG_INFO("fd to be monitored total count : %lu in loop %p on thread %d\n",channels_.size(),getOwnerLoop(),CurrentThread::gettid());
+
     //	int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout)
+    //  得看epoll源码了。10月22之前开始看。
     //  epoll_wait  
         //  epoll_event[] 传入传出参数 用来存内核得到事件的集合，
         //  maxevents     epoll总共需要监听多少个events
@@ -132,8 +130,6 @@ Timestamp EpollPoller::poll(int timeoutMs,ChannelList *activeChannels)
     //  保存errno 防止被其他错误修改
     int saveErrno = errno;
     
-    Timestamp now(Timestamp::now());
-
     if(numEvents > 0)
     {
         LOG_INFO("%d events happneded\n",numEvents);
@@ -146,7 +142,7 @@ Timestamp EpollPoller::poll(int timeoutMs,ChannelList *activeChannels)
     }
     else if(numEvents == 0)
     {
-        LOG_INFO("%s timeout!\n","epoll_wait");
+        LOG_INFO("epoll_wait timeout!\n");
     }
     else 
     {
@@ -158,7 +154,8 @@ Timestamp EpollPoller::poll(int timeoutMs,ChannelList *activeChannels)
             LOG_ERROR("epoll_wait error : %d\n",errno);
         }
     }
-    return now;
+
+    return Timestamp::now();
 }
 
 

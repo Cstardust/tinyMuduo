@@ -37,7 +37,6 @@ TcpConnection::TcpConnection(EventLoop *loop,
 
 
     LOG_INFO("TcpConnection::ctor [%s] on fd = %d\n",name_.c_str(),connfd);
-    //  作用？？？
     socket_->setKeepAlive(true);
 }
 
@@ -108,6 +107,10 @@ void TcpConnection::handleWrite()
                     shutdownInLoop();
                 }
             }
+            //  如何做到一个事件的处理不长时间占用控制权？措施之一如下
+                //  如果一次没写完的话，不会阻塞在这里等待缓冲区空闲然后继续写
+                //  而是将控制交还给eventloop。因为写事件还在epoll tree上监听，并且未写的数据存在outputBuffer中
+                //  等待下一次循环poller监听到写事件 触发write即可。!!!
             else
             {
                 LOG_INFO("I'm going to write more data");
@@ -164,7 +167,6 @@ void TcpConnection::handleError()
     int optval;
     socklen_t optlen = sizeof optval;
     int err = 0;
-    //  干嘛？？
     if(::getsockopt(channel_->fd(),SOL_SOCKET,SO_ERROR,&optval,&optlen) < 0)
     {
         err = errno;
@@ -224,7 +226,7 @@ void TcpConnection::sendInLoop(const void *data,size_t len)
     }
 
     //  如果output queue(outputBuffer_) 中没有任何数据的话，那么就直接发送给fd。
-        //  表示channel第一次开始写数据 而且缓冲区没有待发送数据
+        //  表示channel上并没有写事件被监听，而且缓冲区没有待发送数据
     if(!channel_->isWriting() && outputBuffer_.readableBytes()==0)
     {
         LOG_INFO("直接将data发送，而不是先送入outputBuffer");
@@ -235,18 +237,18 @@ void TcpConnection::sendInLoop(const void *data,size_t len)
         {
             //  是否将data都发送完
             remaning = len - nwrote;
+            //  我猜这个writeCompleteCallback 是用户设置的
             if(remaning == 0 && writeCompleteCallback_)
             {
                 //  如果发送完了 那么就调用一下writeCompleteCallback_
-                //  既然在这里 数据全部发送完成 就不用再给channel 设置 epollout事件了
+                //  既然在这里 数据全部发送完成 也就无需给channel 设置 epollout事件了
                 loop_->queueInLoop(
                     std::bind(writeCompleteCallback_,shared_from_this())
                 );
+                //  一次全部写完 结束 无需后续监听写事件/加入outputBuffer
+                return ;
             }
-            //  else ? 
-            //  没发送完的话不是应当write more data 吗 ？
-            //  为什么没处理 ？
-                //  在这个if外面处理了
+            //  没发送完 继续发送
         }
         else    //  nwrote < 0
         {
@@ -287,6 +289,7 @@ void TcpConnection::sendInLoop(const void *data,size_t len)
                 std::bind(highWaterMarkCallback_,shared_from_this(),oldlen + remaning)
             );   
         }
+
         //  将data中没有发送的数据 存入outputBuffer
         outputBuffer_.append((char*)data+nwrote,remaning);
         //  这里一定要注册Channel的写事件

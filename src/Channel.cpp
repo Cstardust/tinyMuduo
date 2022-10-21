@@ -62,7 +62,7 @@ void Channel::handleEvent(const Timestamp& receiveTime)
 void Channel::handlerEventWithGuard(const Timestamp& receiveTime)
 {
     //  对端关闭?
-    if(!(revents_ & EPOLLIN) && (revents_ & EPOLLHUP)) //  什么意思？？EPOLLHUP???
+    if(!(revents_ & EPOLLIN) && (revents_ & EPOLLHUP)) 
     {
         LOG_INFO("happened 1\n");
         if(closeCallback_!=nullptr)
