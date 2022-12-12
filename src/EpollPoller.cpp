@@ -111,8 +111,11 @@ void EpollPoller::removeChannel(Channel *channel)
     
     //  从map表中删除fd-channel
     channels_.erase(fd);
-    
-    update(EPOLL_CTL_DEL,channel);
+    //  防止重复删除
+    if (index == kAdded)
+    {
+        update(EPOLL_CTL_DEL, channel);
+    }
 }
 
 

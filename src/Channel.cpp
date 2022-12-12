@@ -15,8 +15,6 @@ Channel::Channel(EventLoop *loop, int fd)
 Channel::~Channel()
 {}
 
-
-//  绑定什么？绑定poller吗？也不是啊
 void Channel::tie(const std::shared_ptr<void>& ptr)
 {
     tie_ = ptr;
@@ -42,27 +40,30 @@ void Channel::remove()
 //  Channel的核心
 void Channel::handleEvent(const Timestamp& receiveTime)
 {
-    //  绑定了 && 没析构 handleEvent
+    //  owner is TcpConnection
     if(tied_)
     {
+        //  lock
+        //  延长TcpConnection生命周期，保证不在handleEvent时析构
         std::shared_ptr<void> guard = tie_.lock();
         if(guard)
         {
             handlerEventWithGuard(receiveTime);
         }
     }
-    //  没绑定 handleEvent
+    //  owner is Acceptor
     else
     {
         handlerEventWithGuard(receiveTime);
     }
 }
 
+
 //  根据poller通知的channel发生的具体事件，由channel负责调用具体的回调操作
 void Channel::handlerEventWithGuard(const Timestamp& receiveTime)
 {
     //  对端关闭?
-    if(!(revents_ & EPOLLIN) && (revents_ & EPOLLHUP)) 
+    if((!(revents_ & EPOLLIN)) && (revents_ & EPOLLHUP)) 
     {
         LOG_INFO("happened 1\n");
         if(closeCallback_!=nullptr)

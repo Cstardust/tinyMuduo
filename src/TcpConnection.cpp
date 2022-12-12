@@ -78,23 +78,21 @@ void TcpConnection::handleWrite()
     if(channel_->isWriting())
     {
         int savedErrno = 0;
-        //  outputBuffer中的bytes 写入 可写的fd
+        //  outputBuffer中的bytes 写入 fd
         ssize_t n = outputBuffer_.writeFd(channel_->fd(),&savedErrno);
         if(n > 0)
         {
-            //  如果已经没有数据可以从buffer中取出  可取bytes : [readerIdx,writerIdx) 
-                //  即buffer中的数据都已经写给fd
+            //  如果已经没有数据可以从buffer中取出给fd  可取bytes : [readerIdx,writerIdx) 
                 //  那么我们需要立刻停止epoll对writable事件的监听
             //  !=0的话 代表buffer中还有可写数据 那么不必取消监听。epoll稍后应当检测到可写事件 然后继续调用本函数进行写
             if(outputBuffer_.readableBytes() == 0)
             {
-                //  取消监听！！！
+                //  取消监听
                 channel_->disableWriting();
                 //  执行写完成回调
                 if(writeCompleteCallback_)
                 {
                     //  唤醒loop对应的thread线程 执行回调
-                        //  这个writeCompleteCallback 是什么？
                     loop_->queueInLoop(
                         std::bind(writeCompleteCallback_,shared_from_this())
                     );
@@ -128,9 +126,10 @@ void TcpConnection::handleWrite()
 }
 
 
-//  我应该是写错了什么地方 不然不可能析构。。下午/晚上再排查吧。。
-    //  破案了 传参的时候传错了。应当传shared_ptr 而非裸指针
 //  poller ->  channel::closeCallback -> TcpConnection::handleClose -> TcpServer::removeConnection -> TcpConnection::connectionDestoyed
+//  之前注册给channel的关于关闭连接的回调操作都已经完成 
+    //  且TcpConnection也一直保持着没有析构。
+//  该函数结束之后，TcpConnection就会几乎马上被析构!
 void TcpConnection::handleClose()
 {
     LOG_INFO("TcpConnection::handleClose fd = %d state = %d\n",socket_->fd(),state_.load());
@@ -141,24 +140,24 @@ void TcpConnection::handleClose()
     assert(state_ == kConnected || state_ == kDisconnecting);
     //  改变状态
     setState(kDisconnected);
-    //  从epoll树上拿下来
+    //  取消监听
     channel_->disableAll();
 
-    // LOG_INFO("shared_ptr cnt %ld",shared_from_this().use_count());
-    TcpConnectionPtr connPtr(shared_from_this());
-    // LOG_INFO("shared_ptr cnt %ld",connPtr.use_count());
+
+    //  3  = 1(channel::tie_.lock) + 1(TcpServer::connections_[connName] = conn;) 
+    //  + 1(shared_from_this()临时量移动构造给connPtr)
+    TcpConnectionPtr connPtr(shared_from_this());          
     
-    //  user设置的
-    connectionCallback_(connPtr);       //  连接断开和连接的回调
+    //  user set
+    connectionCallback_(connPtr);         
 
-    // LOG_INFO("shared_ptr cnt %ld",connPtr.use_count());
-
-    //  不是user设置的
+    //  TcpServer set
     //  TcpServer::removeConnection -> TcpConnection::connectionDestroyed
-    closeCallback_(connPtr);            //  关闭连接的回调  TcpServer::removeConnection
+    //  connections_.erase(TcpConnectionPtr)
+    closeCallback_(connPtr);            
 
-    //  记得研究tcpConnectionPtr计数
-    LOG_INFO("shared_ptr cnt %ld tcpconnection %p point to %p",connPtr.use_count(),connPtr.get(),this);
+    // LOG_INFO("shared_ptr cnt %ld tcpconnection %p point to %p",connPtr.use_count(),connPtr.get(),this);
+    //  2 = 1(channel::tie_.lock) + 1(connPtr)
 }
 
 
@@ -237,7 +236,6 @@ void TcpConnection::sendInLoop(const void *data,size_t len)
         {
             //  是否将data都发送完
             remaning = len - nwrote;
-            //  我猜这个writeCompleteCallback 是用户设置的
             if(remaning == 0 && writeCompleteCallback_)
             {
                 //  如果发送完了 那么就调用一下writeCompleteCallback_
@@ -310,7 +308,7 @@ void TcpConnection::connectionEstablished()
 {
     LOG_INFO("connectionEstablised in loop %p on thread %d",loop_,CurrentThread::gettid());
     setState(kConnected);
-    //  延长channel生命周期 ？
+    //  防止channel执行回调时TcpConnection被析构
     channel_->tie(shared_from_this());
     // 给新建立的connfd 注册读事件到Poller
     channel_->enableReading();           

@@ -15,7 +15,6 @@ src/CMakeFiles/miniMuduo.dir/Acceptor.cpp.o: ../src/Acceptor.cpp
 src/CMakeFiles/miniMuduo.dir/Buffer.cpp.o: ../include/Buffer.h
 src/CMakeFiles/miniMuduo.dir/Buffer.cpp.o: ../include/Logger.h
 src/CMakeFiles/miniMuduo.dir/Buffer.cpp.o: ../include/noncopyable.h
-src/CMakeFiles/miniMuduo.dir/Buffer.cpp.o: ../include/public.h
 src/CMakeFiles/miniMuduo.dir/Buffer.cpp.o: ../src/Buffer.cpp
 
 src/CMakeFiles/miniMuduo.dir/Channel.cpp.o: ../include/Channel.h
@@ -24,7 +23,6 @@ src/CMakeFiles/miniMuduo.dir/Channel.cpp.o: ../include/EventLoop.h
 src/CMakeFiles/miniMuduo.dir/Channel.cpp.o: ../include/Logger.h
 src/CMakeFiles/miniMuduo.dir/Channel.cpp.o: ../include/Timestamp.h
 src/CMakeFiles/miniMuduo.dir/Channel.cpp.o: ../include/noncopyable.h
-src/CMakeFiles/miniMuduo.dir/Channel.cpp.o: ../include/public.h
 src/CMakeFiles/miniMuduo.dir/Channel.cpp.o: ../src/Channel.cpp
 
 src/CMakeFiles/miniMuduo.dir/CurrentThread.cpp.o: ../include/CurrentThread.h
@@ -38,7 +36,6 @@ src/CMakeFiles/miniMuduo.dir/EpollPoller.cpp.o: ../include/Logger.h
 src/CMakeFiles/miniMuduo.dir/EpollPoller.cpp.o: ../include/Poller.h
 src/CMakeFiles/miniMuduo.dir/EpollPoller.cpp.o: ../include/Timestamp.h
 src/CMakeFiles/miniMuduo.dir/EpollPoller.cpp.o: ../include/noncopyable.h
-src/CMakeFiles/miniMuduo.dir/EpollPoller.cpp.o: ../include/public.h
 src/CMakeFiles/miniMuduo.dir/EpollPoller.cpp.o: ../src/EpollPoller.cpp
 
 src/CMakeFiles/miniMuduo.dir/EventLoop.cpp.o: ../include/Channel.h
@@ -48,7 +45,6 @@ src/CMakeFiles/miniMuduo.dir/EventLoop.cpp.o: ../include/Logger.h
 src/CMakeFiles/miniMuduo.dir/EventLoop.cpp.o: ../include/Poller.h
 src/CMakeFiles/miniMuduo.dir/EventLoop.cpp.o: ../include/Timestamp.h
 src/CMakeFiles/miniMuduo.dir/EventLoop.cpp.o: ../include/noncopyable.h
-src/CMakeFiles/miniMuduo.dir/EventLoop.cpp.o: ../include/public.h
 src/CMakeFiles/miniMuduo.dir/EventLoop.cpp.o: ../src/EventLoop.cpp
 
 src/CMakeFiles/miniMuduo.dir/EventLoopThread.cpp.o: ../include/Channel.h
@@ -59,7 +55,6 @@ src/CMakeFiles/miniMuduo.dir/EventLoopThread.cpp.o: ../include/Logger.h
 src/CMakeFiles/miniMuduo.dir/EventLoopThread.cpp.o: ../include/Thread.h
 src/CMakeFiles/miniMuduo.dir/EventLoopThread.cpp.o: ../include/Timestamp.h
 src/CMakeFiles/miniMuduo.dir/EventLoopThread.cpp.o: ../include/noncopyable.h
-src/CMakeFiles/miniMuduo.dir/EventLoopThread.cpp.o: ../include/public.h
 src/CMakeFiles/miniMuduo.dir/EventLoopThread.cpp.o: ../src/EventLoopThread.cpp
 
 src/CMakeFiles/miniMuduo.dir/EventLoopThreadPool.cpp.o: ../include/EventLoopThread.h
@@ -67,7 +62,6 @@ src/CMakeFiles/miniMuduo.dir/EventLoopThreadPool.cpp.o: ../include/EventLoopThre
 src/CMakeFiles/miniMuduo.dir/EventLoopThreadPool.cpp.o: ../include/Logger.h
 src/CMakeFiles/miniMuduo.dir/EventLoopThreadPool.cpp.o: ../include/Thread.h
 src/CMakeFiles/miniMuduo.dir/EventLoopThreadPool.cpp.o: ../include/noncopyable.h
-src/CMakeFiles/miniMuduo.dir/EventLoopThreadPool.cpp.o: ../include/public.h
 src/CMakeFiles/miniMuduo.dir/EventLoopThreadPool.cpp.o: ../src/EventLoopThreadPool.cpp
 
 src/CMakeFiles/miniMuduo.dir/InetAddress.cpp.o: ../include/InetAddress.h
@@ -79,7 +73,6 @@ src/CMakeFiles/miniMuduo.dir/InetAddress.cpp.o: ../src/InetAddress.cpp
 src/CMakeFiles/miniMuduo.dir/Logger.cpp.o: ../include/Logger.h
 src/CMakeFiles/miniMuduo.dir/Logger.cpp.o: ../include/Timestamp.h
 src/CMakeFiles/miniMuduo.dir/Logger.cpp.o: ../include/noncopyable.h
-src/CMakeFiles/miniMuduo.dir/Logger.cpp.o: ../include/public.h
 src/CMakeFiles/miniMuduo.dir/Logger.cpp.o: ../src/Logger.cpp
 
 src/CMakeFiles/miniMuduo.dir/Poller.cpp.o: ../include/Channel.h
@@ -88,7 +81,6 @@ src/CMakeFiles/miniMuduo.dir/Poller.cpp.o: ../include/EventLoop.h
 src/CMakeFiles/miniMuduo.dir/Poller.cpp.o: ../include/Poller.h
 src/CMakeFiles/miniMuduo.dir/Poller.cpp.o: ../include/Timestamp.h
 src/CMakeFiles/miniMuduo.dir/Poller.cpp.o: ../include/noncopyable.h
-src/CMakeFiles/miniMuduo.dir/Poller.cpp.o: ../include/public.h
 src/CMakeFiles/miniMuduo.dir/Poller.cpp.o: ../src/Poller.cpp
 
 src/CMakeFiles/miniMuduo.dir/Socket.cpp.o: ../include/InetAddress.h
@@ -135,11 +127,9 @@ src/CMakeFiles/miniMuduo.dir/Thread.cpp.o: ../include/CurrentThread.h
 src/CMakeFiles/miniMuduo.dir/Thread.cpp.o: ../include/Logger.h
 src/CMakeFiles/miniMuduo.dir/Thread.cpp.o: ../include/Thread.h
 src/CMakeFiles/miniMuduo.dir/Thread.cpp.o: ../include/noncopyable.h
-src/CMakeFiles/miniMuduo.dir/Thread.cpp.o: ../include/public.h
 src/CMakeFiles/miniMuduo.dir/Thread.cpp.o: ../src/Thread.cpp
 
 src/CMakeFiles/miniMuduo.dir/Timestamp.cpp.o: ../include/Timestamp.h
-src/CMakeFiles/miniMuduo.dir/Timestamp.cpp.o: ../include/public.h
 src/CMakeFiles/miniMuduo.dir/Timestamp.cpp.o: ../src/Timestamp.cpp
 
 src/CMakeFiles/miniMuduo.dir/main.cpp.o: ../include/Acceptor.h
@@ -168,6 +158,5 @@ src/CMakeFiles/miniMuduo.dir/newDefaultPoller.cpp.o: ../include/EventLoop.h
 src/CMakeFiles/miniMuduo.dir/newDefaultPoller.cpp.o: ../include/Poller.h
 src/CMakeFiles/miniMuduo.dir/newDefaultPoller.cpp.o: ../include/Timestamp.h
 src/CMakeFiles/miniMuduo.dir/newDefaultPoller.cpp.o: ../include/noncopyable.h
-src/CMakeFiles/miniMuduo.dir/newDefaultPoller.cpp.o: ../include/public.h
 src/CMakeFiles/miniMuduo.dir/newDefaultPoller.cpp.o: ../src/newDefaultPoller.cpp
 

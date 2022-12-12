@@ -2,10 +2,10 @@
 #define MY_MUDUO_LOGGER_H
 
 #include"noncopyable.h"
-#include"public.h"
 #include<unordered_map>
 #include<cstdio>
-
+#include<string>
+using std::string;
 using std::unordered_map;
 
 enum LogLevel
@@ -30,7 +30,7 @@ enum LogLevel
            logger.setLogLevel(INFO); \
            logger.log(buf,header); \
         } while (0)
-        
+
 
 #define LOG_ERROR(logmsgFormat,...) \
         do \
@@ -85,7 +85,7 @@ public:
     static Logger& getInstance();
     //  set log level
     void setLogLevel(LogLevel);
-    //  do the log 
+    //  do the log
     void log(const string&,const string&);
 private:
     LogLevel logLevel_;

@@ -18,7 +18,7 @@ const int kPollerTimeMs = 10000;
 //  创建wakeupFd,用来notify唤醒subReactor处理新来的Channel
 int createEventfd()
 {
-    int evtfd = ::eventfd(0,EFD_NONBLOCK|EFD_CLOEXEC);  // ????EFD_NONBLOCK??
+    int evtfd = ::eventfd(0,EFD_NONBLOCK|EFD_CLOEXEC);  
     if(evtfd < 0)
     {
         LOG_FATAL("eventfd error:%d\n",errno);

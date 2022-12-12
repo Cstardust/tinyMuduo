@@ -2,8 +2,11 @@
 #include "Timestamp.h"
 #include <functional>
 #include <cstdio>
+#include<iostream>
 
 using std::function;
+using std::cout;
+using std::endl;
 
 Logger &Logger::getInstance()
 {

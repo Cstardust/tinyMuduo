@@ -3,7 +3,7 @@
 #include<cassert>
 
 //  user只需要自己编写当server接收到connection fd发送的数据时的动作
-//  以及当server接收到新连接时 除了要accept连接之外的动作。accept的相关动作都已经由miniMuduo中的accepto实现了。
+//  以及当server接收到新连接时 除了要accept连接之外的动作。accept的相关动作都已经由myMuduo中的acceptor实现了。
 class EchoServer
 {
 public:
@@ -71,9 +71,9 @@ int main()
     InetAddress addr(6667);
     EchoServer es(&loop,addr,"EchoServer");
     //  设置subloop/thread的数量
-    es.setSubThreadNum(3);
+    es.setSubThreadNum(0);
     //  开启server 开启监听 监听到的事件会通知给loop
     es.start();
-    //  mainLoop的循环需要由user开启。其实感觉也可以设置成由start开启。。不过可能user在这之前还需要做其他动作？？
+    //  mainLoop的循环需要由user开启。其实感觉也可以设置成由start开启。.
     loop.loop();
 }

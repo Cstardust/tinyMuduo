@@ -94,11 +94,10 @@ private:
     int revents_;     //  poller 实际监听到的事件
     int index_;
 
-    //  这个weak_ptr到底是引用谁？？？
-    std::weak_ptr<void> tie_; //  weak_ptr 解决shared_ptr循环引用 以及 多线程安全问题
-    bool tied_;               //  是否绑定了？话说绑定的到底是什么啊md
+    std::weak_ptr<void> tie_; //  weak_ptr : useful when owned to TcpConnection ,解决shared_ptr循环引用 以及 TcpConnection 被析构的安全问题
+    bool tied_;               //  own Acceptor or TcpConnection
 
-    //  因为Channel通道里面能够获知fd最终发生的具体的事件revents，所以它负责调用具体事件的回调操作
+    //  上层注册给Channel的callBack。注意这些callback的生命周期不由Channel维护，而是依赖于注册者的生命周期维护。
     ReadEventCallback readCallback_; //  读回调
     EventCallback writeCallback_;    //  写回调
     EventCallback closeCallback_;    //  连接关闭回调
