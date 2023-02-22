@@ -1,16 +1,21 @@
-cmake_minimum_required(VERSION 3.0)
-project(tinyMuduo)
+# gcc *.c -o CatServer -g -I include -l library
 
-# tinymuduo最终编译成.so动态库，设置动态库路径，放在根目录下的lib文件夹下
-set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+# cmake 版本
+cmake_minimum_required(VERSION 3.0)
+# 项目名称
+project(CatServer)
+
+# 配置最终可执行文件输出路径
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
 # 添加头文件路径
-include_directories(${PROJECT_SOURCE_DIR}/src)
-include_directories(${PROJECT_SOURCE_DIR}/src/base)
-include_directories(${PROJECT_SOURCE_DIR}/src/http)
+include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/include/db)
+include_directories(${PROJECT_SOURCE_DIR}/include/model)
+include_directories(${PROJECT_SOURCE_DIR}/thirdparty)
 
 # 配置编译选项
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11 -fPIC")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11 -Werror")
 
 
 # 配置编译选项 for asan

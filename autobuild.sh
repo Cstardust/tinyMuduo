@@ -19,20 +19,24 @@ cd `pwd`/build &&
 # 回到项目根目录
 cd ..
 
-# 头文件拷贝到usr/include/miniMuduo 
+# 头文件拷贝到usr/include/tinyMuduo 
 # .so 拷贝到 /usr/lib
-if [ ! -d /usr/include/miniMuduo ]; then
-    mkdir /usr/include/miniMuduo
+if [ ! -d /usr/include/tinyMuduo ]; then
+    mkdir /usr/include/tinyMuduo
 fi
 
-# 头文件拷贝到usr/include/miniMuduo 
-for header in `ls ./include/*.h`
+# 头文件拷贝到usr/include/tinyMuduo 
+for header in `ls ./src/base/*.h`
 do 
-    cp $header /usr/include/miniMuduo
+    cp $header /usr/include/tinyMuduo
+done
+
+for header in `ls ./src/http/*.h`
+do 
+    cp $header /usr/include/tinyMuduo
 done
 
 # .so 拷贝到 /usr/lib
-cp `pwd`/lib/libminiMuduo.so /usr/lib
-
+cp `pwd`/lib/libtinyMuduo.so /usr/lib
 
 ldconfig

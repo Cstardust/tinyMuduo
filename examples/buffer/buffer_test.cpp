@@ -1,5 +1,5 @@
-#include<miniMuduo/Buffer.h>
-#include<miniMuduo/Logger.h>
+#include<tinyMuduo/Buffer.h>
+#include<tinyMuduo/Logger.h>
 #include<unistd.h>
 #include<fcntl.h>
 #include<cstring>
@@ -10,7 +10,7 @@ int Open(string path,int flag)
     int fd = open(path.c_str(),O_RDONLY);
     if(fd==-1)
     {
-        LOG_INFO("errno = %d ; error = %s\n",errno,strerror(errno));
+        LOG_ERROR("errno = %d ; error = %s\n",errno,strerror(errno));
     }
     return fd;
 }
