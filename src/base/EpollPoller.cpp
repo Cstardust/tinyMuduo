@@ -92,7 +92,7 @@ void EpollPoller::update(int operation,Channel* channel)
     {
         if(operation == EPOLL_CTL_DEL)
         {
-            LOG_DEBUG("epoll_ctl del error %d\n",errno);
+            LOG_ERROR("epoll_ctl del error %d\n",errno);
             return ;
         }
         else
@@ -111,8 +111,10 @@ void EpollPoller::removeChannel(Channel *channel)
     
     //  从map表中删除fd-channel
     channels_.erase(fd);
-    
-    update(EPOLL_CTL_DEL,channel);
+    if(index == kAdded)     //  注意状态. 只有当前channel对应的事件注册在epoll上被监听. 才删epoll_ctl_del该channel
+    {
+        update(EPOLL_CTL_DEL,channel);
+    }
 }
 
 

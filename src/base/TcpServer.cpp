@@ -127,13 +127,13 @@ void TcpServer::removeConnection(const TcpConnectionPtr &conn)
 //  handleRead n = 0 -> handleClose - >removeConnection -> removeConnectionInLoop -> TcpConnection::connectionDestroyed
 void TcpServer::removeConnectionInLoop(const TcpConnectionPtr &conn)
 {
-    LOG_DEBUG("shared_ptr cnt %ld",conn.use_count());
+    // LOG_DEBUG("shared_ptr cnt %ld",conn.use_count());
     LOG_INFO("TcpServer::removeConnectionInLoop [%s] - connection %s",
              name_.c_str(), conn->name().c_str());
     //  tcpserver 从记录中删除该连接
     connections_.erase(conn->name());       //  tcpconnection use count -- 
 
-    LOG_DEBUG("after erase shared_ptr cnt %ld",conn.use_count());
+    // LOG_DEBUG("after erase shared_ptr cnt %ld",conn.use_count());
     //  将tcpconnection的生命周期 延迟到connectionDestroyed时刻
         //  参数绑定传智能指针！！而非裸指针！！不然会导致其提前析构！！
         //  **智能指针 可以作为成员函数隐含的this**
@@ -143,5 +143,5 @@ void TcpServer::removeConnectionInLoop(const TcpConnectionPtr &conn)
     //     std::bind(&TcpConnection::connectionDestroyed,conn));
     ioLoop->runInLoop(
         std::bind(&TcpConnection::connectionDestroyed,conn));
-    LOG_DEBUG("after removeConnectionInLoop");
+    // LOG_DEBUG("after removeConnectionInLoop");
 }

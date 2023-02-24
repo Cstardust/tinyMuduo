@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
   EventLoop loop;
   HttpServer hs(&loop, InetAddress(6667), "HttpServer");
   hs.setHttpCallback(respond);
-  hs.setSubThreadNum(2);
+  hs.setSubThreadNum(1);
   hs.start();
   loop.loop();
 }

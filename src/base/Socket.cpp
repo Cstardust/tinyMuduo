@@ -48,7 +48,7 @@ int Socket::accept(InetAddress *clietaddr)
     int connfd = ::accept4(fd_,(sockaddr*)&cliet_addr,&cliet_len,SOCK_CLOEXEC | SOCK_NONBLOCK);
     if(connfd == -1)
     {
-        LOG_FATAL("failed to accept the connection!\n");
+        LOG_ERROR("failed to accept the connection!\n");
     }
     clietaddr->setSockAddr(cliet_addr);
     return connfd;

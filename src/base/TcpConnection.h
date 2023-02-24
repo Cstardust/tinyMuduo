@@ -72,7 +72,7 @@ private:
 
     void setState(StateE s){state_ = s;}
 
-    EventLoop *loop_;                   //  这里可不是baseloop 因为TcpConnection是subloop 。即 subthread的 即 subreactor的处理连接connfd的loop
+    EventLoop *loop_;                   
     const std::string name_;
     std::atomic<int> state_;
     bool reading_;

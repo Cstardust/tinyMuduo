@@ -21,8 +21,8 @@ TcpConnection::TcpConnection(EventLoop *loop,
                              const InetAddress &peerAddr)
     : loop_(checkLoopNotNull(loop)),
       name_(name),
-      state_(0),
-      reading_(false),
+      state_(kConnecting),
+      reading_(true),
       socket_(new Socket(connfd)),
       channel_(new Channel(loop,connfd)),
       localAddr_(localAddr),
@@ -312,16 +312,18 @@ void TcpConnection::sendInLoop(const void *data,size_t len)
 }
 
 
-// 连接建立
+// 连接建立 eventloop 被 acceptor 通过 runinloop -> wakeupfd 唤醒,调用该connectionEstablished. 将该TCPConnection的
     //  调用之前TcpServer注册的 connectionCallback_ (即TcpServer::connectionCallback_ )  Tcp::connectionCallback其实也是user set的
     //  eventloop 会调用该callback
 void TcpConnection::connectionEstablished()
 {
     LOG_DEBUG("connectionEstablised in loop %p on thread %d",loop_,CurrentThread::gettid());
     setState(kConnected);
-    //  延长channel生命周期 ？
+    //  延长channel生命周期 
     channel_->tie(shared_from_this());
-    // 给新建立的connfd 注册读事件到Poller
+    //  给新建立的connfd 注册读事件到Poller
+    //  真正实现分发连接. 将该connfd的读写事件注册到本channel所属TCPConnection的loop的poller上(每个loop都有一个poller channel只要知道自己是哪个loop就能找到对应的poller.)
+    //  TCPConnectionPtr所属哪个loop,由Acceptor决定(TcpServer::newConnection).
     channel_->enableReading();           
 
     // 新连接建立，执行回调
