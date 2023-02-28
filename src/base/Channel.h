@@ -13,6 +13,7 @@
 #include "noncopyable.h"
 #include "Timestamp.h"
 
+class TcpConnection;
 class EventLoop; //  因为没有定义对象 所以只声明一下即可
 using std::function;
 
@@ -60,7 +61,7 @@ public:
     //  tie this channel to the owner object managed by shared_ptr
     //  prevent the owner object being destroyed in handleEvent;
     //  通过weak_ptr tie_
-    void tie(const std::shared_ptr<void> &);
+    void tie(const std::shared_ptr<TcpConnection> &);
 
     int fd() const { return fd_; }                  //  return 监听的fd
     int events() const { return events_; }          //  return fd注册到epoll的事件
@@ -94,9 +95,10 @@ private:
     int revents_;     //  poller 实际监听到的事件
     int index_;
 
-    //  这个weak_ptr到底是引用谁？？？
-    std::weak_ptr<void> tie_; //  weak_ptr 解决shared_ptr循环引用 以及 多线程安全问题
-    bool tied_;               //  是否绑定了？话说绑定的到底是什么啊md
+    //  没必要用void 都知道绑定的是TCPConnection了. 合理怀疑ChenShuo炫技
+    //  weak_ptr 绑定 TcpConnection 以防止其析构导致channel析构
+    std::weak_ptr<TcpConnection> tie_; //  weak_ptr 解决shared_ptr循环引用 以及 多线程安全问题
+    bool tied_;               
 
     //  因为Channel通道里面能够获知fd最终发生的具体的事件revents，所以它负责调用具体事件的回调操作
     ReadEventCallback readCallback_; //  读回调

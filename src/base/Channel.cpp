@@ -16,7 +16,7 @@ Channel::~Channel()
 {}
 
 
-void Channel::tie(const std::shared_ptr<void>& ptr)
+void Channel::tie(const std::shared_ptr<TcpConnection>& ptr)
 {
     tie_ = ptr;
     tied_ = true;
@@ -44,7 +44,7 @@ void Channel::handleEvent(const Timestamp& receiveTime)
     //  绑定了 && 没析构 handleEvent
     if(tied_)
     {
-        std::shared_ptr<void> guard = tie_.lock();
+        std::shared_ptr<TcpConnection> guard = tie_.lock();
         if(guard)
         {
             handlerEventWithGuard(receiveTime);
