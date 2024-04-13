@@ -1,12 +1,22 @@
-#ifndef _HTTP_SERVER_H
-#define _HTTP_SERVER_H
+#ifndef HTTP_SERVER_H
+#define HTTP_SERVER_H
 
-#include "TcpServer.h"
-#include "noncopyable.h"
-#include "Logger.h"
+// #include "TcpServer.h"
+// #include "noncopyable.h"
+// #include "Logger.h"
+// #include <string>
+// #include "HttpResponse.h"
+// #include "HttpRequest.h"
+
+#include<tinyMuduo/TcpServer.h>
+#include<tinyMuduo/noncopyable.h>
+#include<tinyMuduo/Logger.h>
 #include <string>
 #include "HttpResponse.h"
 #include "HttpRequest.h"
+
+using namespace httpparser;
+
 
 class HttpServer : noncopyable
 {

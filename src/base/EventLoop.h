@@ -84,7 +84,7 @@ private:
     Channel*   currentActiveChannel_;   //  for assert
     
     std::atomic<bool> callingPendingFunctors_;   //  loop_ is doPendingFunctor
-    std::vector<Functor> pendingFunctors_;      //  存储loop需要执行的所有回调操作  干嘛的？
+    std::vector<Functor> pendingFunctors_;      //  存储loop需要执行的所有回调操作  
     std::mutex mtx_;                            //  互斥锁 用来保护上面vector的线程安全操作
 };
 

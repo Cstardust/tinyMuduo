@@ -1,50 +1,87 @@
-#ifndef _HTTP_RESPONSE_H_
-#define _HTTP_RESPONSE_H_
+/*
+ * Copyright (C) Alex Nekipelov (alex@nekipelov.net)
+ * License: MIT
+ */
 
-#include "noncopyable.h"
-#include "Timestamp.h"
-#include "Buffer.h"
-#include <unordered_map>
+#ifndef HTTPPARSER_RESPONSE_H
+#define HTTPPARSER_RESPONSE_H
 
-class HttpResponse
+#include <string>
+#include <vector>
+#include <sstream>
+
+namespace httpparser
 {
-public:
-  //  status code
-  enum HttpStatusCode
-  {
-    kUnknown,
-    k200Ok = 200,               // ok
-    k301MovedPermanently = 301, // 资源被永久转移
-    k400BadRequest = 400,       // http request错误
-    k404NotFound = 404,         // not found
-    k505NotVersionSupported = 505   //  server不支持http request的http版本
-  };
 
-  explicit HttpResponse(bool close) : statusCode_(kUnknown), closeConnection_(close) {}
+struct HttpResponse {
+    HttpResponse(int vmax = 0, int vmin = 0, bool ka = false, int code = 0)
+        : versionMajor(vmax), versionMinor(vmin), keepAlive(ka), statusCode(code)
+    {}
+    
+    struct HeaderItem
+    {
+        std::string name;
+        std::string value;
+        HeaderItem(const std::string &k = "", const std::string &v = ""):
+            name(k), value(v) {}
+    };
 
-  void setStatusCode(HttpStatusCode code) { statusCode_ = code; }
+    //  status code
+    enum HttpStatusCode
+    {
+        kUnknown,
+        k200Ok = 200,               // ok
+        k301MovedPermanently = 301, // 资源被永久转移
+        k400BadRequest = 400,       // http request错误
+        k404NotFound = 404,         // not found
+        k505NotVersionSupported = 505   //  server不支持http request的http版本
+    };
 
-  void setStatusMessage(const string &message) { statusMessage_ = message; }
+    int versionMajor;
+    int versionMinor;
+    std::vector<HeaderItem> headers;
+    std::vector<char> content;
+    bool keepAlive;
+    
+    unsigned int statusCode;
+    std::string status;
 
-  void setCloseConnection(bool on) { closeConnection_ = on; }
+    void setContent(const std::string &str) {
+        content.assign(str.begin(), str.end());
+    }
 
-  bool closeConnection() const { return closeConnection_; }
+    void setStatusCode(HttpStatusCode code) {
+        statusCode = code;
+    }
 
-  void setContentType(const string &contentType) { addHeader("Content-Type", contentType); }
+    void setStatusMsg(const std::string &str) {
+        status = str;
+    }
 
-  void addHeader(const string &key, const string &value) { headers_[key] = value; }
+    void addHeader(const std::string k, const std::string v) {
+        headers.emplace_back(k, v);
+    }
 
-  void setBody(const string &body) { body_ = body; }
+    std::string inspect() const
+    {
+        std::stringstream stream;
+        stream << "HTTP/" << versionMajor << "." << versionMinor
+               << " " << statusCode << " " << status << "\r\n";
 
-  //  将HttpResponse序列化到Buffer中
-  void appendToBuffer(Buffer *output) const;  
-
-private:
-  HttpStatusCode statusCode_;                  // 状态行 statusCode
-  string statusMessage_;                       // 状态行 statusCode文字
-  std::unordered_map<string, string> headers_; // 首部行  
-  string body_;                                // 实体体
-  bool closeConnection_;                       // 是否关闭连接
+        for(std::vector<HttpResponse::HeaderItem>::const_iterator it = headers.begin();
+            it != headers.end(); ++it)
+        {
+            stream << it->name << ": " << it->value << "\r\n";
+        }
+        stream << "\r\n";
+        std::string data(content.begin(), content.end());
+        // stream << data << "\r\n";
+        stream << data;
+        return stream.str();
+    }
 };
 
-#endif
+} // namespace httpparser
+
+#endif // HTTPPARSER_RESPONSE_H
+

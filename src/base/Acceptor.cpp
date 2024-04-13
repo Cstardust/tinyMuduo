@@ -78,8 +78,6 @@ void Acceptor :: handleConnection(Timestamp)
             //  参数的传递问题
                 //  值拷贝： 简单 不出错
                 //  高效 ： 移动语义
-                    //  这里可以用Socket 然后移动语义转移给newConnectionCallback ?  说是可以确保资源安全释放？？
-                    //  那不会造成在移动的时候就调用了Socket的析构函数从而关闭了connfd吗？
             newConnectionCallback_(connfd,peerAddr,localAddr); //  轮询subloop 唤醒 分发当前新client的channel
         }
         else

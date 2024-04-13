@@ -62,13 +62,18 @@ private:
 };
 
 
-int main()
+int main(int argc,char *argvs[])
 {
+if(argc!=2)
+{
+	LOG_FATAL("usage : ./testEchoServer port");
+}
+uint16_t port = atoi(argvs[1]);
     LOG_INFO("main thread : %d\n",CurrentThread::gettid());
     //  在main thread创建的main loop。这个loop负责接收新连接
     //  user传入main loop
     EventLoop loop;
-    InetAddress addr(6667);
+    InetAddress addr(port);
     EchoServer es(&loop,addr,"EchoServer");
     //  设置subloop/thread的数量
     es.setSubThreadNum(3);

@@ -16,6 +16,8 @@ Channel::~Channel()
 {}
 
 
+//  只有owner是TCPConnection才需要tie_
+//  channel的owner为Acceptor则不需要tie_
 void Channel::tie(const std::shared_ptr<TcpConnection>& ptr)
 {
     tie_ = ptr;
@@ -41,7 +43,7 @@ void Channel::remove()
 //  Channel的核心
 void Channel::handleEvent(const Timestamp& receiveTime)
 {
-    //  绑定了 && 没析构 handleEvent
+    //  owner is TCPConnection , needs to lock. 防止handleEvent导致TCPConnection析构
     if(tied_)
     {
         std::shared_ptr<TcpConnection> guard = tie_.lock();
@@ -50,7 +52,7 @@ void Channel::handleEvent(const Timestamp& receiveTime)
             handlerEventWithGuard(receiveTime);
         }
     }
-    //  没绑定 handleEvent
+    //  owner is Acceptor , 不必lock shared。因为不会析构
     else
     {
         handlerEventWithGuard(receiveTime);

@@ -52,7 +52,7 @@ void TcpConnection::handleRead(Timestamp receiveTime)
     //  将fd中可读的数据 读到inputBuffer中
     ssize_t n = inputBuffer_.readFd(channel_->fd(),&savedErrno);
 
-    LOG_DEBUG("handle read %lu bytes",n);
+    LOG_INFO("handle read %lu bytes",n);
     if(n>0)
     {
         if(messageCallback_)
@@ -83,7 +83,7 @@ void TcpConnection::handleRead(Timestamp receiveTime)
 //  outputBuffer中有未发送数据 且 tcp socket的写缓冲区可写的时候 loop会执行这个call back
 void TcpConnection::handleWrite()
 {
-    LOG_DEBUG("fd = %d , outputBuffer data size = %ld ",channel_->fd(),outputBuffer_.readableBytes());
+    LOG_INFO("fd = %d , outputBuffer data size = %ld ",channel_->fd(),outputBuffer_.readableBytes());
     //  channel_ 封装的fd 有注册在epoll上的writing事件
     if(channel_->isWriting())
     {
@@ -138,12 +138,10 @@ void TcpConnection::handleWrite()
 }
 
 
-//  我应该是写错了什么地方 不然不可能析构。。下午/晚上再排查吧。。
-    //  破案了 传参的时候传错了。应当传shared_ptr 而非裸指针
 //  poller ->  channel::closeCallback -> TcpConnection::handleClose -> TcpServer::removeConnection -> TcpConnection::connectionDestoyed
 void TcpConnection::handleClose()
 {
-    LOG_DEBUG("TcpConnection::handleClose fd = %d state = %d\n",socket_->fd(),state_.load());
+    LOG_INFO("TcpConnection::handleClose fd = %d state = %d\n",socket_->fd(),state_.load());
 
     //  调用handleClose的情况
         //  写端 读端都没关闭 kConnected : 调用handleClose 
@@ -193,7 +191,7 @@ void TcpConnection::send(const std::string &buf)
 {
     int n = buf.size();
     const char *str = buf.c_str();
-    LOG_DEBUG("test send %d : %s",n,str);
+    LOG_INFO("test send %d : %s",n,str);
     if(state_ == kConnected)
     {
         //  sendInLoop
@@ -221,8 +219,9 @@ void TcpConnection::send(const std::string &buf)
     需要把待发送的数据写入缓冲区
     而且设置了水位回调
 */
-void TcpConnection::sendInLoop(const void *data,size_t len)
+void TcpConnection::sendInLoop(const void *data, size_t len)
 {
+    LOG_DEBUG("sendInLoop, len = %ld", len);
     ssize_t nwrote = 0;
     size_t remaning = len;
     bool faultError = false;
@@ -238,10 +237,10 @@ void TcpConnection::sendInLoop(const void *data,size_t len)
         //  表示channel上并没有写事件被监听，而且缓冲区没有待发送数据
     if(!channel_->isWriting() && outputBuffer_.readableBytes()==0)
     {
-        LOG_DEBUG("直接将data发送 , 而不是先送入outputBuffer");
+        LOG_INFO("直接将data发送 , 而不是先送入outputBuffer");
         //  output queue中没有待发送数据 因此 直接将data写给fd
         nwrote = ::write(channel_->fd(),data,len);
-        LOG_DEBUG("nwrote = %ld",nwrote);
+        LOG_INFO("nwrote = %ld",nwrote);
         if(nwrote >= 0)
         {
             //  是否将data都发送完
@@ -287,7 +286,7 @@ void TcpConnection::sendInLoop(const void *data,size_t len)
     //  也就是TcpConnection::handleWrite方法 把发送缓冲区的数据全部发送完成为止
     if(!faultError && remaning > 0)
     {
-        LOG_DEBUG("data没能全部发送走 因此将剩余的data放入outputBuffer");
+        LOG_INFO("data没能全部发送走 因此将剩余的data放入outputBuffer");
         //  目前发送缓冲区剩余的待发送数据的长度
         size_t oldlen = outputBuffer_.readableBytes();
         if(oldlen + remaning >= highWaterMark_
@@ -320,7 +319,7 @@ void TcpConnection::connectionEstablished()
     LOG_DEBUG("connectionEstablised in loop %p on thread %d",loop_,CurrentThread::gettid());
     setState(kConnected);
     //  延长channel生命周期 
-    channel_->tie(shared_from_this());
+    channel_->tie(shared_from_this());          //  owner is TCPConnection
     //  给新建立的connfd 注册读事件到Poller
     //  真正实现分发连接. 将该connfd的读写事件注册到本channel所属TCPConnection的loop的poller上(每个loop都有一个poller channel只要知道自己是哪个loop就能找到对应的poller.)
     //  TCPConnectionPtr所属哪个loop,由Acceptor决定(TcpServer::newConnection).
@@ -357,7 +356,7 @@ void TcpConnection::connectionDestroyed()
 }
 
 
-//  关闭连接
+//  关闭连接(Server 发送完数据,关闭写端)
 void TcpConnection::shutdown()
 {
     LOG_DEBUG("shutdown in thread %d",CurrentThread::gettid());

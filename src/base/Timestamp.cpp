@@ -1,7 +1,7 @@
 #include"Timestamp.h"
 
 
-Timestamp::Timestamp(int64_t s /* =0 */):mircoSecondsSinceEpoch_(s){}
+Timestamp::Timestamp(int64_t s /* =0 */):microSecondsSinceEpoch_(s){}
 
 Timestamp Timestamp::now()
 {
@@ -10,7 +10,7 @@ Timestamp Timestamp::now()
 
 string Timestamp::toString() const
 {
-    tm *t = localtime(&mircoSecondsSinceEpoch_);
+    tm *t = localtime(&microSecondsSinceEpoch_);
     char buf[512];
     sprintf(buf,
             "%04d-%02d-%02d-%02d-%02d-%02d", 

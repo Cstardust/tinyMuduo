@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inference Web Page</title>
+    <style>
+        /* 样式用于拖放区域 */
+        #dropArea {
+            width: 300px;
+            height: 200px;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 200px;
+            font-size: 20px; /* 设置字体大小 */
+            margin-bottom: 20px;
+        }
+        /* 高亮显示拖放区域 */
+        #dropArea.highlight {
+            background-color: #f0f0f0;
+        }
+        /* 可滚动区域的样式 */
+        #dataDisplay {
+            width: 400px;
+            height: 300px; /* 设置高度 */
+            overflow: auto; /* 设置为可滚动 */
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Deep Learning Inference Web Page</h1>
+
+    <!-- 拖放区域 -->
+    <div id="dropArea" ondragover="handleDragOver(event)" ondrop="handleFileDrop(event)">
+        <span style="font-size: 16px;">Drag and drop your Conll file here</span> <!-- 修改字体大小 -->
+    </div>
+    
+    <!-- Inference按钮 -->
+    <button id="inferenceButton">Inference</button>
+
+    <!-- 展示后端返回数据的区域 -->
+    <div id="dataDisplay"></div>
+
+    <script>
+        // 存储文件内容的全局变量
+        var fileContent = "";
+
+        // 处理拖放事件 - 鼠标悬停在拖放区域上方
+        function handleDragOver(event) {
+            event.preventDefault(); // 阻止浏览器默认行为
+            event.dataTransfer.dropEffect = "copy"; // 设置拖放操作为复制
+            document.getElementById("dropArea").classList.add("highlight"); // 添加高亮样式类
+        }
+
+        // 处理文件拖放事件 - 文件被拖放到拖放区域内
+        function handleFileDrop(event) {
+            event.preventDefault(); // 阻止浏览器默认行为
+            document.getElementById("dropArea").classList.remove("highlight"); // 移除高亮样式类
+
+            var files = event.dataTransfer.files; // 获取拖放的文件列表
+            // 清空文件内容
+            fileContent = "";
+            if (files.length > 0) {
+                var file = files[0]; // 获取第一个文件
+                var reader = new FileReader(); // 创建FileReader对象用于读取文件内容
+                reader.onload = function(e) {
+                    fileContent = e.target.result; // 将文件内容存储在全局变量中
+                    // 在这里可以处理文件内容，比如上传到后端
+                    console.log("File content:", fileContent); // 输出文件内容到控制台
+                    alert("File uploaded successfully!"); // 提示文件上传成功
+                };
+                reader.readAsText(file); // 以文本格式读取文件内容
+            }
+        }
+
+        // Inference按钮点击事件处理
+        document.getElementById("inferenceButton").addEventListener("click", function() {
+            // 设置后端服务的IP地址和端口
+            const backendIP = "127.0.0.1";
+            const backendPort = "7000";
+
+            // 构造请求的URL
+            const url = `http://${backendIP}:${backendPort}/inference`;
+            console.log('upload content', fileContent)
+            // 发送POST请求到后端，包含文件内容作为数据
+            fetch(url, {
+                method: 'POST',
+                body: fileContent,
+                headers: {
+                    'Content-Type': 'conll',
+                    'Id': '456123'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                console.log(response.headers.get("Access-Control-Allow-Origin")); 
+                console.log(response.headers.get("Access-Control-Allow-Methods"));
+                console.log(response.headers.get("Content-Type"));
+                return response.text();
+            })
+            .then(data => {
+                console.log("++++++++++++++++++");
+                console.log(data);
+                // displayData(data); // 调用函数将数据显示在页面上
+                // 将响应文本按照换行符分割成行，并用 <br> 标签表示换行
+                const lines = data.split('\n');
+                const formattedData = lines.map(line => {
+                    return line.trim(); // 去除每行前后的空白字符
+                }).join('<br>'); // 用 <br> 标签连接每行
+                displayData(formattedData); 
+                alert("Inference result received successfully!"); // 提示推理结果接收成功
+            })
+            .catch(error => {
+                console.error('There was a problem with your fetch operation:', error);
+                alert("Failed to receive inference result. Please check the backend server."); // 提示推理结果接收失败
+            });
+
+
+        });
+
+        // 将后端返回的数据显示在页面上
+        function displayData(data) {
+            var dataDisplay = document.getElementById("dataDisplay");
+            dataDisplay.innerHTML = JSON.stringify(data, null, 2); // 格式化并显示数据
+        }
+    </script>
+</body>
+</html>

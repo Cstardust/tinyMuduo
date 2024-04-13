@@ -27,6 +27,7 @@ int setnonblocking(int fd);
 
 void lt(epoll_event *events,int num,int epfd,int lfd)
 {
+    cout<<"lt"<<endl;
     char buf[BUFFER_SIZE]={0};
     for(int i=0;i<num;++i)
     {
@@ -50,15 +51,21 @@ void lt(epoll_event *events,int num,int epfd,int lfd)
         {
             //  5.1 read
             //  只要socket读缓存中还有没读出的数据，这段代码就被触发。
-            cout<<"event trigger once\n"<<endl;
+            cout<<"event trigger once " << fd << " \n"<<endl;
             memset(buf,0,BUFFER_SIZE);
             int len = read(fd,buf,BUFFER_SIZE-1);   //  留一个位置server自己放0 因为我们需要打印 且 因为对方不一定发送\0作为结尾。lt模式下，只读一次，就不需要fd一定non blocking了。反正就读一次，EPOLLIN发生了就一定有数据，read就一定会返回。但是et模式下就不行，因为et模式必须一次循环读完所有数据，必然会遇到读尽数据的情况，如果fd是blocking的话，那么必然会阻塞在那里。
-            if(len <= 0)                            
+            cout<<"get "<<len<<" byte of content "<<buf<<endl;
+
+            //  close(fd) 注释掉，此时应当是busyloop. 故lt意味着 该关闭事件会一直触发。直到user自己取消对其监听. 
+            //  已验证 ok
+            if(len <= 0)
             {
-                close(fd);
+                // 关闭fd读端或者将其从eventpoll上拿下来，都会使得epoll不再监听该fd读事件
+                epoll_ctl(epfd,EPOLL_CTL_DEL,fd,nullptr);
+                shutdown(fd,SHUT_RD);
+                shutdown(fd,SHUT_WR);
                 continue;
             }
-            cout<<"get "<<len<<" byte of content "<<buf<<endl;
         }
         else
         {
@@ -153,20 +160,22 @@ int main(int argc,char *argv[])
     assert(epfd!=-1);
     epoll_event events[MAX_EVENT_NUMBER];   
     //  4.1.1 epoll_ctl 监听listening fd 以接收client connection
+    //  listening fd et。 
     addfd(epfd,lfd,true);
 
     while(1)
     {
         //  4.2 epoll_wait
         int events_num = epoll_wait(epfd,events,MAX_EVENT_NUMBER,-1);
+        cout<<"ssa"<<endl;
         if(events_num == -1) 
         {
             printf("epoll failure\n");
             break;
         }
         //  deal with events monitored
-        // lt(events,events_num,epfd,lfd);
-        et(events,events_num,epfd,lfd);
+        lt(events,events_num,epfd,lfd);
+        // et(events,events_num,epfd,lfd);
     }    
 
     close(lfd);
@@ -198,7 +207,7 @@ void addfd(int epfd,int fd,bool is_et)
     {
         event.events |= EPOLLET;
     }
-    setnonblocking(fd);
+    // setnonblocking(fd);
     epoll_ctl(epfd,EPOLL_CTL_ADD,fd,&event);
     //  将要监听的fd的event事件注册到epfd的事件表上
 }
