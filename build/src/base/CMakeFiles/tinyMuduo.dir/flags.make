@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DtinyMuduo_EXPORTS
 
-CXX_INCLUDES = -I/mnt/workspace/Muduo/src -I/mnt/workspace/Muduo/src/base -I/mnt/workspace/Muduo/src/http
+CXX_INCLUDES = -I/root/Server/tinyMuduo/src -I/root/Server/tinyMuduo/src/base -I/root/Server/tinyMuduo/src/http
 
 CXX_FLAGS =  -g -std=c++11 -fPIC -fPIC
 

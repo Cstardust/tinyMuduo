@@ -1,4 +1,4 @@
-# Install script for directory: /mnt/workspace/Muduo/src
+# Install script for directory: /root/Server/tinyMuduo/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -44,7 +44,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/mnt/workspace/Muduo/build/src/base/cmake_install.cmake")
+  include("/root/Server/tinyMuduo/build/src/base/cmake_install.cmake")
 
 endif()
 

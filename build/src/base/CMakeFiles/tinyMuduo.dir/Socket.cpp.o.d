@@ -1,5 +1,5 @@
 src/base/CMakeFiles/tinyMuduo.dir/Socket.cpp.o: \
- /mnt/workspace/Muduo/src/base/Socket.cpp /usr/include/stdc-predef.h \
+ /root/Server/tinyMuduo/src/base/Socket.cpp /usr/include/stdc-predef.h \
  /usr/include/arpa/inet.h /usr/include/features.h \
  /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -68,10 +68,11 @@ src/base/CMakeFiles/tinyMuduo.dir/Socket.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
  /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
- /usr/include/linux/close_range.h /mnt/workspace/Muduo/src/base/Socket.h \
- /mnt/workspace/Muduo/src/base/noncopyable.h \
- /mnt/workspace/Muduo/src/base/InetAddress.h \
- /mnt/workspace/Muduo/src/base/public.h /usr/include/c++/11/iostream \
+ /usr/include/linux/close_range.h \
+ /root/Server/tinyMuduo/src/base/Socket.h \
+ /root/Server/tinyMuduo/src/base/noncopyable.h \
+ /root/Server/tinyMuduo/src/base/InetAddress.h \
+ /root/Server/tinyMuduo/src/base/public.h /usr/include/c++/11/iostream \
  /usr/include/c++/11/ostream /usr/include/c++/11/ios \
  /usr/include/c++/11/iosfwd /usr/include/c++/11/bits/stringfwd.h \
  /usr/include/c++/11/bits/memoryfwd.h /usr/include/c++/11/bits/postypes.h \
@@ -174,7 +175,8 @@ src/base/CMakeFiles/tinyMuduo.dir/Socket.cpp.o: \
  /usr/include/c++/11/bits/basic_ios.tcc \
  /usr/include/c++/11/bits/ostream.tcc /usr/include/c++/11/istream \
  /usr/include/c++/11/bits/istream.tcc \
- /mnt/workspace/Muduo/src/base/Logger.h /usr/include/c++/11/unordered_map \
+ /root/Server/tinyMuduo/src/base/Logger.h \
+ /usr/include/c++/11/unordered_map \
  /usr/include/c++/11/ext/aligned_buffer.h \
  /usr/include/c++/11/bits/hashtable.h \
  /usr/include/c++/11/bits/hashtable_policy.h /usr/include/c++/11/tuple \

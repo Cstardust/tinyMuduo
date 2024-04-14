@@ -1,9 +1,9 @@
 src/base/CMakeFiles/tinyMuduo.dir/EventLoopThread.cpp.o: \
- /mnt/workspace/Muduo/src/base/EventLoopThread.cpp \
+ /root/Server/tinyMuduo/src/base/EventLoopThread.cpp \
  /usr/include/stdc-predef.h \
- /mnt/workspace/Muduo/src/base/EventLoopThread.h \
- /mnt/workspace/Muduo/src/base/noncopyable.h \
- /mnt/workspace/Muduo/src/base/Thread.h /usr/include/c++/11/thread \
+ /root/Server/tinyMuduo/src/base/EventLoopThread.h \
+ /root/Server/tinyMuduo/src/base/noncopyable.h \
+ /root/Server/tinyMuduo/src/base/Thread.h /usr/include/c++/11/thread \
  /usr/include/c++/11/bits/std_thread.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -158,11 +158,11 @@ src/base/CMakeFiles/tinyMuduo.dir/EventLoopThread.cpp.o: \
  /usr/include/c++/11/stdexcept /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h \
  /usr/include/c++/11/condition_variable \
- /mnt/workspace/Muduo/src/base/EventLoop.h /usr/include/c++/11/vector \
+ /root/Server/tinyMuduo/src/base/EventLoop.h /usr/include/c++/11/vector \
  /usr/include/c++/11/bits/stl_vector.h \
  /usr/include/c++/11/bits/stl_bvector.h \
  /usr/include/c++/11/bits/vector.tcc \
- /mnt/workspace/Muduo/src/base/CurrentThread.h /usr/include/unistd.h \
+ /root/Server/tinyMuduo/src/base/CurrentThread.h /usr/include/unistd.h \
  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h \
@@ -174,8 +174,8 @@ src/base/CMakeFiles/tinyMuduo.dir/EventLoopThread.cpp.o: \
  /usr/include/x86_64-linux-gnu/asm/unistd.h \
  /usr/include/x86_64-linux-gnu/asm/unistd_64.h \
  /usr/include/x86_64-linux-gnu/bits/syscall.h \
- /mnt/workspace/Muduo/src/base/Timestamp.h \
- /mnt/workspace/Muduo/src/base/public.h /usr/include/c++/11/iostream \
+ /root/Server/tinyMuduo/src/base/Timestamp.h \
+ /root/Server/tinyMuduo/src/base/public.h /usr/include/c++/11/iostream \
  /usr/include/c++/11/ostream /usr/include/c++/11/ios \
  /usr/include/c++/11/bits/ios_base.h \
  /usr/include/c++/11/bits/locale_classes.h \
@@ -191,15 +191,15 @@ src/base/CMakeFiles/tinyMuduo.dir/EventLoopThread.cpp.o: \
  /usr/include/c++/11/bits/basic_ios.tcc \
  /usr/include/c++/11/bits/ostream.tcc /usr/include/c++/11/istream \
  /usr/include/c++/11/bits/istream.tcc \
- /mnt/workspace/Muduo/src/base/Logger.h /usr/include/c++/11/unordered_map \
- /usr/include/c++/11/bits/hashtable.h \
+ /root/Server/tinyMuduo/src/base/Logger.h \
+ /usr/include/c++/11/unordered_map /usr/include/c++/11/bits/hashtable.h \
  /usr/include/c++/11/bits/hashtable_policy.h \
  /usr/include/c++/11/bits/enable_special_members.h \
  /usr/include/c++/11/bits/unordered_map.h \
  /usr/include/c++/11/bits/erase_if.h \
  /usr/include/x86_64-linux-gnu/sys/timerfd.h \
  /usr/include/x86_64-linux-gnu/bits/timerfd.h \
- /mnt/workspace/Muduo/src/base/Channel.h \
+ /root/Server/tinyMuduo/src/base/Channel.h \
  /usr/include/x86_64-linux-gnu/sys/epoll.h \
  /usr/include/x86_64-linux-gnu/bits/epoll.h /usr/include/c++/11/cstring \
  /usr/include/string.h /usr/include/strings.h

@@ -124,7 +124,8 @@ int main(int argc, char* argv[])
 {
   sourceLoad();
   EventLoop loop;
-  HttpServer hs(&loop, InetAddress(7000), "HttpServer");
+  LOG_INFO("listening on port %d", 7000);
+  HttpServer hs(&loop, InetAddress(7000, "172.18.32.173"), "HttpServer");
   hs.setHttpCallback(respond);
   hs.setSubThreadNum(1);
   hs.start();

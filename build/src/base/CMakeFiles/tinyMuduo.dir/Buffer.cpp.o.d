@@ -1,6 +1,6 @@
 src/base/CMakeFiles/tinyMuduo.dir/Buffer.cpp.o: \
- /mnt/workspace/Muduo/src/base/Buffer.cpp /usr/include/stdc-predef.h \
- /mnt/workspace/Muduo/src/base/Buffer.h /usr/include/c++/11/vector \
+ /root/Server/tinyMuduo/src/base/Buffer.cpp /usr/include/stdc-predef.h \
+ /root/Server/tinyMuduo/src/base/Buffer.h /usr/include/c++/11/vector \
  /usr/include/c++/11/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -136,9 +136,9 @@ src/base/CMakeFiles/tinyMuduo.dir/Buffer.cpp.o: \
  /usr/include/c++/11/bits/stl_heap.h \
  /usr/include/c++/11/bits/stl_tempbuf.h \
  /usr/include/c++/11/bits/uniform_int_dist.h \
- /mnt/workspace/Muduo/src/base/Logger.h \
- /mnt/workspace/Muduo/src/base/noncopyable.h \
- /mnt/workspace/Muduo/src/base/public.h /usr/include/c++/11/iostream \
+ /root/Server/tinyMuduo/src/base/Logger.h \
+ /root/Server/tinyMuduo/src/base/noncopyable.h \
+ /root/Server/tinyMuduo/src/base/public.h /usr/include/c++/11/iostream \
  /usr/include/c++/11/ostream /usr/include/c++/11/ios \
  /usr/include/c++/11/exception /usr/include/c++/11/bits/exception_ptr.h \
  /usr/include/c++/11/bits/cxxabi_init_exception.h \

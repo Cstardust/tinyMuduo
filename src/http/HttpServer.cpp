@@ -41,6 +41,8 @@ void HttpServer::onConnection(const TcpConnectionPtr& conn)
     }
 }
 
+static std::vector<HttpRequest> inc_buf;
+
 // 有消息到来时的业务处理
 void HttpServer::onMessage(const TcpConnectionPtr& conn,
                            Buffer* buf,
@@ -49,14 +51,48 @@ void HttpServer::onMessage(const TcpConnectionPtr& conn,
     HttpRequest req;
     HttpRequestParser parser;
     string text = buf->retrieveAllAsString();
-    HttpRequestParser::ParseResult res = parser.parse(req, text.c_str(), text.c_str() + text.size());
+    //if(text.size() > 2 && text[text.size() - 1] == '\n' && text[text.size() - 2 == '\n']) {
+    //	LOG_INFO("2 n, pop_back 1");
+//	    text.pop_back();
+//    }
+    LOG_INFO("DEBUG receive request %s", text.c_str());
+    
+    HttpRequestParser::ParseResult res = HttpRequestParser::ParsingError;
+    
+    if (inc_buf.size() == 0) {
+	LOG_INFO("no old req");
+    	parser.parse(req, text.c_str(), text.c_str() + text.size());
+    } else {
+	LOG_INFO("%ld old req", inc_buf.size());
+	req = inc_buf.back();
+	inc_buf.pop_back();
+	req.content.assign(text.begin(), text.end());
+    	res = HttpRequestParser::ParsingCompleted;
+    }
+
     if( res == HttpRequestParser::ParsingCompleted )
     {
         LOG_INFO ("parseRequest success!");
         onRequest(conn, req);
     }
+    else if (res == HttpRequestParser::ParsingIncompleted)
+    {
+	LOG_INFO("Parsing InCompeted!");
+	        conn->send("HTTP/1.1 400 Bad Request\r\n\r\n");
+        conn->shutdown();
+    }
     else
     {
+	LOG_INFO("req method %s, content size %ld", req.method.c_str(), req.content.size());
+	if(req.method == "POST" && req.content.size() == 0) {
+		LOG_INFO("wait for the next data");
+		inc_buf.push_back(req);
+		return ;
+	} else if (req.method == "GET" && ( req.uri == "/inference" || req.uri == "/favicon.ico")) {
+		LOG_INFO("passed get");
+		onRequest(conn, req);
+		return ;
+	}
         LOG_ERROR ("parseRequest failed due to invalid http request");
         conn->send("HTTP/1.1 400 Bad Request\r\n\r\n");
         conn->shutdown();
