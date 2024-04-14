@@ -8,8 +8,8 @@
 // #include "HttpResponse.h"
 // #include "HttpRequest.h"
 
-#include "tinyMuduo/TcpServer.h"
-#include "tinyMuduo/noncopyable.h"
+#include "TcpServer.h"
+#include "noncopyable.h"
 #include "Logger.h"
 #include <string>
 #include "HttpResponse.h"
