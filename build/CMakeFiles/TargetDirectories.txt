@@ -1,7 +1,7 @@
-/home/shc/Muduo/build/CMakeFiles/rebuild_cache.dir
-/home/shc/Muduo/build/CMakeFiles/edit_cache.dir
-/home/shc/Muduo/build/src/CMakeFiles/rebuild_cache.dir
-/home/shc/Muduo/build/src/CMakeFiles/edit_cache.dir
-/home/shc/Muduo/build/src/base/CMakeFiles/rebuild_cache.dir
-/home/shc/Muduo/build/src/base/CMakeFiles/edit_cache.dir
-/home/shc/Muduo/build/src/base/CMakeFiles/tinyMuduo.dir
+/mnt/workspace/Muduo/build/CMakeFiles/edit_cache.dir
+/mnt/workspace/Muduo/build/CMakeFiles/rebuild_cache.dir
+/mnt/workspace/Muduo/build/src/CMakeFiles/edit_cache.dir
+/mnt/workspace/Muduo/build/src/CMakeFiles/rebuild_cache.dir
+/mnt/workspace/Muduo/build/src/base/CMakeFiles/tinyMuduo.dir
+/mnt/workspace/Muduo/build/src/base/CMakeFiles/edit_cache.dir
+/mnt/workspace/Muduo/build/src/base/CMakeFiles/rebuild_cache.dir

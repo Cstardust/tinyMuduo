@@ -117,7 +117,7 @@ void respond(const HttpRequest& req, HttpResponse* resp)
 static void sourceLoad() 
 {
   pages["/inference"] = retriveFileAsString(WEB_BASE_DIR + "index.html");
-  pages["/favicon.ico"] = retriveFileAsString(WEB_BASE_DIR + "./web/ico/favicon.ico");
+  pages["/favicon.ico"] = retriveFileAsString(WEB_BASE_DIR + "ico/favicon.ico");
 }
 
 int main(int argc, char* argv[])
