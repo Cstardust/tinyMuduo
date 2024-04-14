@@ -66,8 +66,12 @@ void HttpServer::onMessage(const TcpConnectionPtr& conn,
 	LOG_INFO("%ld old req", inc_buf.size());
 	req = inc_buf.back();
 	inc_buf.pop_back();
-	req.content.assign(text.begin(), text.end());
-    	res = HttpRequestParser::ParsingCompleted;
+	// req.content.assign(text.begin(), text.end());
+	req.content.insert(req.content.end(), text.begin(), text.end());
+	// body接收完毕
+	if(req.content.size() >= req.contentLen) {
+    	  res = HttpRequestParser::ParsingCompleted;
+	}
     }
 
     if( res == HttpRequestParser::ParsingCompleted )
@@ -83,8 +87,8 @@ void HttpServer::onMessage(const TcpConnectionPtr& conn,
     }
     else
     {
-	LOG_INFO("req method %s, content size %ld", req.method.c_str(), req.content.size());
-	if(req.method == "POST" && req.content.size() == 0) {
+	LOG_INFO("req method %s, content size %ld, contentLen %ld", req.method.c_str(), req.content.size(), req.contentLen);
+	if(req.method == "POST" && req.content.size() < req.contentLen) {
 		LOG_INFO("wait for the next data");
 		inc_buf.push_back(req);
 		return ;

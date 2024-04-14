@@ -294,7 +294,7 @@ private:
                     if( strcasecmp(h.name.c_str(), "Content-Length") == 0 )
                     {
                         contentSize = atoi(h.value.c_str());
-                        resp.content.reserve( contentSize );
+			resp.content.reserve( contentSize );
                     }
                     else if( strcasecmp(h.name.c_str(), "Transfer-Encoding") == 0 )
                     {

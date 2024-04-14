@@ -14,7 +14,7 @@ namespace httpparser
 {
 
 struct HttpResponse {
-    HttpResponse(int vmax = 0, int vmin = 0, bool ka = false, int code = 0)
+    HttpResponse(int vmax = 0, int vmin = 0, bool ka = false, int code = 0, size_t len = 0)
         : versionMajor(vmax), versionMinor(vmin), keepAlive(ka), statusCode(code)
     {}
     
@@ -42,7 +42,6 @@ struct HttpResponse {
     std::vector<HeaderItem> headers;
     std::vector<char> content;
     bool keepAlive;
-    
     unsigned int statusCode;
     std::string status;
 

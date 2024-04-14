@@ -15,7 +15,7 @@ namespace httpparser
 
 struct HttpRequest {
     HttpRequest()
-        : versionMajor(0), versionMinor(0), keepAlive(false)
+        : versionMajor(0), versionMinor(0), keepAlive(false), contentLen(0)
     {}
     
     struct HeaderItem
@@ -31,6 +31,11 @@ struct HttpRequest {
     std::vector<HeaderItem> headers;    // 可以优化成unordered_map
     std::vector<char> content;
     bool keepAlive;
+    size_t contentLen;
+
+    void setContentLen(size_t len) {
+    	contentLen = len;
+    }
 
     std::string operator[](const std::string &field) const 
     {

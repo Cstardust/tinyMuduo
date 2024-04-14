@@ -45,7 +45,7 @@ static std::string pasringDialog(const std::string id, const std::string &dialog
   // prepare args
   std::string dfn(DATA_BASE_DIR + "/usr-data-" + id + ".conll"); 
   saveStringToFile(dfn, dialog);  // 保存用户提交的语料. 便于后续扩展功能. id为get返回的.
-  std::string rfn(DATA_BASE_DIR + "user-res-" + id + ".log"); // 保存用户推理的结果. 便于后续扩展功能, 如历史记录等. 
+  std::string rfn(DATA_BASE_DIR + "usr-res-" + id + ".log"); // 保存用户推理的结果. 便于后续扩展功能, 如历史记录等. 
   std::vector<std::string> args(config_args);
   args.push_back("--format"); args.push_back(type);
   args.push_back("--data_file"); args.push_back(dfn);
