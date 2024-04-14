@@ -1,7 +1,8 @@
 src/base/CMakeFiles/tinyMuduo.dir/InetAddress.cpp.o: \
- /mnt/workspace/Muduo/src/base/InetAddress.cpp /usr/include/stdc-predef.h \
- /mnt/workspace/Muduo/src/base/InetAddress.h /usr/include/netinet/in.h \
- /usr/include/features.h /usr/include/features-time64.h \
+ /root/Server/tinyMuduo/src/base/InetAddress.cpp \
+ /usr/include/stdc-predef.h /root/Server/tinyMuduo/src/base/InetAddress.h \
+ /usr/include/netinet/in.h /usr/include/features.h \
+ /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
  /usr/include/x86_64-linux-gnu/bits/timesize.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -52,7 +53,7 @@ src/base/CMakeFiles/tinyMuduo.dir/InetAddress.cpp.o: \
  /usr/include/asm-generic/sockios.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
  /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/arpa/inet.h \
- /mnt/workspace/Muduo/src/base/public.h /usr/include/c++/11/iostream \
+ /root/Server/tinyMuduo/src/base/public.h /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/cpu_defines.h \
@@ -164,8 +165,8 @@ src/base/CMakeFiles/tinyMuduo.dir/InetAddress.cpp.o: \
  /usr/include/c++/11/bits/ostream.tcc /usr/include/c++/11/istream \
  /usr/include/c++/11/bits/istream.tcc /usr/include/c++/11/cstring \
  /usr/include/string.h /usr/include/strings.h \
- /mnt/workspace/Muduo/src/base/Logger.h \
- /mnt/workspace/Muduo/src/base/noncopyable.h \
+ /root/Server/tinyMuduo/src/base/Logger.h \
+ /root/Server/tinyMuduo/src/base/noncopyable.h \
  /usr/include/c++/11/unordered_map \
  /usr/include/c++/11/ext/aligned_buffer.h \
  /usr/include/c++/11/bits/hashtable.h \

@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "../../../lib/libtinyMuduo.pdb"
-  "../../../lib/libtinyMuduo.so"
+  "/root/Server/tinyMuduo/lib/libtinyMuduo.pdb"
+  "/root/Server/tinyMuduo/lib/libtinyMuduo.so"
   "CMakeFiles/tinyMuduo.dir/Acceptor.cpp.o"
   "CMakeFiles/tinyMuduo.dir/Acceptor.cpp.o.d"
   "CMakeFiles/tinyMuduo.dir/Buffer.cpp.o"

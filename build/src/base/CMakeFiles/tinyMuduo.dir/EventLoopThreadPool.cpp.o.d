@@ -1,10 +1,10 @@
 src/base/CMakeFiles/tinyMuduo.dir/EventLoopThreadPool.cpp.o: \
- /mnt/workspace/Muduo/src/base/EventLoopThreadPool.cpp \
+ /root/Server/tinyMuduo/src/base/EventLoopThreadPool.cpp \
  /usr/include/stdc-predef.h \
- /mnt/workspace/Muduo/src/base/EventLoopThreadPool.h \
- /mnt/workspace/Muduo/src/base/EventLoopThread.h \
- /mnt/workspace/Muduo/src/base/noncopyable.h \
- /mnt/workspace/Muduo/src/base/Thread.h /usr/include/c++/11/thread \
+ /root/Server/tinyMuduo/src/base/EventLoopThreadPool.h \
+ /root/Server/tinyMuduo/src/base/EventLoopThread.h \
+ /root/Server/tinyMuduo/src/base/noncopyable.h \
+ /root/Server/tinyMuduo/src/base/Thread.h /usr/include/c++/11/thread \
  /usr/include/c++/11/bits/std_thread.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -162,8 +162,8 @@ src/base/CMakeFiles/tinyMuduo.dir/EventLoopThreadPool.cpp.o: \
  /usr/include/c++/11/bits/stl_vector.h \
  /usr/include/c++/11/bits/stl_bvector.h \
  /usr/include/c++/11/bits/vector.tcc \
- /mnt/workspace/Muduo/src/base/Logger.h \
- /mnt/workspace/Muduo/src/base/public.h /usr/include/c++/11/iostream \
+ /root/Server/tinyMuduo/src/base/Logger.h \
+ /root/Server/tinyMuduo/src/base/public.h /usr/include/c++/11/iostream \
  /usr/include/c++/11/ostream /usr/include/c++/11/ios \
  /usr/include/c++/11/bits/ios_base.h \
  /usr/include/c++/11/bits/locale_classes.h \

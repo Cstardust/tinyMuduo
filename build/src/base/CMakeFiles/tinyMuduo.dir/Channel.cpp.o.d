@@ -1,6 +1,6 @@
 src/base/CMakeFiles/tinyMuduo.dir/Channel.cpp.o: \
- /mnt/workspace/Muduo/src/base/Channel.cpp /usr/include/stdc-predef.h \
- /mnt/workspace/Muduo/src/base/Channel.h /usr/include/c++/11/functional \
+ /root/Server/tinyMuduo/src/base/Channel.cpp /usr/include/stdc-predef.h \
+ /root/Server/tinyMuduo/src/base/Channel.h /usr/include/c++/11/functional \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -120,9 +120,9 @@ src/base/CMakeFiles/tinyMuduo.dir/Channel.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/select.h \
  /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h \
  /usr/include/x86_64-linux-gnu/bits/epoll.h \
- /mnt/workspace/Muduo/src/base/noncopyable.h \
- /mnt/workspace/Muduo/src/base/Timestamp.h \
- /mnt/workspace/Muduo/src/base/public.h /usr/include/c++/11/iostream \
+ /root/Server/tinyMuduo/src/base/noncopyable.h \
+ /root/Server/tinyMuduo/src/base/Timestamp.h \
+ /root/Server/tinyMuduo/src/base/public.h /usr/include/c++/11/iostream \
  /usr/include/c++/11/ostream /usr/include/c++/11/ios \
  /usr/include/c++/11/bits/char_traits.h /usr/include/c++/11/cstdint \
  /usr/include/c++/11/bits/localefwd.h \
@@ -166,7 +166,7 @@ src/base/CMakeFiles/tinyMuduo.dir/Channel.cpp.o: \
  /usr/include/c++/11/bits/basic_ios.tcc \
  /usr/include/c++/11/bits/ostream.tcc /usr/include/c++/11/istream \
  /usr/include/c++/11/bits/istream.tcc \
- /mnt/workspace/Muduo/src/base/EventLoop.h /usr/include/c++/11/atomic \
+ /root/Server/tinyMuduo/src/base/EventLoop.h /usr/include/c++/11/atomic \
  /usr/include/c++/11/vector /usr/include/c++/11/bits/stl_vector.h \
  /usr/include/c++/11/bits/stl_bvector.h \
  /usr/include/c++/11/bits/vector.tcc /usr/include/c++/11/mutex \
@@ -175,7 +175,7 @@ src/base/CMakeFiles/tinyMuduo.dir/Channel.cpp.o: \
  /usr/include/c++/11/bits/parse_numbers.h \
  /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h \
- /mnt/workspace/Muduo/src/base/CurrentThread.h /usr/include/unistd.h \
+ /root/Server/tinyMuduo/src/base/CurrentThread.h /usr/include/unistd.h \
  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h \
@@ -187,8 +187,8 @@ src/base/CMakeFiles/tinyMuduo.dir/Channel.cpp.o: \
  /usr/include/x86_64-linux-gnu/asm/unistd.h \
  /usr/include/x86_64-linux-gnu/asm/unistd_64.h \
  /usr/include/x86_64-linux-gnu/bits/syscall.h \
- /mnt/workspace/Muduo/src/base/Logger.h /usr/include/c++/11/unordered_map \
- /usr/include/c++/11/bits/hashtable.h \
+ /root/Server/tinyMuduo/src/base/Logger.h \
+ /usr/include/c++/11/unordered_map /usr/include/c++/11/bits/hashtable.h \
  /usr/include/c++/11/bits/hashtable_policy.h \
  /usr/include/c++/11/bits/enable_special_members.h \
  /usr/include/c++/11/bits/unordered_map.h \

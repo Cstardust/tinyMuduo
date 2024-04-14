@@ -1,8 +1,8 @@
 src/base/CMakeFiles/tinyMuduo.dir/EpollPoller.cpp.o: \
- /mnt/workspace/Muduo/src/base/EpollPoller.cpp /usr/include/stdc-predef.h \
- /mnt/workspace/Muduo/src/base/Logger.h \
- /mnt/workspace/Muduo/src/base/noncopyable.h \
- /mnt/workspace/Muduo/src/base/public.h /usr/include/c++/11/iostream \
+ /root/Server/tinyMuduo/src/base/EpollPoller.cpp \
+ /usr/include/stdc-predef.h /root/Server/tinyMuduo/src/base/Logger.h \
+ /root/Server/tinyMuduo/src/base/noncopyable.h \
+ /root/Server/tinyMuduo/src/base/public.h /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -155,9 +155,9 @@ src/base/CMakeFiles/tinyMuduo.dir/EpollPoller.cpp.o: \
  /usr/include/c++/11/bits/enable_special_members.h \
  /usr/include/c++/11/bits/unordered_map.h \
  /usr/include/c++/11/bits/erase_if.h \
- /mnt/workspace/Muduo/src/base/EpollPoller.h \
- /mnt/workspace/Muduo/src/base/Poller.h \
- /mnt/workspace/Muduo/src/base/EventLoop.h /usr/include/c++/11/atomic \
+ /root/Server/tinyMuduo/src/base/EpollPoller.h \
+ /root/Server/tinyMuduo/src/base/Poller.h \
+ /root/Server/tinyMuduo/src/base/EventLoop.h /usr/include/c++/11/atomic \
  /usr/include/c++/11/bits/atomic_base.h \
  /usr/include/c++/11/bits/atomic_lockfree_defines.h \
  /usr/include/c++/11/memory /usr/include/c++/11/bits/stl_uninitialized.h \
@@ -180,7 +180,7 @@ src/base/CMakeFiles/tinyMuduo.dir/EpollPoller.cpp.o: \
  /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h /usr/include/c++/11/functional \
  /usr/include/c++/11/bits/std_function.h \
- /mnt/workspace/Muduo/src/base/CurrentThread.h /usr/include/unistd.h \
+ /root/Server/tinyMuduo/src/base/CurrentThread.h /usr/include/unistd.h \
  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h \
@@ -192,8 +192,8 @@ src/base/CMakeFiles/tinyMuduo.dir/EpollPoller.cpp.o: \
  /usr/include/x86_64-linux-gnu/asm/unistd.h \
  /usr/include/x86_64-linux-gnu/asm/unistd_64.h \
  /usr/include/x86_64-linux-gnu/bits/syscall.h \
- /mnt/workspace/Muduo/src/base/Timestamp.h \
- /mnt/workspace/Muduo/src/base/Channel.h \
+ /root/Server/tinyMuduo/src/base/Timestamp.h \
+ /root/Server/tinyMuduo/src/base/Channel.h \
  /usr/include/x86_64-linux-gnu/sys/epoll.h \
  /usr/include/x86_64-linux-gnu/bits/epoll.h \
  /usr/include/x86_64-linux-gnu/sys/poll.h \

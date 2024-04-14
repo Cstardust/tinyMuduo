@@ -80,7 +80,7 @@
         // Inference按钮点击事件处理
         document.getElementById("inferenceButton").addEventListener("click", function() {
             // 设置后端服务的IP地址和端口
-            const backendIP = "127.0.0.1";
+            const backendIP = "139.196.45.181";
             const backendPort = "7000";
 
             // 构造请求的URL
@@ -92,7 +92,8 @@
                 body: fileContent,
                 headers: {
                     'Content-Type': 'conll',
-                    'Id': '456123'
+                    'Id': '7777',
+		            'Content-Length': fileContent.length
                 }
             })
             .then(response => {

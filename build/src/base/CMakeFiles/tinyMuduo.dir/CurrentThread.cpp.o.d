@@ -1,8 +1,8 @@
 src/base/CMakeFiles/tinyMuduo.dir/CurrentThread.cpp.o: \
- /mnt/workspace/Muduo/src/base/CurrentThread.cpp \
- /usr/include/stdc-predef.h /mnt/workspace/Muduo/src/base/CurrentThread.h \
- /usr/include/unistd.h /usr/include/features.h \
- /usr/include/features-time64.h \
+ /root/Server/tinyMuduo/src/base/CurrentThread.cpp \
+ /usr/include/stdc-predef.h \
+ /root/Server/tinyMuduo/src/base/CurrentThread.h /usr/include/unistd.h \
+ /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
  /usr/include/x86_64-linux-gnu/bits/timesize.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \

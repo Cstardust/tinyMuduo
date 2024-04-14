@@ -1,8 +1,8 @@
 src/base/CMakeFiles/tinyMuduo.dir/Logger.cpp.o: \
- /mnt/workspace/Muduo/src/base/Logger.cpp /usr/include/stdc-predef.h \
- /mnt/workspace/Muduo/src/base/Logger.h \
- /mnt/workspace/Muduo/src/base/noncopyable.h \
- /mnt/workspace/Muduo/src/base/public.h /usr/include/c++/11/iostream \
+ /root/Server/tinyMuduo/src/base/Logger.cpp /usr/include/stdc-predef.h \
+ /root/Server/tinyMuduo/src/base/Logger.h \
+ /root/Server/tinyMuduo/src/base/noncopyable.h \
+ /root/Server/tinyMuduo/src/base/public.h /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -155,6 +155,6 @@ src/base/CMakeFiles/tinyMuduo.dir/Logger.cpp.o: \
  /usr/include/c++/11/bits/enable_special_members.h \
  /usr/include/c++/11/bits/unordered_map.h \
  /usr/include/c++/11/bits/erase_if.h \
- /mnt/workspace/Muduo/src/base/Timestamp.h /usr/include/c++/11/functional \
- /usr/include/c++/11/bits/refwrap.h \
+ /root/Server/tinyMuduo/src/base/Timestamp.h \
+ /usr/include/c++/11/functional /usr/include/c++/11/bits/refwrap.h \
  /usr/include/c++/11/bits/std_function.h

@@ -1,4 +1,4 @@
-# Install script for directory: /mnt/workspace/Muduo/src/base
+# Install script for directory: /root/Server/tinyMuduo/src/base
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
