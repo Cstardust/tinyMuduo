@@ -1,1 +1,0 @@
-/usr/bin/c++ -g -rdynamic CMakeFiles/InferenceServer.dir/InferenceServer.cpp.o -o ../../bin/InferenceServer  -lpthread -ltinyMuduo -lpython3.10 -ldl -lpthread -lutil -ltinyMuduo -lpython3.10 -ldl -lutil 

@@ -1,7 +1,0 @@
-/root/Server/tinyMuduo/examples/parsingServer/build/CMakeFiles/edit_cache.dir
-/root/Server/tinyMuduo/examples/parsingServer/build/CMakeFiles/rebuild_cache.dir
-/root/Server/tinyMuduo/examples/parsingServer/build/thirdparty/pybind11/CMakeFiles/edit_cache.dir
-/root/Server/tinyMuduo/examples/parsingServer/build/thirdparty/pybind11/CMakeFiles/rebuild_cache.dir
-/root/Server/tinyMuduo/examples/parsingServer/build/src/CMakeFiles/InferenceServer.dir
-/root/Server/tinyMuduo/examples/parsingServer/build/src/CMakeFiles/edit_cache.dir
-/root/Server/tinyMuduo/examples/parsingServer/build/src/CMakeFiles/rebuild_cache.dir

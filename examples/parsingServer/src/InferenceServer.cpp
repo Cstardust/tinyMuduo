@@ -14,10 +14,11 @@
 
 using namespace httpparser;
 
-const std::string INFERENCE_NAME = "./core/Parser/inf.py";
-const std::string DATA_BASE_DIR = "./usrdata/";
-const std::string WEB_BASE_DIR = "./web/";
-const std::vector<std::string> config_args{INFERENCE_NAME, "--res_dir", "results_v1", "--visual", "true"};
+const std::string MODLE_ABS_BASE_DIR = "/mnt/workspace/Parser/";  // fix with env
+const std::string INFERENCE_NAME = "test2.py";
+const std::string DATA_ABS_BASE_DIR = "/mnt/workspace/Muduo/examples/parsingServer/usrdata/"; // fix with env
+const std::string WEB_BASE_DIR = "web/";
+const std::vector<std::string> config_args{MODLE_ABS_BASE_DIR + INFERENCE_NAME, "--res_dir", "results_v1", "--visual", "true"};
 unordered_map<std::string, std::string> pages;
 
 static void saveStringToFile(const std::string &file_name, const std::string & data) 
@@ -43,14 +44,14 @@ static std::string retriveFileAsString(const std::string & file_name)
 static std::string pasringDialog(const std::string id, const std::string &dialog, const std::string &type) {
   LOG_INFO("id = %s, dialog = %s, type %s\n", id.c_str(), dialog.c_str(), type.c_str());
   // prepare args
-  std::string dfn(DATA_BASE_DIR + "/usr-data-" + id + ".conll"); 
-  saveStringToFile(dfn, dialog);  // 保存用户提交的语料. 便于后续扩展功能. id为get返回的.
-  std::string rfn(DATA_BASE_DIR + "usr-res-" + id + ".log"); // 保存用户推理的结果. 便于后续扩展功能, 如历史记录等. 
+  std::string dfn(DATA_ABS_BASE_DIR + "usr-data-" + id + ".conll"); // 保存用户提交的语料. 便于后续扩展功能. id为get返回的.
+  saveStringToFile(dfn, dialog);                                    
+  std::string rfn(DATA_ABS_BASE_DIR + "usr-res-" + id + ".log");    // 保存用户推理的结果. 便于后续扩展功能, 如历史记录等. 
   std::vector<std::string> args(config_args);
   args.push_back("--format"); args.push_back(type);
   args.push_back("--data_file"); args.push_back(dfn);
   args.push_back("--uid_store"); args.push_back(rfn);
-  bool finished = ex_py(INFERENCE_NAME, args);
+  bool finished = ex_py(MODLE_ABS_BASE_DIR, INFERENCE_NAME, args);
   if (!finished)
     return "Inference Failed";
   // uas, las, visual res

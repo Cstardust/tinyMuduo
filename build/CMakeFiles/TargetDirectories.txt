@@ -1,7 +1,0 @@
-/root/Server/tinyMuduo/build/CMakeFiles/edit_cache.dir
-/root/Server/tinyMuduo/build/CMakeFiles/rebuild_cache.dir
-/root/Server/tinyMuduo/build/src/CMakeFiles/edit_cache.dir
-/root/Server/tinyMuduo/build/src/CMakeFiles/rebuild_cache.dir
-/root/Server/tinyMuduo/build/src/base/CMakeFiles/tinyMuduo.dir
-/root/Server/tinyMuduo/build/src/base/CMakeFiles/edit_cache.dir
-/root/Server/tinyMuduo/build/src/base/CMakeFiles/rebuild_cache.dir
