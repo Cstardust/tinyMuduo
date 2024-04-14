@@ -18,3 +18,4 @@
   - `./autobuild.sh` : 在/usr/lib下生成libtinyMuduo.so. 头文件拷贝在/usr/include/tinyMuduo
   - 使用时include头文件 并链接 -ltinyMuduo
   - 使用样例见example
+- 博客: https://cstardust.github.io/categories/Muduo/
