@@ -11,14 +11,15 @@
 #include <algorithm>
 #include <unordered_map>
 #include "util.h"
+#include <uuid/uuid.h>
 
 using namespace httpparser;
 
-const std::string MODLE_ABS_BASE_DIR = "/mnt/workspace/Parser/";  // fix with env
+const std::string MODLE_ABS_BASE_DIR = "/root/Parser/";  // fix with env
 const std::string INFERENCE_NAME = "test2.py";
-const std::string DATA_ABS_BASE_DIR = "/mnt/workspace/Muduo/examples/parsingServer/usrdata/"; // fix with env
+const std::string DATA_ABS_BASE_DIR = "/root/Server/tinyMuduo/examples/parsingServer/usrdata/"; // fix with env
 const std::string WEB_BASE_DIR = "web/";
-const std::vector<std::string> config_args{MODLE_ABS_BASE_DIR + INFERENCE_NAME, "--res_dir", "results_v1", "--visual", "true"};
+const std::vector<std::string> config_args{MODLE_ABS_BASE_DIR + INFERENCE_NAME, "--res_dir", "results_v0", "--visual", "true"};
 unordered_map<std::string, std::string> pages;
 
 static void saveStringToFile(const std::string &file_name, const std::string & data) 
@@ -89,12 +90,33 @@ static void handleOptions(const HttpRequest& req, HttpResponse* resp)
   }
 }
 
+static std::string getUuid(const std::string & html)
+{
+	size_t pos = html.find("c07ce2c3-54c4-40e1-8d65-cb034d680420");
+	if (pos == std::string::npos) {
+		LOG_ERROR("replace error return");
+		return html;
+	}
+	std::string uhtml(html);
+	uuid_t uuid;
+    	uuid_generate(uuid);
+	char uuidStr[37] = {0};
+	uuid_unparse(uuid, uuidStr);
+	LOG_INFO("generate uuid %s\n", uuidStr);
+	uhtml.replace(pos, 36, uuidStr);
+	return uhtml;
+}
+
 static void handleGet(const HttpRequest& req, HttpResponse* resp)
 {
   LOG_INFO("uri %s\n", req.uri.c_str());
   resp->setStatusCode(HttpResponse::k200Ok);    
   resp->setStatusMsg("OK");
-  resp->setContent(pages[req.uri]);
+  if (req.uri == "/inference") {
+  	resp->setContent(getUuid(pages[req.uri]));
+  } else {
+  	resp->setContent(pages[req.uri]);
+  }
 }
 
 void respond(const HttpRequest& req, HttpResponse* resp)

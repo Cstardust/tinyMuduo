@@ -5,16 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inference Web Page</title>
     <style>
+        /* SVG背景样式 */
+        #svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            margin-top: 55px; /* 居中 */
+            z-index: -1; /* 将SVG放置在最底层 */
+        }
+
         /* 样式用于拖放区域 */
         #dropArea {
             width: 300px;
-            height: 200px;
+            height: 100px;
             border: 2px dashed #ccc;
             border-radius: 10px;
             text-align: center;
-            line-height: 200px;
+            line-height: 100px;
             font-size: 20px; /* 设置字体大小 */
-            margin-bottom: 20px;
+            margin: 0 auto 20px; /* 居中 */
+            margin-top: 50px; /* 居中 */
+            /* margin-bottom: 20px; */
         }
         /* 高亮显示拖放区域 */
         #dropArea.highlight {
@@ -22,19 +35,59 @@
         }
         /* 可滚动区域的样式 */
         #dataDisplay {
-            width: 400px;
+            width: 500px;
             height: 300px; /* 设置高度 */
             overflow: auto; /* 设置为可滚动 */
             border: 1px solid #ccc;
             padding: 10px;
-            margin-bottom: 20px;
+            /* margin-bottom: 20px; */
+            margin: 0 auto 20px; /* 居中 */
+            margin-top: 50px;
+            border-radius: 10px; /* 圆角 */
+        }
+        /* 文本虚线样式 */
+        #dropArea span {
+            opacity: 0.6; /* 设置文本透明度 */
+        }
+        /* 居中按钮 */
+        #inferenceButton {
+            display: block;
+            margin: 0 auto 20px; /* 居中，并增加上边距 */
+            margin-top: 70px;
+            width: 200px; /* 设置宽度 */
+            height: 50px; /* 设置高度 */
+            font-size: 18px; /* 设置字体大小 */
+            border: none; /* 移除边框 */
+            border-radius: 10px; /* 圆角 */
+            background-color: #9e9fe1; /* 设置背景颜色 */
+            color: white; /* 设置文字颜色 */
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* 添加阴影效果 */
+            transition: 0.3s; /* 添加过渡效果 */
+        }
+        /* 鼠标悬停时改变按钮颜色 */
+        #inferenceButton:hover {
+            background-color: #8183d5;
+        }
+        /* 鼠标点击时改变按钮颜色 */
+        #inferenceButton:active {
+            background-color: #8183d5;
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+            transform: translateY(2px); /* 点击时按钮下移2px */
+        }
+
+        /* 居中标题 */
+        h1 {
+            text-align: center;
+            font-size: 40px; /* 增大标题字体大小 */
         }
     </style>
 </head>
 <body>
     <h1>Deep Learning Inference Web Page</h1>
+    
+    <!-- SVG 背景 -->
+    <svg width="100%" height="100%" id="svg" viewBox="0 0 1440 590" xmlns="http://www.w3.org/2000/svg" class="transition duration-300 ease-in-out delay-150" style="margin-bottom: -5px;"><defs><linearGradient id="gradient" x1="0%" y1="50%" x2="100%" y2="50%"><stop offset="5%" stop-color="#F78DA7"></stop><stop offset="95%" stop-color="#8ED1FC"></stop></linearGradient></defs><path d="M 0,600 L 0,150 C 78.31578947368422,172.1244019138756 156.63157894736844,194.24880382775117 246,206 C 335.36842105263156,217.75119617224883 435.7894736842105,219.12918660287085 551,192 C 666.2105263157895,164.87081339712915 796.2105263157896,109.23444976076554 897,89 C 997.7894736842104,68.76555023923446 1069.3684210526317,83.933014354067 1155,100 C 1240.6315789473683,116.066985645933 1340.3157894736842,133.0334928229665 1440,150 L 1440,600 L 0,600 Z" stroke="none" stroke-width="0" fill="url(#gradient)" fill-opacity="0.53" class="transition-all duration-300 ease-in-out delay-150 path-0"></path><defs><linearGradient id="gradient" x1="0%" y1="50%" x2="100%" y2="50%"><stop offset="5%" stop-color="#F78DA7"></stop><stop offset="95%" stop-color="#8ED1FC"></stop></linearGradient></defs><path d="M 0,600 L 0,350 C 90.84210526315792,315.08133971291863 181.68421052631584,280.1626794258373 263,301 C 344.31578947368416,321.8373205741627 416.1052631578947,398.4306220095694 523,403 C 629.8947368421053,407.5693779904306 771.8947368421052,340.11483253588517 881,340 C 990.1052631578948,339.88516746411483 1066.3157894736842,407.1100478468899 1154,420 C 1241.6842105263158,432.8899521531101 1340.842105263158,391.444976076555 1440,350 L 1440,600 L 0,600 Z" stroke="none" stroke-width="0" fill="url(#gradient)" fill-opacity="1" class="transition-all duration-300 ease-in-out delay-150 path-1"></path></svg>
 
-    <!-- 拖放区域 -->
     <div id="dropArea" ondragover="handleDragOver(event)" ondrop="handleFileDrop(event)">
         <span style="font-size: 16px;">Drag and drop your Conll file here</span> <!-- 修改字体大小 -->
     </div>
@@ -80,7 +133,7 @@
         // Inference按钮点击事件处理
         document.getElementById("inferenceButton").addEventListener("click", function() {
             // 设置后端服务的IP地址和端口
-            const backendIP = "139.196.45.181";
+            const backendIP = "139.196.191.185";
             const backendPort = "7000";
 
             // 构造请求的URL
@@ -92,8 +145,8 @@
                 body: fileContent,
                 headers: {
                     'Content-Type': 'conll',
-                    'Id': '7777',
-		            'Content-Length': fileContent.length
+                    'Id': 'c07ce2c3-54c4-40e1-8d65-cb034d680420',
+                    'Content-Length': fileContent.length
                 }
             })
             .then(response => {
@@ -110,25 +163,55 @@
                 console.log(data);
                 // displayData(data); // 调用函数将数据显示在页面上
                 // 将响应文本按照换行符分割成行，并用 <br> 标签表示换行
-                const lines = data.split('\n');
-                const formattedData = lines.map(line => {
-                    return line.trim(); // 去除每行前后的空白字符
-                }).join('<br>'); // 用 <br> 标签连接每行
-                displayData(formattedData); 
+                // const trimmedData = data.replace(/^"|"$/g, '');
+                const trimmedData = data
+                const lines = trimmedData.split('\n');
+                // const formattedData = lines.map(line => {
+                //    return line.trim(); // 去除每行前后的空白字符
+                // }).join('<br>'); // 用 <br> 标签连接每行
+                displayData(lines); 
                 alert("Inference result received successfully!"); // 提示推理结果接收成功
             })
             .catch(error => {
                 console.error('There was a problem with your fetch operation:', error);
                 alert("Failed to receive inference result. Please check the backend server."); // 提示推理结果接收失败
             });
-
-
         });
 
         // 将后端返回的数据显示在页面上
-        function displayData(data) {
+        function displayData(lines) {
             var dataDisplay = document.getElementById("dataDisplay");
-            dataDisplay.innerHTML = JSON.stringify(data, null, 2); // 格式化并显示数据
+            
+	   // console.log("lines", lines);
+            // 取出第一行数据
+            const firstLine = lines.shift();
+           // console.log("first line", firstLine);
+
+            // 使用正则表达式提取出UAS和LAS的值
+            const uasMatch = firstLine.match(/UAS:\s*(\d+(\.\d+)?)/);
+            const lasMatch = firstLine.match(/LAS:\s*(\d+(\.\d+)?)/);
+            
+            // 保存UAS和LAS的值
+            let uasValue = null;
+            let lasValue = null;
+            if (uasMatch && uasMatch[1]) {
+                uasValue = parseFloat(uasMatch[1]);
+            }
+            if (lasMatch && lasMatch[1]) {
+                lasValue = parseFloat(lasMatch[1]);
+            }
+            
+            // 在界面上展示剩余的数据（去除了第一行）
+            // const remainingData = lines.join('\n');
+            //dataDisplay.innerHTML = lines;
+            const remainingData = lines.map(line => `<div>${line}</div>`).join('');
+ 	    dataDisplay.innerHTML = remainingData;
+
+            // 在控制台打印解析得到的UAS和LAS的值
+            console.log("UAS:", uasValue);
+            console.log("LAS:", lasValue);
+
+	    // console.log("REMAINING DATA", remainingData);
         }
     </script>
 </body>

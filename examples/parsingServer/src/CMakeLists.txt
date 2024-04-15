@@ -10,6 +10,6 @@ add_executable(InferenceServer ${SRC_LIST})      # 1. 生成可执行文件
 find_package(Python 3.10 COMPONENTS Interpreter Development REQUIRED)
 
 # target_link_libraries(InferenceServer tinyMuduo pybind11::embed pthread)
-target_link_libraries(InferenceServer pthread tinyMuduo python3.10 dl pthread util)
+target_link_libraries(InferenceServer pthread tinyMuduo python3.10 dl pthread util uuid)
 
 # https://cloud.tencent.com/developer/ask/sof/107018498
