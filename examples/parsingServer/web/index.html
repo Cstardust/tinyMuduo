@@ -13,7 +13,12 @@
             width: 100%;
             height: 100%;
             margin-top: 55px; /* 居中 */
-            z-index: -1; /* 将SVG放置在最底层 */
+            z-index: -1; /*将SVG放置在最底层*/
+            display: block;
+            padding: 0;
+            overflow: hidden;
+            display: block;
+            margin: 0
         }
 
         /* 样式用于拖放区域 */
@@ -86,7 +91,7 @@
     <h1>Deep Learning Inference Web Page</h1>
     
     <!-- SVG 背景 -->
-    <svg width="100%" height="100%" id="svg" viewBox="0 0 1440 590" xmlns="http://www.w3.org/2000/svg" class="transition duration-300 ease-in-out delay-150" style="margin-bottom: -5px;"><defs><linearGradient id="gradient" x1="0%" y1="50%" x2="100%" y2="50%"><stop offset="5%" stop-color="#F78DA7"></stop><stop offset="95%" stop-color="#8ED1FC"></stop></linearGradient></defs><path d="M 0,600 L 0,150 C 78.31578947368422,172.1244019138756 156.63157894736844,194.24880382775117 246,206 C 335.36842105263156,217.75119617224883 435.7894736842105,219.12918660287085 551,192 C 666.2105263157895,164.87081339712915 796.2105263157896,109.23444976076554 897,89 C 997.7894736842104,68.76555023923446 1069.3684210526317,83.933014354067 1155,100 C 1240.6315789473683,116.066985645933 1340.3157894736842,133.0334928229665 1440,150 L 1440,600 L 0,600 Z" stroke="none" stroke-width="0" fill="url(#gradient)" fill-opacity="0.53" class="transition-all duration-300 ease-in-out delay-150 path-0"></path><defs><linearGradient id="gradient" x1="0%" y1="50%" x2="100%" y2="50%"><stop offset="5%" stop-color="#F78DA7"></stop><stop offset="95%" stop-color="#8ED1FC"></stop></linearGradient></defs><path d="M 0,600 L 0,350 C 90.84210526315792,315.08133971291863 181.68421052631584,280.1626794258373 263,301 C 344.31578947368416,321.8373205741627 416.1052631578947,398.4306220095694 523,403 C 629.8947368421053,407.5693779904306 771.8947368421052,340.11483253588517 881,340 C 990.1052631578948,339.88516746411483 1066.3157894736842,407.1100478468899 1154,420 C 1241.6842105263158,432.8899521531101 1340.842105263158,391.444976076555 1440,350 L 1440,600 L 0,600 Z" stroke="none" stroke-width="0" fill="url(#gradient)" fill-opacity="1" class="transition-all duration-300 ease-in-out delay-150 path-1"></path></svg>
+    <svg width="100%" height="100%" id="svg" viewBox="0 0 1440 400" xmlns="http://www.w3.org/2000/svg" class="transition duration-300 ease-in-out delay-150" style="margin-bottom: -5px;"><defs><linearGradient id="gradient" x1="0%" y1="50%" x2="100%" y2="50%"><stop offset="5%" stop-color="#F78DA7"></stop><stop offset="95%" stop-color="#8ED1FC"></stop></linearGradient></defs><path d="M 0,600 L 0,150 C 78.31578947368422,172.1244019138756 156.63157894736844,194.24880382775117 246,206 C 335.36842105263156,217.75119617224883 435.7894736842105,219.12918660287085 551,192 C 666.2105263157895,164.87081339712915 796.2105263157896,109.23444976076554 897,89 C 997.7894736842104,68.76555023923446 1069.3684210526317,83.933014354067 1155,100 C 1240.6315789473683,116.066985645933 1340.3157894736842,133.0334928229665 1440,150 L 1440,600 L 0,600 Z" stroke="none" stroke-width="0" fill="url(#gradient)" fill-opacity="0.53" class="transition-all duration-300 ease-in-out delay-150 path-0"></path><defs><linearGradient id="gradient" x1="0%" y1="50%" x2="100%" y2="50%"><stop offset="5%" stop-color="#F78DA7"></stop><stop offset="95%" stop-color="#8ED1FC"></stop></linearGradient></defs><path d="M 0,600 L 0,350 C 90.84210526315792,315.08133971291863 181.68421052631584,280.1626794258373 263,301 C 344.31578947368416,321.8373205741627 416.1052631578947,398.4306220095694 523,403 C 629.8947368421053,407.5693779904306 771.8947368421052,340.11483253588517 881,340 C 990.1052631578948,339.88516746411483 1066.3157894736842,407.1100478468899 1154,420 C 1241.6842105263158,432.8899521531101 1340.842105263158,391.444976076555 1440,350 L 1440,600 L 0,600 Z" stroke="none" stroke-width="0" fill="url(#gradient)" fill-opacity="1" class="transition-all duration-300 ease-in-out delay-150 path-1"></path></svg>
 
     <div id="dropArea" ondragover="handleDragOver(event)" ondrop="handleFileDrop(event)">
         <span style="font-size: 16px;">Drag and drop your Conll file here</span> <!-- 修改字体大小 -->
